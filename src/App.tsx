@@ -4,6 +4,7 @@ import { Skills } from "@/components/sections/skills";
 import { Experience } from "@/components/sections/experience";
 import { Contact } from "@/components/sections/contact";
 import { Projects } from "@/components/sections/projects";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Contact />
         <Projects />
       </main>
+      <Analytics />
     </div>
   );
 }
