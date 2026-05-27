@@ -1,5 +1,5 @@
 import { Timeline } from "@/components/ui/timeline";
-import { experience } from "@/data/portfolio";
+import { experience, sectionCopy } from "@/data/portfolio";
 
 export function Experience() {
   const data = experience.map((company) => ({
@@ -34,8 +34,8 @@ export function Experience() {
     <section id="experience" className="scroll-mt-20 border-t border-white/10">
       <Timeline
         data={data}
-        heading="Experience"
-        subheading="My professional journey building web & mobile products over the past 3+ years."
+        heading={sectionCopy.experience.heading}
+        subheading={sectionCopy.experience.subheading}
       />
     </section>
   );

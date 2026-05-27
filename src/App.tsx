@@ -1,8 +1,9 @@
 import { Navbar } from "@/components/sections/navbar";
 import { Hero } from "@/components/sections/hero";
+import { Skills } from "@/components/sections/skills";
 import { Experience } from "@/components/sections/experience";
-import { Projects } from "@/components/sections/projects";
 import { Contact } from "@/components/sections/contact";
+import { Projects } from "@/components/sections/projects";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Navbar />
       <main>
         <Hero />
+        <Skills />
         <Experience />
         <Contact />
         <Projects />

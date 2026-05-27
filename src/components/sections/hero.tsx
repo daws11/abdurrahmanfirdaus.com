@@ -3,7 +3,13 @@ import { motion, type Variants } from "framer-motion";
 import { ArrowDownRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GlitchText } from "@/components/ui/glitch-text";
-import { profile, projects } from "@/data/portfolio";
+import {
+  profile,
+  projects,
+  heroHeadline,
+  heroSubheadline,
+  heroGlitchText,
+} from "@/data/portfolio";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
@@ -22,7 +28,7 @@ export function Hero() {
           >
             <GlitchText
               as="h1"
-              text="SOFTWARE ENGINEER"
+              text={heroGlitchText}
               className="z-20 text-primary relative font-bold text-center tracking-[-7px] text-7xl md:text-9xl xl:tracking-[-1rem] md:tracking-[-14px] xl:text-[10rem]"
             />
           </motion.div>
@@ -81,13 +87,14 @@ export function Hero() {
           animate="show"
           transition={{ duration: 0.6, delay: 0.55 }}
         >
-          <p className="mx-auto max-w-2xl font-mono text-center text-sm font-medium tracking-wide text-muted-foreground md:text-base">
-            I'M A FULL-STACK DEVELOPER &amp; TECH LEAD,
-            <br />
-            BUILDING RELIABLE WEB &amp; MOBILE PRODUCTS
-            <br />
-            WITH 3+ YEARS OF EXPERIENCE
+          <p className="mx-auto max-w-2xl text-center text-xl font-medium tracking-tight text-white md:text-2xl">
+            {heroHeadline}
           </p>
+          {heroSubheadline && (
+            <p className="mx-auto mt-4 max-w-xl text-center text-base text-neutral-400 md:text-lg">
+              {heroSubheadline}
+            </p>
+          )}
         </motion.div>
 
         <motion.div

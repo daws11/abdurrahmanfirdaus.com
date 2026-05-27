@@ -26,7 +26,7 @@ export interface WorkExperience {
 export const profile = {
   name: "Abdurrahman Firdaus",
   nickname: "Daus",
-  title: "Full-Stack Developer · Tech Lead",
+  title: "Tech Lead & Full-stack Engineer",
   bio: "I am a Software Engineer with experience in designing, developing, and maintaining high-quality software solutions with 2+ years experience. Proficient in backend and full-stack development, with a strong focus on JavaScript frameworks. Skilled in collaborating with cross-functional teams, identifying and resolving software-related issues, and staying updated with the latest industry trends. Known for boosting project completion, improving code quality, and delivering top-notch user experiences.",
   email: "abdurrahmanfirdaus53@gmail.com",
   location: "Jl. Purbamustika C-55, Arcamanik, Bandung",
@@ -41,6 +41,14 @@ export const social = {
   resume:
     "https://drive.google.com/file/d/1x74YWG3ccHtRvtvw0k66npw54lZR-HfK/view?usp=sharing",
 } as const;
+
+export const heroHeadline =
+  "Full-stack engineer and tech lead. I build products, lead teams, and ship AI that gets things done.";
+
+export const heroSubheadline = "";
+
+export const heroGlitchText = "SOFTWARE ENGINEER";
+
 
 /** Phrases cycled by the hero "I Am Into …" typewriter. */
 export const heroTyping: string[] = [
@@ -88,6 +96,68 @@ export const skills: Skill[] = [
   { name: "Netlify", icon: "https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/48/000000/external-netlify-a-cloud-computing-company-that-offers-hosting-and-serverless-backend-services-for-static-websites-logo-shadow-tal-revivo.png" },
   { name: "JQuery", icon: "https://img.icons8.com/ios-filled/48/1169ae/jquery.png" },
 ];
+
+export interface SkillCategory {
+  name: string;
+  description: string;
+}
+
+export const skillCategories: SkillCategory[] = [
+  {
+    name: "AI-Powered Development",
+    description:
+      "Agentic coding, MCP-based integrations, and purpose-built automation agents that replace manual workflows entirely. I've shipped a recruitment AI agent in production — a system that interviews, filters, and routes candidates without human intervention.",
+  },
+  {
+    name: "Full-Stack Delivery",
+    description:
+      "Full-stack means I own every layer — database schema, RESTful APIs, performant UI. Containerized with Docker, deployed via CI/CD, monitored in production. React, Next.js, Node.js, PostgreSQL — from first migration to live traffic.",
+  },
+  {
+    name: "Systems Integration",
+    description:
+      "I build the infrastructure that keeps your product running — Docker containers, CI/CD pipelines, and cloud deployments that don't break at the worst moment. I also connect third-party services so your entire stack communicates seamlessly.",
+  },
+  {
+    name: "Technical Leadership",
+    description:
+      "Leadership isn't a title — it's the work before the work. I write PRDs engineers understand, build roadmaps aligned with business priorities, and run code reviews that raise the bar. The goal is never just velocity — it's a team that knows why they're building.",
+  },
+];
+
+export const skillsIntro = "How I build";
+
+export const skillsDescription =
+  "From AI automation to full-stack delivery — how I take products from first commit to production.";
+
+export const techLogos = [
+  { src: "https://svgl.app/library/react_wordmark_light.svg", alt: "React" },
+  { src: "https://svgl.app/library/vercel_wordmark.svg", alt: "Vercel" },
+  { src: "https://svgl.app/library/typescript.svg", alt: "TypeScript" },
+  { src: "https://svgl.app/library/tailwindcss-wordmark.svg", alt: "Tailwind CSS" },
+  { src: "https://svgl.app/library/postgresql-wordmark-light.svg", alt: "PostgreSQL" },
+  { src: "https://svgl.app/library/nodejs.svg", alt: "Node.js" },
+  { src: "https://svgl.app/library/supabase_wordmark_light.svg", alt: "Supabase" },
+  { src: "https://svgl.app/library/docker.svg", alt: "Docker" },
+  { src: "https://svgl.app/library/github_wordmark_light.svg", alt: "GitHub" },
+  { src: "https://svgl.app/library/python.svg", alt: "Python" },
+];
+
+export const sectionCopy = {
+  experience: {
+    heading: "Experience",
+    subheading: "",
+  },
+  projects: {
+    heading: "Projects",
+    subheading: "",
+  },
+  contact: {
+    heading: "Get in touch",
+    subheading:
+      "Open to freelance, full-time roles, and collaborations.",
+  },
+} as const;
 
 /** Work experience, newest first — grouped by company (roles show promotions). */
 export const experience: WorkExperience[] = [
@@ -265,6 +335,8 @@ export const projects: FocusRailItem[] = [
 /** Anchor sections for the navbar. */
 export const navLinks = [
   { label: "Home", href: "#home" },
+
+  { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
   { label: "Projects", href: "#work" },

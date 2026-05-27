@@ -1,5 +1,5 @@
 import { FocusRail } from "@/components/ui/focus-rail";
-import { projects } from "@/data/portfolio";
+import { projects, sectionCopy } from "@/data/portfolio";
 
 export function Projects() {
   return (
@@ -9,11 +9,13 @@ export function Projects() {
     >
       <div className="mb-12 px-6 text-center">
         <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-          Projects <span className="text-emerald-400">Made</span>
+          {sectionCopy.projects.heading}
         </h2>
-        <p className="mt-3 text-neutral-400">
-          Drag, swipe, or use the arrows to explore selected work.
-        </p>
+        {sectionCopy.projects.subheading && (
+          <p className="mx-auto mt-3 max-w-lg text-neutral-400">
+            {sectionCopy.projects.subheading}
+          </p>
+        )}
       </div>
 
       <FocusRail items={projects} autoPlay={false} loop />

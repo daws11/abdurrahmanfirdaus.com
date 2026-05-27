@@ -1,6 +1,6 @@
 import { MessageCircle, Mail, Github, Linkedin, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { profile, social } from "@/data/portfolio";
+import { profile, social, sectionCopy } from "@/data/portfolio";
 
 export function Contact() {
   return (
@@ -10,11 +10,10 @@ export function Contact() {
     >
       <div className="mx-auto max-w-3xl px-6 text-center">
         <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-          Get In <span className="text-emerald-400">Touch</span>
+          {sectionCopy.contact.heading}
         </h2>
-        <p className="mx-auto mt-4 max-w-md text-neutral-400">
-          Have a project in mind or just want to say hi? Reach out — I'd love to
-          hear from you.
+        <p className="mx-auto mt-4 max-w-lg text-neutral-400">
+          {sectionCopy.contact.subheading}
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
