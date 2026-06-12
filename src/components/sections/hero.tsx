@@ -63,7 +63,7 @@ export function Hero() {
                   className="h-100 w-full object-contain grayscale transition-all duration-500 hover:grayscale-0"
                 />
                 <div className="text-left p-2 rotate-180 [writing-mode:vertical-rl] text-xs font-medium tracking-widest">
-                  BASED IN BANDUNG, INDONESIA
+                  BASED IN BALI, INDONESIA
                 </div>
               </div>
             </div>
@@ -75,7 +75,7 @@ export function Hero() {
               className="h-100 w-full object-contain grayscale"
             />
             <div className="text-left p-2 rotate-180 [writing-mode:vertical-rl] text-xs font-medium tracking-widest">
-              BASED IN BANDUNG, INDONESIA
+              BASED IN BALI, INDONESIA
             </div>
           </div>
         </motion.div>
