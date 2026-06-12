@@ -28,8 +28,8 @@ export const profile = {
   nickname: "Daus",
   title: "Tech Lead & Full-stack Engineer",
   bio: "I am a Software Engineer with experience in designing, developing, and maintaining high-quality software solutions with 2+ years experience. Proficient in backend and full-stack development, with a strong focus on JavaScript frameworks. Skilled in collaborating with cross-functional teams, identifying and resolving software-related issues, and staying updated with the latest industry trends. Known for boosting project completion, improving code quality, and delivering top-notch user experiences.",
-  email: "abdurrahmanfirdaus53@gmail.com",
-  location: "Jl. Purbamustika C-55, Arcamanik, Bandung",
+  email: "hello@abdurrahmanfirdaus.com",
+  location: "Bali, Indonesia",
   photo: "/assets/images/daws.jpg",
 } as const;
 

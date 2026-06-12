@@ -106,7 +106,7 @@ export function Hero() {
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
             <Button size={"lg"} asChild>
-              <a href="#contact">Contact Me</a>
+              <a href="mailto:hello@abdurrahmanfirdaus.com">Contact Me</a>
             </Button>
           </motion.div>
         </motion.div>
