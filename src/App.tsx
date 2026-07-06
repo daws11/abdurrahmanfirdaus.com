@@ -1,9 +1,10 @@
 import { Navbar } from "@/components/sections/navbar";
 import { Hero } from "@/components/sections/hero";
-import { Skills } from "@/components/sections/skills";
+import { About } from "@/components/sections/about";
+import { Metrics } from "@/components/sections/metrics";
+import { Projects } from "@/components/sections/projects";
 import { Experience } from "@/components/sections/experience";
 import { Contact } from "@/components/sections/contact";
-import { Projects } from "@/components/sections/projects";
 import { Analytics } from "@vercel/analytics/react";
 
 function App() {
@@ -12,10 +13,11 @@ function App() {
       <Navbar />
       <main>
         <Hero />
-        <Skills />
+        <About />
+        <Metrics />
+        <Projects />
         <Experience />
         <Contact />
-        <Projects />
       </main>
       <Analytics />
     </div>

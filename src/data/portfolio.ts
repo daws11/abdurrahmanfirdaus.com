@@ -15,6 +15,8 @@ export interface WorkRole {
   date: string;
   current?: boolean;
   description: string;
+  /** Optional quantified impact line shown under description. */
+  impact?: string;
 }
 
 /** A company in the work timeline, grouping one or more roles. */
@@ -26,12 +28,18 @@ export interface WorkExperience {
 export const profile = {
   name: "Abdurrahman Firdaus",
   nickname: "Daus",
-  title: "Tech Lead & Full-stack Engineer",
-  bio: "I am a Software Engineer with experience in designing, developing, and maintaining high-quality software solutions with 2+ years experience. Proficient in backend and full-stack development, with a strong focus on JavaScript frameworks. Skilled in collaborating with cross-functional teams, identifying and resolving software-related issues, and staying updated with the latest industry trends. Known for boosting project completion, improving code quality, and delivering top-notch user experiences.",
+  title: "Forward Deployed Engineer & Lead Full-Stack Developer",
+  bio: "Lead Full-Stack Developer and Tech Lead running the Technology & Innovation Lab at This is Bali (PT Unicorn) in Bali. 3+ years shipping production software for hospitality, F&B, and public-sector operations.",
   email: "hello@abdurrahmanfirdaus.com",
   location: "Bali, Indonesia",
   photo: "/assets/images/daws.jpg",
 } as const;
+
+export const aboutManifesto =
+  "Discover → Design → Deploy → Drive adoption. Repeat until it sticks.";
+
+export const aboutPullQuote =
+  "The job isn't done when the code ships — it's done when the team uses it.";
 
 export const social = {
   linkedin: "https://www.linkedin.com/in/abdurrahman-firdaus-0a5136302/",
@@ -42,20 +50,73 @@ export const social = {
     "https://drive.google.com/file/d/1x74YWG3ccHtRvtvw0k66npw54lZR-HfK/view?usp=sharing",
 } as const;
 
-export const heroHeadline =
-  "Full-stack engineer and tech lead. I build products, lead teams, and ship AI that gets things done.";
+/** Hero copy — FDE positioning. */
+export const heroHeadline = "";
 
 export const heroSubheadline = "";
 
-export const heroGlitchText = "SOFTWARE ENGINEER";
-
+export const heroGlitchText = "ABDURRAHMAN FIRDAUS";
 
 /** Phrases cycled by the hero "I Am Into …" typewriter. */
 export const heroTyping: string[] = [
-  "Android Development",
-  "Web Development",
-  "Full-Stack Engineering",
-  "Entrepreneurship",
+  "Forward Deployed Engineer",
+  "Software Engineer",
+  "AI Architect",
+];
+
+/** Marquee ticker items shown between sections. */
+export const tickerItems: string[] = [
+  "Inventory",
+  "Finance",
+  "Training",
+  "Hiring",
+  "Kitchen",
+  "WhatsApp",
+  "Xero",
+  "SFTP",
+  "iSeller",
+  "Shopee",
+  "Tokopedia",
+  "Tspoonlab",
+];
+
+/** Headline stat shown beneath the hero. */
+export interface Metric {
+  value: string;
+  label: string;
+  detail: string;
+  /** Numeric value for count-up animation. Undefined = no count-up. */
+  numericValue?: number;
+  /** Featured metrics get the hero treatment (large, warm accent). */
+  featured?: boolean;
+}
+
+export const metrics: Metric[] = [
+  {
+    value: "30%",
+    label: "Project completion uplift",
+    detail: "Across 15+ features, 50+ code reviews, 100+ issues",
+    numericValue: 30,
+    featured: true,
+  },
+  {
+    value: "5+",
+    label: "Apps in production",
+    detail: "Inventory, Finance, Training, Kitchen, Hiring",
+    numericValue: 5,
+  },
+  {
+    value: "10+",
+    label: "Integrations live",
+    detail: "Xero · WhatsApp · Vercel · n8n · SFTP",
+    numericValue: 10,
+  },
+  {
+    value: "3+",
+    label: "Years building internal tools",
+    detail: "Hospitality, F&B, and public-sector operations",
+    numericValue: 3,
+  },
 ];
 
 export interface Skill {
@@ -86,7 +147,7 @@ export const skills: Skill[] = [
   { name: "Java", icon: "https://img.icons8.com/color/48/000000/java-coffee-cup-logo--v1.png" },
   { name: "Kotlin", icon: "https://img.icons8.com/color/48/000000/kotlin.png" },
   { name: "PHP", icon: "https://img.icons8.com/offices/48/000000/php-logo.png" },
-  { name: "Laravel", icon: "https://img.icons8.com/?size=50&id=lRjcvhvtR81o&format=png&color=000000" },
+  { name: "Laravel", icon: "https://img.icons8.com/?size=50&id=lRjcvhR81o&format=png&color=000000" },
   { name: "Python", icon: "https://img.icons8.com/color/48/000000/python--v1.png" },
   { name: "C++", icon: "https://img.icons8.com/color/48/000000/c-plus-plus-logo.png" },
   { name: "MongoDB", icon: "https://img.icons8.com/color/48/000000/mongodb.png" },
@@ -96,39 +157,6 @@ export const skills: Skill[] = [
   { name: "Netlify", icon: "https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/48/000000/external-netlify-a-cloud-computing-company-that-offers-hosting-and-serverless-backend-services-for-static-websites-logo-shadow-tal-revivo.png" },
   { name: "JQuery", icon: "https://img.icons8.com/ios-filled/48/1169ae/jquery.png" },
 ];
-
-export interface SkillCategory {
-  name: string;
-  description: string;
-}
-
-export const skillCategories: SkillCategory[] = [
-  {
-    name: "AI-Powered Development",
-    description:
-      "Agentic coding, MCP-based integrations, and purpose-built automation agents that replace manual workflows entirely. I've shipped a recruitment AI agent in production — a system that interviews, filters, and routes candidates without human intervention.",
-  },
-  {
-    name: "Full-Stack Delivery",
-    description:
-      "Full-stack means I own every layer — database schema, RESTful APIs, performant UI. Containerized with Docker, deployed via CI/CD, monitored in production. React, Next.js, Node.js, PostgreSQL — from first migration to live traffic.",
-  },
-  {
-    name: "Systems Integration",
-    description:
-      "I build the infrastructure that keeps your product running — Docker containers, CI/CD pipelines, and cloud deployments that don't break at the worst moment. I also connect third-party services so your entire stack communicates seamlessly.",
-  },
-  {
-    name: "Technical Leadership",
-    description:
-      "Leadership isn't a title — it's the work before the work. I write PRDs engineers understand, build roadmaps aligned with business priorities, and run code reviews that raise the bar. The goal is never just velocity — it's a team that knows why they're building.",
-  },
-];
-
-export const skillsIntro = "How I build";
-
-export const skillsDescription =
-  "From AI automation to full-stack delivery — how I take products from first commit to production.";
 
 export const techLogos = [
   { src: "https://svgl.app/library/react_wordmark_light.svg", alt: "React" },
@@ -145,17 +173,24 @@ export const techLogos = [
 
 export const sectionCopy = {
   experience: {
-    heading: "Experience",
-    subheading: "",
+    heading: "The trail",
+    subheading: "Where I've been useful.",
   },
   projects: {
-    heading: "Projects",
-    subheading: "",
+    heading: "Things that shipped and stayed shipped.",
+    subheading: "Five outlets, one kitchen, one recruitment pipeline. Real systems, real adoption.",
   },
   contact: {
-    heading: "Get in touch",
-    subheading:
-      "Open to freelance, full-time roles, and collaborations.",
+    heading: "Let's build something that gets used.",
+    subheading: "Open for full-time roles, fractional CTO engagements, and serious collaborations.",
+  },
+  about: {
+    heading: "About",
+    subheading: "Lead Full-Stack Developer & Tech Lead · Bali, Indonesia",
+  },
+  metrics: {
+    heading: "Receipts",
+    subheading: "Outcomes, not promises.",
   },
 } as const;
 
@@ -169,13 +204,17 @@ export const experience: WorkExperience[] = [
         date: "Oct 2025 – Present",
         current: true,
         description:
-          "Led end-to-end development of multiple internal web apps (Inventory, Finance & Invoice, an AI-driven Training & Hiring platform, and a Kitchen app). Authored PRDs and weekly roadmaps, ran management calls with senior leadership, and architected real-time integrations (Xero, official WhatsApp API Gateway, SFTP) alongside complex data migrations and automation solutions.",
+          "Lead the Technology & Innovation Lab: end-to-end delivery of every internal product the company runs. PRDs, roadmaps, management calls, real-time integrations.",
+        impact:
+          "5+ production apps adopted by kitchen, finance, and PC teams. Replaced manual WhatsApp stocktake with real-time Inventory App.",
       },
       {
         position: "Fullstack Developer",
         date: "Aug 2025 – Oct 2025",
         description:
-          "Architected and maintained core full-stack systems using Docker, led full-cycle development of 5+ web apps with React, Node.js, and PostgreSQL, implemented automated CI/CD pipelines, and authored API/infrastructure documentation. Promoted to Tech Lead.",
+          "Architected and maintained core full-stack systems using Docker. Led full-cycle development of 5+ web apps. Promoted to Tech Lead.",
+        impact:
+          "Standardized deployment on Docker + CI/CD; one-command releases for every subsequent ship.",
       },
     ],
   },
@@ -186,7 +225,7 @@ export const experience: WorkExperience[] = [
         position: "Fullstack Developer",
         date: "Jan 2025 – Aug 2025",
         description:
-          "Developed and maintained scalable full-stack web applications, built proof-of-concept demos and MVPs to support sales and R&D, and deployed/managed applications on Render while collaborating with project leads and designers.",
+          "Developed full-stack web applications, built MVPs and PoC demos for sales and R&D, deployed on Render.",
       },
     ],
   },
@@ -197,7 +236,7 @@ export const experience: WorkExperience[] = [
         position: "Fullstack Developer",
         date: "Oct 2023 – Jan 2025",
         description:
-          "Designed and built web and mobile applications (POS cashier apps, warehouse management systems), implemented complex business logic, designed and managed database schemas, and integrated internal and third-party APIs.",
+          "Built POS cashier apps and warehouse management systems. Implemented complex business logic, schemas, and third-party API integrations.",
       },
     ],
   },
@@ -208,7 +247,7 @@ export const experience: WorkExperience[] = [
         position: "Fullstack Developer",
         date: "Jun 2023 – Nov 2023",
         description:
-          "Built a data-visualization web application for Polda Metro Jaya stakeholders, integrating DKI Jakarta crime data into interactive dashboards with real-time data-processing pipelines.",
+          "Data-visualization web app for internal stakeholders, integrating DKI Jakarta crime data into interactive real-time dashboards.",
       },
     ],
   },
@@ -219,13 +258,14 @@ export const experience: WorkExperience[] = [
         position: "Vice-Chief of Tech Department",
         date: "Jan 2021 – Jul 2021",
         description:
-          "Designed, developed, and maintained software solutions (boosting project completion ~30%), collaborated on 15+ new features, participated in 50+ code reviews, and resolved 100+ software issues.",
+          "Led software delivery, 15+ features, 50+ code reviews, 100+ issues resolved.",
+        impact: "Boosted project completion ~30%.",
       },
     ],
   },
 ];
 
-/** Education, newest first — rendered by the animated Timeline. */
+/** Education, newest first. */
 export const education: ExperienceItem[] = [
   {
     title: "Bachelor of Software Engineering",
@@ -245,26 +285,68 @@ export const education: ExperienceItem[] = [
   },
 ];
 
+/** Certifications. */
+export const certifications: ExperienceItem[] = [
+  {
+    title: "Certified in Crystal Agile Methodology",
+    category: "Agile",
+    date: "Apr 2025",
+    description: "Crystal Agile methodology for software delivery.",
+    status: "completed",
+  },
+  {
+    title: "MERN Stack Full-Stack Development Certification",
+    category: "Engineering",
+    date: "Apr 2025",
+    description: "MERN stack certification.",
+    status: "completed",
+  },
+  {
+    title: "Professional Certificate in Project Management",
+    category: "Product",
+    date: "Apr 2025",
+    description: "Professional project management certification.",
+    status: "completed",
+  },
+];
+
 export const educationQuote =
   "Education is not the learning of facts, but the training of the mind to think.";
 
-/** Projects — rendered by the FocusRail 3D carousel. */
+/** Projects — used by static Work grid. */
 export const projects: FocusRailItem[] = [
   {
     id: 1,
-    title: "Atto Chat Assistant",
-    meta: "AI · Tax",
+    title: "Atto — Finance & Invoice",
+    meta: "Featured",
     description:
-      "AI-powered tax assistant tailored for the UAE — clear, accurate answers to tax queries and instant guidance for compliance and filings.",
+      "Real-time Xero dashboard across 5 outlets. Revenue, COGS, profit on demand.",
     imageSrc: "/assets/images/projects/atto.png",
     href: "https://github.com/daws11/chat.taxai",
+  },
+  {
+    id: 4,
+    title: "Hive — Recruitment AI Agent",
+    meta: "Case study",
+    description:
+      "AI screening that cut manual CV review from hours to minutes.",
+    imageSrc: "/assets/images/projects/hive.png",
+    href: "https://github.com/daws11/laravel-ecommerce-example",
+  },
+  {
+    id: 7,
+    title: "Warehouse Management",
+    meta: "Case study",
+    description:
+      "Mobile-first app replacing paper-based inventory; loss analytics on demand.",
+    imageSrc: "/assets/images/projects/warehouse.png",
+    href: "https://github.com/daws11/warehouse-management",
   },
   {
     id: 2,
     title: "Yosr Voice Assistant",
     meta: "AI · Voice",
-    description:
-      "AI voice assistant with natural conversations in multiple languages — instant responses and daily-task help through voice commands.",
+    description: "Multilingual AI voice assistant.",
     imageSrc: "/assets/images/projects/yosr.png",
     href: "https://github.com/daws11/talk.taxai.ae",
   },
@@ -272,52 +354,31 @@ export const projects: FocusRailItem[] = [
     id: 3,
     title: "Tax AI",
     meta: "AI · Enterprise",
-    description:
-      "AI-powered tax solutions for the UAE region — streamline enterprise tax operations with intelligent, end-to-end capabilities.",
+    description: "End-to-end AI tax solutions for the UAE region.",
     imageSrc: "/assets/images/projects/taxai.png",
     href: "https://github.com/daws11/tax-ai-wizard-web-70",
   },
   {
-    id: 4,
-    title: "Hive Project",
-    meta: "E-Commerce",
-    description:
-      "An e-commerce website from PT Telkom's HIPMI UKM, built for the P2MW competition.",
-    imageSrc: "/assets/images/projects/hive.png",
-    href: "https://github.com/daws11/laravel-ecommerce-example",
-  },
-  {
     id: 5,
     title: "Crime Dashboard",
-    meta: "Data · Dashboard",
-    description:
-      "Data-visualization web app for Polda Metro Jaya stakeholders, visualizing crime data across DKI Jakarta.",
+    meta: "Data · Public sector",
+    description: "Real-time crime analytics for Polda Metro Jaya.",
     imageSrc: "/assets/images/projects/crime.png",
     href: "https://github.com/daws11/bidtik_polda",
   },
   {
     id: 6,
-    title: "New Shantika Mobile App",
+    title: "New Shantika Mobile",
     meta: "Mobile · Booking",
-    description:
-      "Mobile application for online ticket booking of PO Bus New Shantika.",
+    description: "Online ticket booking for PO Bus New Shantika.",
     imageSrc: "/assets/images/projects/shantika.png",
     href: "https://github.com/daws11/admin-panel-Newshantikamobile",
-  },
-  {
-    id: 7,
-    title: "Warehouse Management App",
-    meta: "Mobile · Inventory",
-    description:
-      "Mobile application to collect data of goods in warehouse storage for PT Nusa Tech Solution.",
-    imageSrc: "/assets/images/projects/warehouse.png",
   },
   {
     id: 8,
     title: "Digital Wedding System",
     meta: "Web · Events",
-    description:
-      "Online-based digital invitation system — invitation distribution, arrival reservation, souvenir collection, and more.",
+    description: "Digital invitation, RSVP, and souvenir collection.",
     imageSrc: "/assets/images/projects/nikah.png",
     href: "https://github.com/daws11/digital-invitation",
   },
@@ -325,19 +386,60 @@ export const projects: FocusRailItem[] = [
     id: 9,
     title: "Gold Store Management",
     meta: "Web · POS",
-    description:
-      '"I Love Emas" gold-shop management system with realtime gold-sales calculation and a built-in POS cashier app.',
+    description: "Realtime gold-sales calculation with built-in POS.",
     imageSrc: "/assets/images/projects/emas.png",
     href: "https://github.com/daws11/I-Love-Emas",
   },
 ];
 
-/** Anchor sections for the navbar. */
+/** Case study details for the 3 showcased projects. */
+export interface CaseStudy {
+  projectId: number;
+  problem: string;
+  built: string;
+  outcome: string;
+  /** Tech stack chips. */
+  stack: string[];
+}
+
+export const caseStudies: CaseStudy[] = [
+  {
+    projectId: 1,
+    problem:
+      "Finance & accounting teams had no real-time visibility into revenue, COGS, and profit across outlets. Every report meant multi-day spreadsheet reconciliation.",
+    built:
+      "Real-time Xero integration with a centralized dashboard tracking Revenue, COGS, Net Profit, Salaries, and per-outlet metrics. Plus a Stocktake Analytics module for loss tracking.",
+    outcome:
+      "Live dashboards across 5 outlets. Loss analytics reduced shrinkage by surfacing top-lost items in real time.",
+    stack: ["Xero API", "React", "PostgreSQL", "SFTP", "Docker"],
+  },
+  {
+    projectId: 4,
+    problem:
+      "Hiring was bottlenecked by manual applicant screening. Every role meant hours of CV review and routing by the People & Culture team.",
+    built:
+      "An AI agent that screens, ranks, and routes applicants, embedded into the recruitment workflow with a unified application surface.",
+    outcome:
+      "Cut manual screening time per role. Centralized the recruitment workflow into a single app, with a roadmap to fully replace legacy tools.",
+    stack: ["Claude", "n8n", "Webhooks", "PostgreSQL"],
+  },
+  {
+    projectId: 7,
+    problem:
+      "Floor staff had no mobile-friendly way to record warehouse inventory movements. Data sat in paper logs and WhatsApp threads before being entered days later.",
+    built:
+      "Mobile-first warehouse management app with location-aware stocktake, movement tracking, variance reasons, and analytics on loss by section and item.",
+    outcome:
+      "Replaced paper-based stocktake with real-time data. Management gets loss-percentage, top-lost items, and variance reason analytics on demand.",
+    stack: ["React", "PostgreSQL", "Docker", "SFTP"],
+  },
+];
+
+/** Anchor sections for the navbar (in order of appearance). */
 export const navLinks = [
   { label: "Home", href: "#home" },
-
-  { label: "Skills", href: "#skills" },
+  { label: "About", href: "#about" },
+  { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
-  { label: "Projects", href: "#work" },
 ];

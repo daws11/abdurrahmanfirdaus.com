@@ -4,8 +4,8 @@ import { projects, sectionCopy } from "@/data/portfolio";
 export function Projects() {
   return (
     <section
-      id="work"
-      className="scroll-mt-20 overflow-x-hidden border-t border-white/10 bg-neutral-950 py-24 text-white"
+      id="projects"
+      className="scroll-mt-20 overflow-x-hidden border-t border-white/10 bg-neutral-950 py-20 text-white md:py-28"
     >
       <div className="mb-12 px-6 text-center">
         <h2 className="text-3xl font-bold tracking-tight md:text-4xl">

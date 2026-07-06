@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { motion, type Variants } from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { ArrowDownRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GlitchText } from "@/components/ui/glitch-text";
@@ -9,12 +10,39 @@ import {
   heroHeadline,
   heroSubheadline,
   heroGlitchText,
+  heroTyping,
 } from "@/data/portfolio";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0 },
 };
+
+function HeroTyping({ phrases }: { phrases: string[] }) {
+  const [index, setIndex] = useState(0);
+  useEffect(() => {
+    if (phrases.length <= 1) return;
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % phrases.length);
+    }, 2800);
+    return () => clearInterval(id);
+  }, [phrases.length]);
+  if (phrases.length === 0) return null;
+  return (
+    <AnimatePresence mode="wait">
+      <motion.span
+        key={index}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="inline-block bg-gradient-to-r from-neutral-600 via-white to-neutral-600 bg-[length:200%_auto] bg-clip-text text-transparent [animation:gradient-x_4s_ease_infinite]"
+      >
+        {phrases[index]}
+      </motion.span>
+    </AnimatePresence>
+  );
+}
 
 export function Hero() {
   return (
@@ -33,14 +61,14 @@ export function Hero() {
             />
           </motion.div>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="absolute -bottom-12 left-6 sm:left-12 lg:left-24 whitespace-nowrap text-2xl lg:text-3xl xl:text-4xl font-thin tracking-[2px] lg:tracking-[4px] xl:tracking-[6px] bg-gradient-to-r from-neutral-600 via-white to-neutral-600 bg-[length:200%_auto] bg-clip-text text-transparent [animation:gradient-x_4s_ease_infinite]"
+            className="absolute -bottom-10 left-0 right-0 text-center text-base sm:text-lg md:text-xl lg:text-2xl font-thin tracking-[2px] lg:tracking-[3px] xl:tracking-[4px]"
           >
-            {profile.name}
-          </motion.p>
+            <HeroTyping phrases={heroTyping} />
+          </motion.div>
         </div>
 
         <motion.div
@@ -52,9 +80,10 @@ export function Hero() {
           <div className="space-y-8 pt-20 flex gap-6 justify-center">
             <div className="flex gap-6 bg-secondary w-full max-w-xl h-fit p-10 items-end space-y-2 text-xl font-bold md:text-2xl lg:text-3xl">
               <div className="font-semibold text-xl">
-                <div>/ WEB DEVELOPMENT</div>
-                <div>/ MOBILE DEVELOPMENT</div>
-                <div>/ BACKEND &amp; APIs</div>
+                <div>/ INVENTORY &amp; OPS</div>
+                <div>/ FINANCE &amp; ANALYTICS</div>
+                <div>/ HR &amp; WORKFORCE</div>
+                <div>/ INTEGRATIONS &amp; APIs</div>
               </div>
               <div className="absolute hidden  md:flex left-1/2 -top-10 w-fit overflow-hidden bg-secondary">
                 <img
@@ -80,25 +109,29 @@ export function Hero() {
           </div>
         </motion.div>
 
-        <motion.div
-          className="md:mt-40 mt-10 flex flex-col items-center"
-          variants={fadeUp}
-          initial="hidden"
-          animate="show"
-          transition={{ duration: 0.6, delay: 0.55 }}
-        >
-          <p className="mx-auto max-w-2xl text-center text-xl font-medium tracking-tight text-white md:text-2xl">
-            {heroHeadline}
-          </p>
-          {heroSubheadline && (
-            <p className="mx-auto mt-4 max-w-xl text-center text-base text-neutral-400 md:text-lg">
-              {heroSubheadline}
-            </p>
-          )}
-        </motion.div>
+        {(heroHeadline || heroSubheadline) && (
+          <motion.div
+            className="md:mt-40 mt-10 flex flex-col items-center"
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            transition={{ duration: 0.6, delay: 0.55 }}
+          >
+            {heroHeadline && (
+              <p className="mx-auto max-w-2xl text-center text-xl font-medium tracking-tight text-white md:text-2xl">
+                {heroHeadline}
+              </p>
+            )}
+            {heroSubheadline && (
+              <p className="mx-auto mt-4 max-w-xl text-center text-base text-neutral-400 md:text-lg">
+                {heroSubheadline}
+              </p>
+            )}
+          </motion.div>
+        )}
 
         <motion.div
-          className="flex justify-center pt-6"
+          className="mt-32 flex justify-center pt-6 md:mt-40"
           variants={fadeUp}
           initial="hidden"
           animate="show"
