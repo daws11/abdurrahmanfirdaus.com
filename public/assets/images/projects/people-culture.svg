@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <defs>
+    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="800" fill="#171717"/>
+  <rect x="0" y="0" width="600" height="4" fill="url(#g3)"/>
+  <g transform="translate(48, 120)">
+    <text x="0" y="0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="42" font-weight="700" fill="#fafafa" letter-spacing="-2">PEOPLE &amp;</text>
+    <text x="0" y="48" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="42" font-weight="700" fill="#fafafa" letter-spacing="-2">CULTURE</text>
+    <text x="0" y="86" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#34d399" letter-spacing="3">HR  ·  WORKFORCE</text>
+  </g>
+  <g transform="translate(48, 280)">
+    <g>
+      <circle cx="40" cy="40" r="20" fill="#262626"/>
+      <circle cx="40" cy="32" r="8" fill="#525252"/>
+      <path d="M22 52 Q22 42 40 42 Q58 42 58 52 L58 60 L22 60 Z" fill="#525252"/>
+      <rect x="20" y="76" width="40" height="2" fill="#34d399"/>
+      <text x="40" y="92" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#a3a3a3">ONBOARD</text>
+    </g>
+    <g transform="translate(160, 0)">
+      <circle cx="40" cy="40" r="20" fill="#262626"/>
+      <circle cx="40" cy="32" r="8" fill="#525252"/>
+      <path d="M22 52 Q22 42 40 42 Q58 42 58 52 L58 60 L22 60 Z" fill="#525252"/>
+      <rect x="20" y="76" width="40" height="2" fill="#34d399"/>
+      <text x="40" y="92" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#a3a3a3">RECORDS</text>
+    </g>
+    <g transform="translate(320, 0)">
+      <circle cx="40" cy="40" r="20" fill="#262626"/>
+      <circle cx="40" cy="32" r="8" fill="#525252"/>
+      <path d="M22 52 Q22 42 40 42 Q58 42 58 52 L58 60 L22 60 Z" fill="#525252"/>
+      <rect x="20" y="76" width="40" height="2" fill="#34d399"/>
+      <text x="40" y="92" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#a3a3a3">LIFECYCLE</text>
+    </g>
+  </g>
+  <g transform="translate(48, 420)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#525252">
+    <text x="0" y="0">FOR THE PEOPLE &amp; CULTURE TEAM</text>
+    <text x="0" y="18">TO RUN THE WORKFORCE</text>
+    <text x="0" y="36">— AND NOTHING ELSE.</text>
+  </g>
+  <g transform="translate(48, 720)">
+    <text font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#404040" letter-spacing="2">PT UNICORN · INTERNAL · 03/05</text>
+  </g>
+</svg>

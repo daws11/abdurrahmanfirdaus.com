@@ -29,7 +29,7 @@ export const profile = {
   name: "Abdurrahman Firdaus",
   nickname: "Daus",
   title: "Forward Deployed Engineer & Lead Full-Stack Developer",
-  bio: "Lead Full-Stack Developer and Tech Lead running the Technology & Innovation Lab at This is Bali (PT Unicorn) in Bali. 3+ years shipping production software for hospitality, F&B, and public-sector operations.",
+  bio: "Forward Deployed Engineer at PT Unicorn Food and Service in Bali. I sit with the team, find what's actually broken, ship the smallest fix that unsticks it, and stay until they reach for it without thinking.",
   email: "hello@abdurrahmanfirdaus.com",
   location: "Bali, Indonesia",
   photo: "/assets/images/daws.jpg",
@@ -51,9 +51,11 @@ export const social = {
 } as const;
 
 /** Hero copy — FDE positioning. */
-export const heroHeadline = "";
+export const heroHeadline =
+  "I ship into the business — then I sit with the people who use it until adoption sticks.";
 
-export const heroSubheadline = "";
+export const heroSubheadline =
+  "Forward Deployed Engineer at PT Unicorn Food and Service. Five production apps. One kitchen. Five outlets. Solo + agentic, with a single teammate on booking.";
 
 export const heroGlitchText = "ABDURRAHMAN FIRDAUS";
 
@@ -66,18 +68,22 @@ export const heroTyping: string[] = [
 
 /** Marquee ticker items shown between sections. */
 export const tickerItems: string[] = [
+  "Invoice",
+  "Reconcile",
   "Inventory",
+  "COGS",
+  "Stocktake",
   "Finance",
-  "Training",
-  "Hiring",
-  "Kitchen",
-  "WhatsApp",
-  "Xero",
-  "SFTP",
+  "People & Culture",
+  "WhatsApp Business",
+  "Instagram Graph",
+  "TikTok",
+  "Mastra AI",
+  "Teaspoon",
   "iSeller",
-  "Shopee",
-  "Tokopedia",
-  "Tspoonlab",
+  "Xero",
+  "n8n",
+  "SFTP",
 ];
 
 /** Headline stat shown beneath the hero. */
@@ -93,29 +99,29 @@ export interface Metric {
 
 export const metrics: Metric[] = [
   {
-    value: "30%",
-    label: "Project completion uplift",
-    detail: "Across 15+ features, 50+ code reviews, 100+ issues",
-    numericValue: 30,
+    value: "5",
+    label: "Production apps adopted",
+    detail: "Invoice · Inventory · People & Culture · Kitchen Fresh · Channelflow",
+    numericValue: 5,
     featured: true,
   },
   {
-    value: "5+",
-    label: "Apps in production",
-    detail: "Inventory, Finance, Training, Kitchen, Hiring",
+    value: "5",
+    label: "Outlets on one stack",
+    detail: "Real-time inventory, finance, and ops in one place",
     numericValue: 5,
   },
   {
     value: "10+",
     label: "Integrations live",
-    detail: "Xero · WhatsApp · Vercel · n8n · SFTP",
+    detail: "Xero · iSeller · Teaspoon · WhatsApp · IG · TikTok · Mastra AI · n8n",
     numericValue: 10,
   },
   {
-    value: "3+",
-    label: "Years building internal tools",
-    detail: "Hospitality, F&B, and public-sector operations",
-    numericValue: 3,
+    value: "1",
+    label: "Teammate (booking)",
+    detail: "Solo + agentic for the rest. Multi-session Claude Code workflow.",
+    numericValue: 1,
   },
 ];
 
@@ -177,8 +183,12 @@ export const sectionCopy = {
     subheading: "Where I've been useful.",
   },
   projects: {
-    heading: "Things that shipped and stayed shipped.",
-    subheading: "Five outlets, one kitchen, one recruitment pipeline. Real systems, real adoption.",
+    heading: "Five apps. Five outlets. One kitchen.",
+    subheading: "Everything below was built to be used — by finance, warehouse, kitchen, HR, and ops, every day.",
+  },
+  work: {
+    heading: "Inside the work.",
+    subheading: "Three of the five systems, told in detail. Problem → Built → Outcome, plus what it actually meant to be in the room.",
   },
   contact: {
     heading: "Let's build something that gets used.",
@@ -186,7 +196,7 @@ export const sectionCopy = {
   },
   about: {
     heading: "About",
-    subheading: "Lead Full-Stack Developer & Tech Lead · Bali, Indonesia",
+    subheading: "Forward Deployed Engineer & Tech Lead · Bali, Indonesia",
   },
   metrics: {
     heading: "Receipts",
@@ -316,122 +326,141 @@ export const educationQuote =
 /** Projects — used by static Work grid. */
 export const projects: FocusRailItem[] = [
   {
-    id: 1,
-    title: "Atto — Finance & Invoice",
-    meta: "Featured",
+    id: "inv-01",
+    title: "Invoice Sense",
+    meta: "Finance · Xero · iSeller",
     description:
-      "Real-time Xero dashboard across 5 outlets. Revenue, COGS, profit on demand.",
-    imageSrc: "/assets/images/projects/atto.png",
-    href: "https://github.com/daws11/chat.taxai",
+      "One inbox for every invoice. Auto-cross-checks against Inventory entries and bank balance.",
+    imageSrc: "/assets/images/projects/invoice-sense.svg",
+    href: "https://github.com/PTUNICORN/Invoice-Sense",
+    caseStudyId: "invoice",
   },
   {
-    id: 4,
-    title: "Hive — Recruitment AI Agent",
-    meta: "Case study",
+    id: "inv-02",
+    title: "Invenflow",
+    meta: "Inventory · Warehouse · Multi-outlet",
     description:
-      "AI screening that cut manual CV review from hours to minutes.",
-    imageSrc: "/assets/images/projects/hive.png",
-    href: "https://github.com/daws11/laravel-ecommerce-example",
+      "Purchasing board, receiving, stocktake, and inter-outlet movement — replaces WhatsApp ops.",
+    imageSrc: "/assets/images/projects/invenflow.svg",
+    href: "https://github.com/PTUNICORN/invenflow",
+    caseStudyId: "invenflow",
   },
   {
-    id: 7,
-    title: "Warehouse Management",
-    meta: "Case study",
+    id: "inv-03",
+    title: "People & Culture",
+    meta: "HR · Workforce",
     description:
-      "Mobile-first app replacing paper-based inventory; loss analytics on demand.",
-    imageSrc: "/assets/images/projects/warehouse.png",
-    href: "https://github.com/daws11/warehouse-management",
+      "Internal workforce module for the People & Culture team — onboarding, records, lifecycle.",
+    imageSrc: "/assets/images/projects/people-culture.svg",
+    href: "https://github.com/PTUNICORN/people-and-culture-app",
   },
   {
-    id: 2,
-    title: "Yosr Voice Assistant",
-    meta: "AI · Voice",
-    description: "Multilingual AI voice assistant.",
-    imageSrc: "/assets/images/projects/yosr.png",
-    href: "https://github.com/daws11/talk.taxai.ae",
+    id: "inv-04",
+    title: "Kitchen Fresh",
+    meta: "Kitchen · Outlet ops",
+    description:
+      "Daily kitchen ops for outlets — built alongside the kitchen team, not for them.",
+    imageSrc: "/assets/images/projects/kitchen-fresh.svg",
+    href: "https://github.com/PTUNICORN/kitchen-fresh",
   },
   {
-    id: 3,
-    title: "Tax AI",
-    meta: "AI · Enterprise",
-    description: "End-to-end AI tax solutions for the UAE region.",
-    imageSrc: "/assets/images/projects/taxai.png",
-    href: "https://github.com/daws11/tax-ai-wizard-web-70",
-  },
-  {
-    id: 5,
-    title: "Crime Dashboard",
-    meta: "Data · Public sector",
-    description: "Real-time crime analytics for Polda Metro Jaya.",
-    imageSrc: "/assets/images/projects/crime.png",
-    href: "https://github.com/daws11/bidtik_polda",
-  },
-  {
-    id: 6,
-    title: "New Shantika Mobile",
-    meta: "Mobile · Booking",
-    description: "Online ticket booking for PO Bus New Shantika.",
-    imageSrc: "/assets/images/projects/shantika.png",
-    href: "https://github.com/daws11/admin-panel-Newshantikamobile",
-  },
-  {
-    id: 8,
-    title: "Digital Wedding System",
-    meta: "Web · Events",
-    description: "Digital invitation, RSVP, and souvenir collection.",
-    imageSrc: "/assets/images/projects/nikah.png",
-    href: "https://github.com/daws11/digital-invitation",
-  },
-  {
-    id: 9,
-    title: "Gold Store Management",
-    meta: "Web · POS",
-    description: "Realtime gold-sales calculation with built-in POS.",
-    imageSrc: "/assets/images/projects/emas.png",
-    href: "https://github.com/daws11/I-Love-Emas",
+    id: "inv-05",
+    title: "Channelflow",
+    meta: "Booking · AI Agent · Mastra",
+    description:
+      "Tis Bali reservations across WhatsApp, IG, Email, TikTok — with a tour-guide commission track.",
+    imageSrc: "/assets/images/projects/channelflow.svg",
+    href: "https://github.com/PTUNICORN/channelflow",
+    caseStudyId: "channelflow",
   },
 ];
 
-/** Case study details for the 3 showcased projects. */
+/** Case study details for the 3 highlighted projects. */
 export interface CaseStudy {
-  projectId: number;
-  problem: string;
-  built: string;
-  outcome: string;
+  id: string;
+  projectHref: string;
+  division: string;
+  /** A short, scene-setting kicker — first line the reader sees. */
+  kicker: string;
+  /** One-line "what I did as FDE here" — pulled into the sidebar. */
+  fdeCallout: string;
+  /** Markdown-ish narrative with **bold** inline labels for sub-sections. */
+  story: string;
+  /** Headline outcome numbers — short labels rendered as visual chips. */
+  impact: { label: string; value: string }[];
   /** Tech stack chips. */
   stack: string[];
+  /** External integrations — rendered as text badges. */
+  integrations: string[];
+  /** Path to a hero visual (the placeholder SVG for the project). */
+  heroSrc: string;
 }
 
 export const caseStudies: CaseStudy[] = [
   {
-    projectId: 1,
-    problem:
-      "Finance & accounting teams had no real-time visibility into revenue, COGS, and profit across outlets. Every report meant multi-day spreadsheet reconciliation.",
-    built:
-      "Real-time Xero integration with a centralized dashboard tracking Revenue, COGS, Net Profit, Salaries, and per-outlet metrics. Plus a Stocktake Analytics module for loss tracking.",
-    outcome:
-      "Live dashboards across 5 outlets. Loss analytics reduced shrinkage by surfacing top-lost items in real time.",
-    stack: ["Xero API", "React", "PostgreSQL", "SFTP", "Docker"],
+    id: "invoice",
+    projectHref: "https://github.com/PTUNICORN/Invoice-Sense",
+    division: "Finance",
+    kicker: "Two weeks at the finance desk. Then a single screen.",
+    fdeCallout:
+      "I didn't write a line of code until I'd watched the team reconcile three weeks of invoices by hand. The product wasn't the bottleneck — the trust in the data was.",
+    story:
+      "**Discovery.** The finance team had three browser tabs open at all times — Xero, the Inventory App, and a manual spreadsheet — and they were cross-referencing invoice numbers by eye. Each purchase meant five minutes of squinting. Each day meant forty purchases. We sat together for two weeks before I opened my editor.\n\n**Built.** Invoice Sense pulls every invoice from purchasing into a single inbox, runs a cross-check against the matching Inventory entry in real time, and reconciles the resulting figure against the Xero ledger. iSeller events feed in POS-side payments so the bank side of the story is never a manual entry. Mismatches are flagged with the exact field that disagrees, not just a red dot.\n\n**Outcome.** Reconciliation collapsed from a multi-day spreadsheet exercise into a single screen per day. Finance stopped chasing tabs and started closing books. The team reaches for Invoice Sense before they reach for Xero.",
+    impact: [
+      { label: "From", value: "multi-day" },
+      { label: "To", value: "single screen" },
+    ],
+    stack: ["Next.js", "TypeScript", "Xero API", "PostgreSQL"],
+    integrations: ["Xero", "iSeller"],
+    heroSrc: "/assets/images/projects/invoice-sense.svg",
   },
   {
-    projectId: 4,
-    problem:
-      "Hiring was bottlenecked by manual applicant screening. Every role meant hours of CV review and routing by the People & Culture team.",
-    built:
-      "An AI agent that screens, ranks, and routes applicants, embedded into the recruitment workflow with a unified application surface.",
-    outcome:
-      "Cut manual screening time per role. Centralized the recruitment workflow into a single app, with a roadmap to fully replace legacy tools.",
-    stack: ["Claude", "n8n", "Webhooks", "PostgreSQL"],
+    id: "invenflow",
+    projectHref: "https://github.com/PTUNICORN/invenflow",
+    division: "Purchasing · Warehouse · Outlets",
+    kicker:
+      "The most complex thing I've shipped. Built by sitting in the warehouse, not by drawing on a whiteboard.",
+    fdeCallout:
+      "Stocktake was happening on paper, on WhatsApp, and in three different spreadsheets across five outlets. The system wasn't broken — there was no system.",
+    story:
+      "**Discovery.** Asset and COGS numbers drifted between warehouse, finance, and the five outlets every week. Nobody was at fault — the work itself was on paper and in chat threads, and the human translation between the two was where the numbers went missing. I spent a week watching the warehouse manager do a stocktake by hand before I drew a single screen.\n\n**Built.** Invenflow is five boards in one. **Purchasing** — a kanban with New → Approve → Purchase, where each item carries an expense / asset / COGS tag so finance books it correctly on the way in. **Receiving** — purchased items land here automatically, ready for the warehouse or outlet to mark received. **Inventory** — a real-time aggregate across every outlet and the warehouse, broken down by asset / stock / COGS / consumable. **Movement** — the warehouse manager's tool for moving stock between locations, so the on-screen numbers stay aligned with what's actually on the shelf. **Stock Take** — outlet-by-outlet count that becomes the next day's baseline. Teaspoon Lab sits underneath for COGS continuity.\n\n**Outcome.** Real-time stock truth across 5 outlets and 1 warehouse. Finance, warehouse, and outlet staff all see the same number at the same time. The next stocktake isn't an event — it's a routine.",
+    impact: [
+      { label: "Locations", value: "5 outlets" },
+      { label: "Boards", value: "5 in one" },
+    ],
+    stack: ["React", "TypeScript", "PostgreSQL", "Teaspoon Lab API"],
+    integrations: ["Teaspoon Lab"],
+    heroSrc: "/assets/images/projects/invenflow.svg",
   },
   {
-    projectId: 7,
-    problem:
-      "Floor staff had no mobile-friendly way to record warehouse inventory movements. Data sat in paper logs and WhatsApp threads before being entered days later.",
-    built:
-      "Mobile-first warehouse management app with location-aware stocktake, movement tracking, variance reasons, and analytics on loss by section and item.",
-    outcome:
-      "Replaced paper-based stocktake with real-time data. Management gets loss-percentage, top-lost items, and variance reason analytics on demand.",
-    stack: ["React", "PostgreSQL", "Docker", "SFTP"],
+    id: "channelflow",
+    projectHref: "https://github.com/PTUNICORN/channelflow",
+    division: "Tis Bali · Restaurant ops",
+    kicker:
+      "Four inboxes. One AI agent. Zero humans in the loop for the booking flow.",
+    fdeCallout:
+      "We started with rule-based NLP. The migration to Mastra AI taught me what adoption actually means when the customer — not the team — is the user.",
+    story:
+      "**Discovery.** Tis Bali took reservations over WhatsApp, Instagram DMs, email, and TikTok. Four inboxes, no unified state, and a separate spreadsheet for tour-guide commission. The host had to ask the same question — date, time, party size — on every channel. Sometimes twice.\n\n**Built.** Channelflow has three pieces. **Landing pages** for Tis Bali and Açai Queen with a web booking flow. **An AI booking agent built on Mastra AI** that lives inside WhatsApp Business, Instagram Graph, Email, and TikTok DMs — handles booking, cancellation, and modification in one conversation. **A tour-guide track** — anyone flagged as a tour guide gets a separate commission ledger, with 10% auto-applied to groups of more than 6. One queue, one source of truth, four doors in.\n\n**Outcome.** The four inboxes collapsed into one queue that the host reads in the morning. Tour-guide commission is automatic — no more end-of-month spreadsheet reconciliation. The AI handles the booking flow without a human in the loop, and the team stopped second-guessing which channel a message came from.",
+    impact: [
+      { label: "Channels", value: "4 → 1" },
+      { label: "Commission", value: "auto" },
+    ],
+    stack: [
+      "Mastra AI",
+      "Next.js",
+      "TypeScript",
+      "WhatsApp Business API",
+      "Instagram Graph API",
+    ],
+    integrations: [
+      "WhatsApp Business",
+      "Instagram Graph",
+      "Email",
+      "TikTok",
+      "Mastra AI",
+    ],
+    heroSrc: "/assets/images/projects/channelflow.svg",
   },
 ];
 
@@ -440,6 +469,7 @@ export const navLinks = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
+  { label: "Work", href: "#work" },
   { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
 ];

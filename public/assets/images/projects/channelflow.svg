@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
+  <defs>
+    <linearGradient id="g5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="800" fill="#171717"/>
+  <rect x="0" y="0" width="600" height="4" fill="url(#g5)"/>
+  <g transform="translate(48, 96)">
+    <text x="0" y="0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="52" font-weight="700" fill="#fafafa" letter-spacing="-2">CHANNEL</text>
+    <text x="0" y="56" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="52" font-weight="700" fill="#fafafa" letter-spacing="-2">FLOW</text>
+    <text x="0" y="96" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#34d399" letter-spacing="3">BOOKING  ·  AI AGENT  ·  MASTRA</text>
+  </g>
+  <g transform="translate(48, 280)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#a3a3a3">
+    <text x="0" y="0">INBOX → AGENT → BOOKING</text>
+  </g>
+  <g transform="translate(48, 300)">
+    <g>
+      <rect width="80" height="60" fill="none" stroke="#262626"/>
+      <text x="40" y="20" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#a3a3a3">WA</text>
+      <text x="40" y="34" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#525252">BIZ</text>
+    </g>
+    <g transform="translate(95, 0)">
+      <rect width="80" height="60" fill="none" stroke="#262626"/>
+      <text x="40" y="20" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#a3a3a3">IG</text>
+      <text x="40" y="34" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#525252">DM</text>
+    </g>
+    <g transform="translate(190, 0)">
+      <rect width="80" height="60" fill="none" stroke="#262626"/>
+      <text x="40" y="20" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#a3a3a3">EMAIL</text>
+      <text x="40" y="34" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#525252">IN</text>
+    </g>
+    <g transform="translate(285, 0)">
+      <rect width="80" height="60" fill="none" stroke="#262626"/>
+      <text x="40" y="20" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#a3a3a3">TIKTOK</text>
+      <text x="40" y="34" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#525252">DM</text>
+    </g>
+  </g>
+  <path d="M128 330 L160 400" stroke="#262626" stroke-width="1" fill="none"/>
+  <path d="M223 330 L240 400" stroke="#262626" stroke-width="1" fill="none"/>
+  <path d="M318 330 L280 400" stroke="#262626" stroke-width="1" fill="none"/>
+  <path d="M373 330 L320 400" stroke="#262626" stroke-width="1" fill="none"/>
+
+  <g transform="translate(120, 410)">
+    <rect width="240" height="100" fill="#0a0a0a" stroke="#34d399" stroke-width="1"/>
+    <text x="120" y="20" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#34d399">MASTRA AI · BOOKING AGENT</text>
+    <line x1="20" y1="32" x2="220" y2="32" stroke="#262626"/>
+    <text x="20" y="48" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#a3a3a3">→ book / cancel / modify</text>
+    <text x="20" y="62" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#a3a3a3">→ tour-guide track (&gt;6 pax)</text>
+    <text x="20" y="76" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#a3a3a3">→ 10% commission auto</text>
+  </g>
+
+  <g transform="translate(48, 580)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#525252">
+    <text x="0" y="0">TIS BALI · AÇAI QUEEN · BALI</text>
+  </g>
+  <g transform="translate(48, 720)">
+    <text font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#404040" letter-spacing="2">PT UNICORN · INTERNAL · 05/05</text>
+  </g>
+</svg>

@@ -72,38 +72,43 @@ export function Hero() {
         </div>
 
         <motion.div
-          className="grid relative"
+          className="grid relative pt-16 md:pt-24"
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.35, ease: "easeOut" }}
         >
-          <div className="space-y-8 pt-20 flex gap-6 justify-center">
-            <div className="flex gap-6 bg-secondary w-full max-w-xl h-fit p-10 items-end space-y-2 text-xl font-bold md:text-2xl lg:text-3xl">
-              <div className="font-semibold text-xl">
+          <div className="mx-auto grid w-full max-w-4xl grid-cols-1 items-center gap-6 md:grid-cols-[1fr_auto] md:gap-10">
+            {/* Left — division list */}
+            <div className="bg-secondary w-full p-6 font-bold text-xl md:p-8 md:text-2xl lg:text-3xl">
+              <div className="space-y-1 font-semibold">
                 <div>/ INVENTORY &amp; OPS</div>
                 <div>/ FINANCE &amp; ANALYTICS</div>
                 <div>/ HR &amp; WORKFORCE</div>
                 <div>/ INTEGRATIONS &amp; APIs</div>
               </div>
-              <div className="absolute hidden  md:flex left-1/2 -top-10 w-fit overflow-hidden bg-secondary">
-                <img
-                  src={profile.photo}
-                  alt={profile.name}
-                  className="h-100 w-full object-contain grayscale transition-all duration-500 hover:grayscale-0"
-                />
-                <div className="text-left p-2 rotate-180 [writing-mode:vertical-rl] text-xs font-medium tracking-widest">
-                  BASED IN BALI, INDONESIA
-                </div>
+            </div>
+
+            {/* Right — photo (desktop) */}
+            <div className="hidden md:flex w-fit overflow-hidden bg-secondary">
+              <img
+                src={profile.photo}
+                alt={profile.name}
+                className="h-72 w-auto object-contain grayscale transition-all duration-500 hover:grayscale-0"
+              />
+              <div className="rotate-180 p-2 text-left text-xs font-medium tracking-widest [writing-mode:vertical-rl]">
+                BASED IN BALI, INDONESIA
               </div>
             </div>
           </div>
-          <div className="flex md:hidden left-1/2 -top-10 w-full md:w-fit overflow-hidden bg-secondary">
+
+          {/* Mobile photo */}
+          <div className="mt-8 flex w-fit overflow-hidden bg-secondary md:hidden">
             <img
               src={profile.photo}
               alt={profile.name}
-              className="h-100 w-full object-contain grayscale"
+              className="h-72 w-full object-contain grayscale"
             />
-            <div className="text-left p-2 rotate-180 [writing-mode:vertical-rl] text-xs font-medium tracking-widest">
+            <div className="rotate-180 p-2 text-left text-xs font-medium tracking-widest [writing-mode:vertical-rl]">
               BASED IN BALI, INDONESIA
             </div>
           </div>

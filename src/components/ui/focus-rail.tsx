@@ -15,6 +15,8 @@ export type FocusRailItem = {
   imageSrc: string;
   href?: string;
   meta?: string;
+  /** Optional id linking to a CaseStudy (used to render a "→ Case study" badge). */
+  caseStudyId?: string;
 };
 
 interface FocusRailProps {
@@ -270,6 +272,14 @@ export function FocusRail({
                   <p className="max-w-md text-neutral-400">
                     {activeItem.description}
                   </p>
+                )}
+                {activeItem.caseStudyId && (
+                  <a
+                    href="#work"
+                    className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-400 transition-colors hover:bg-emerald-400/10"
+                  >
+                    → Case study below
+                  </a>
                 )}
               </motion.div>
             </AnimatePresence>

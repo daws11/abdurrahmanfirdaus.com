@@ -18,7 +18,7 @@ export function About() {
           <span className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-400">
             About
           </span>
-          <p className="max-w-3xl text-2xl font-medium leading-snug text-white md:text-3xl lg:text-4xl">
+          <p className="max-w-2xl text-2xl font-medium leading-snug text-white md:text-3xl">
             {profile.bio}
           </p>
         </motion.div>

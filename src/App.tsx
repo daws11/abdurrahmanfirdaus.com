@@ -3,6 +3,7 @@ import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Metrics } from "@/components/sections/metrics";
 import { Projects } from "@/components/sections/projects";
+import { Work } from "@/components/sections/work";
 import { Experience } from "@/components/sections/experience";
 import { Contact } from "@/components/sections/contact";
 import { Analytics } from "@vercel/analytics/react";
@@ -16,6 +17,7 @@ function App() {
         <About />
         <Metrics />
         <Projects />
+        <Work />
         <Experience />
         <Contact />
       </main>
