@@ -178,6 +178,94 @@
   }
 }
 
+/* ---- Demo theme scopes (useTheme applies the active demo's class to <html>) ---- */
+/* Each scope re-binds the design tokens declared in theme.ts so primitives that
+   read var(--accent) / var(--bg) / etc. pick up the demo's brand identity. */
+
+/* Invoice Sense */
+.demo-invoice-sense {
+  --bg: #ffffff;
+  --surface: #fafafa;
+  --fg: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #2563eb;
+  --accent-fg: #ffffff;
+  --warn: #f59e0b;
+  --ok: #16a34a;
+  --bad: #dc2626;
+  --radius: 8px;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* Invenflow */
+.demo-invenflow {
+  --bg: #f9fafb;
+  --surface: #ffffff;
+  --fg: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --accent: #112239;
+  --accent-deep: #09182b;
+  --accent-fg: #ffffff;
+  --warn: #f59e0b;
+  --ok: #22c55e;
+  --bad: #ef4444;
+  --radius: 8px;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* Channelflow */
+.demo-channelflow {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --fg: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #10b981;
+  --accent-fg: #ffffff;
+  --warn: #f59e0b;
+  --ok: #10b981;
+  --bad: #f43f5e;
+  --channel-ig: #8b5cf6;
+  --channel-email: #0ea5e9;
+  --channel-tiktok: #64748b;
+  --radius: 12px;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* Kitchen Fresh */
+.demo-kitchen-fresh {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --fg: #1a1a1a;
+  --muted: #666666;
+  --border: #e0e0e0;
+  --accent: #1d4ed8;
+  --accent-fg: #ffffff;
+  --warn: #f59e0b;
+  --ok: #22c55e;
+  --bad: #ef4444;
+  --radius: 8px;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* People & Culture */
+.demo-people-culture {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --fg: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #4F46E5;
+  --accent-fg: #ffffff;
+  --warn: #f59e0b;
+  --ok: #10b981;
+  --bad: #f43f5e;
+  --radius: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
 @keyframes glitch-top {
   0%,
   78%,
