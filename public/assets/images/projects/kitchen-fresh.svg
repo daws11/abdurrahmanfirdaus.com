@@ -1,52 +1,225 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
   <defs>
-    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#34d399" stop-opacity="0.7"/>
-      <stop offset="100%" stop-color="#10b981" stop-opacity="0.1"/>
+    <linearGradient id="kf-line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1d4ed8" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.05"/>
     </linearGradient>
   </defs>
-  <rect width="600" height="800" fill="#171717"/>
-  <rect x="0" y="0" width="600" height="4" fill="url(#g4)"/>
-  <g transform="translate(48, 96)">
-    <text x="0" y="0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="52" font-weight="700" fill="#fafafa" letter-spacing="-2">KITCHEN</text>
-    <text x="0" y="56" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="52" font-weight="700" fill="#fafafa" letter-spacing="-2">FRESH</text>
-    <text x="0" y="96" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#34d399" letter-spacing="3">KITCHEN  ·  OUTLET OPS</text>
-  </g>
-  <g transform="translate(48, 280)">
-    <g>
-      <rect width="140" height="80" fill="none" stroke="#262626"/>
-      <line x1="20" y1="20" x2="120" y2="20" stroke="#525252"/>
-      <line x1="20" y1="40" x2="120" y2="40" stroke="#525252"/>
-      <line x1="20" y1="60" x2="80" y2="60" stroke="#34d399"/>
+  <!-- bg -->
+  <rect width="600" height="800" fill="#fafafa"/>
+  <rect x="0" y="0" width="600" height="4" fill="url(#kf-line)"/>
+
+  <!-- Sidebar (shadcn-style) -->
+  <g transform="translate(0, 0)">
+    <rect width="200" height="800" fill="#ffffff"/>
+    <line x1="200" y1="0" x2="200" y2="800" stroke="#e0e0e0"/>
+    <!-- Brand tile (clock icon) -->
+    <g transform="translate(16, 16)">
+      <rect width="32" height="32" rx="6" fill="#1d4ed8"/>
+      <circle cx="16" cy="16" r="9" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+      <line x1="16" y1="16" x2="16" y2="10" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="16" y1="16" x2="20" y2="19" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
     </g>
-    <g transform="translate(160, 0)">
-      <rect width="140" height="80" fill="none" stroke="#262626"/>
-      <line x1="20" y1="20" x2="120" y2="20" stroke="#525252"/>
-      <line x1="20" y1="40" x2="100" y2="40" stroke="#525252"/>
-      <line x1="20" y1="60" x2="60" y2="60" stroke="#34d399"/>
+    <text x="58" y="36" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#1a1a1a">Kitchen Fresh</text>
+    <text x="16" y="68" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#666666" letter-spacing="2">ADMIN MENU</text>
+    <g font-family="Inter, system-ui, sans-serif" font-size="11" fill="#1a1a1a">
+      <g transform="translate(16, 92)">
+        <rect width="6" height="6" rx="1" fill="#1d4ed8" opacity="0.0"/>
+        <text x="20" y="6">Dashboard</text>
+        <text x="20" y="22" font-size="9" fill="#666666">Overview of kitchen status</text>
+      </g>
+      <g transform="translate(16, 134)">
+        <rect width="168" height="32" rx="6" fill="#1d4ed8" fill-opacity="0.08"/>
+        <text x="20" y="20" font-weight="600" fill="#1d4ed8">Fresh Counter</text>
+      </g>
+      <g transform="translate(16, 176)">
+        <text x="20" y="6">Print Label</text>
+        <text x="20" y="22" font-size="9" fill="#666666">Print dish labels</text>
+      </g>
+      <g transform="translate(16, 218)">
+        <text x="20" y="6">Dishes</text>
+        <text x="20" y="22" font-size="9" fill="#666666">Manage menu items</text>
+      </g>
+      <g transform="translate(16, 260)">
+        <text x="20" y="6">Categories</text>
+        <text x="20" y="22" font-size="9" fill="#666666">Browse prep categories</text>
+      </g>
+      <g transform="translate(16, 302)">
+        <text x="20" y="6">Stocktake</text>
+        <text x="20" y="22" font-size="9" fill="#666666">Per-outlet checklist</text>
+      </g>
+      <g transform="translate(16, 344)">
+        <text x="20" y="6">Shift Handoff</text>
+        <text x="20" y="22" font-size="9" fill="#666666">Outgoing &amp; incoming notes</text>
+      </g>
+      <g transform="translate(16, 386)">
+        <text x="20" y="6">Activity Logs</text>
+        <text x="20" y="22" font-size="9" fill="#666666">View activity logs</text>
+      </g>
+      <g transform="translate(16, 428)">
+        <text x="20" y="6">Settings</text>
+        <text x="20" y="22" font-size="9" fill="#666666">System settings</text>
+      </g>
     </g>
-    <g transform="translate(320, 0)">
-      <rect width="140" height="80" fill="none" stroke="#262626"/>
-      <line x1="20" y1="20" x2="120" y2="20" stroke="#525252"/>
-      <line x1="20" y1="40" x2="120" y2="40" stroke="#525252"/>
-      <line x1="20" y1="60" x2="40" y2="60" stroke="#34d399"/>
+    <!-- User card footer -->
+    <rect x="0" y="700" width="200" height="100" fill="#f5f5f5"/>
+    <g transform="translate(16, 720)">
+      <circle cx="14" cy="14" r="14" fill="#1d4ed8"/>
+      <text x="14" y="18" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" fill="#ffffff">S</text>
+      <text x="36" y="12" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="#1a1a1a">Staff 02</text>
+      <text x="36" y="24" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#666666">Kitchen Lead</text>
+      <rect x="0" y="42" width="168" height="22" rx="4" fill="#dc2626"/>
+      <text x="84" y="56" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">Close Shift</text>
     </g>
   </g>
-  <g transform="translate(48, 420)">
-    <rect width="504" height="120" fill="#0a0a0a" stroke="#262626"/>
-    <text x="16" y="24" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#34d399">PREP  ·  TICKING  ·  DONE</text>
-    <g transform="translate(16, 44)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#a3a3a3">
-      <text x="0" y="0">06:00 — Prep window opens</text>
-      <text x="0" y="16">10:30 — Mid-service check</text>
-      <text x="0" y="32">14:00 — Restock flag</text>
-      <text x="0" y="48">22:00 — Close &amp; reconcile</text>
+
+  <!-- Main: prep tile grid -->
+  <g transform="translate(216, 24)">
+    <text x="0" y="14" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#666666" letter-spacing="2">FRESH COUNTER</text>
+    <text x="0" y="36" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="700" fill="#1a1a1a" letter-spacing="-0.5">Daily Ops · Outlet 1</text>
+    <text x="0" y="54" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#666666">Live prep timer grid · Tap to cycle status</text>
+
+    <!-- status pills -->
+    <g transform="translate(0, 70)" font-family="Inter, system-ui, sans-serif">
+      <g>
+        <circle cx="6" cy="6" r="4" fill="#22c55e"/>
+        <text x="14" y="9" font-size="10" font-weight="600" fill="#22c55e">7</text>
+        <text x="22" y="9" font-size="9" fill="#666666">Good</text>
+      </g>
+      <g transform="translate(60, 0)">
+        <circle cx="6" cy="6" r="4" fill="#f59e0b"/>
+        <text x="14" y="9" font-size="10" font-weight="600" fill="#f59e0b">9</text>
+        <text x="22" y="9" font-size="9" fill="#666666">Alert</text>
+      </g>
+      <g transform="translate(116, 0)">
+        <circle cx="6" cy="6" r="4" fill="#ef4444"/>
+        <text x="14" y="9" font-size="10" font-weight="600" fill="#ef4444">31</text>
+        <text x="22" y="9" font-size="9" fill="#666666">Check</text>
+      </g>
+      <g transform="translate(178, 0)">
+        <circle cx="6" cy="6" r="4" fill="#dc2626"/>
+        <text x="14" y="9" font-size="10" font-weight="600" fill="#dc2626">0</text>
+        <text x="22" y="9" font-size="9" fill="#666666">Replace</text>
+      </g>
+      <g transform="translate(238, 0)">
+        <circle cx="6" cy="6" r="4" fill="#b3b9c1"/>
+        <text x="14" y="9" font-size="10" font-weight="600" fill="#666666">23</text>
+        <text x="22" y="9" font-size="9" fill="#666666">Ready</text>
+      </g>
+    </g>
+
+    <!-- prep tile grid: 4 columns x 3 rows = 12 tiles -->
+    <g transform="translate(0, 100)">
+      <!-- Row 1 -->
+      <g>
+        <rect width="86" height="86" rx="6" fill="#ef4444"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">8m</text>
+        <text x="80" y="14" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" fill-opacity="0.85">8.2/14.2</text>
+        <text x="43" y="44" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Acai Base</text>
+        <text x="43" y="58" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#ffffff">00:18:00</text>
+        <text x="43" y="74" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" letter-spacing="1">CHECK</text>
+      </g>
+      <g transform="translate(94, 0)">
+        <rect width="86" height="86" rx="6" fill="#22c55e"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">12m</text>
+        <text x="80" y="14" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" fill-opacity="0.85">2.2/8</text>
+        <text x="43" y="44" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Matcha</text>
+        <text x="43" y="58" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#ffffff">01:26:00</text>
+        <text x="43" y="74" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" letter-spacing="1">FRESH</text>
+      </g>
+      <g transform="translate(188, 0)">
+        <rect width="86" height="86" rx="6" fill="#b3b9c1"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">6m</text>
+        <text x="43" y="46" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Banana</text>
+        <text x="43" y="62" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#1a1a1a">Ready</text>
+      </g>
+      <g transform="translate(282, 0)">
+        <rect width="86" height="86" rx="6" fill="#ef4444"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">5m</text>
+        <text x="80" y="14" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" fill-opacity="0.85">3.2/10.2</text>
+        <text x="43" y="44" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Mango</text>
+        <text x="43" y="58" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#ffffff">00:18:00</text>
+        <text x="43" y="74" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" letter-spacing="1">CHECK</text>
+      </g>
+      <!-- Row 2 -->
+      <g transform="translate(0, 94)">
+        <rect width="86" height="86" rx="6" fill="#ef4444"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">10m</text>
+        <text x="43" y="44" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Strawberry</text>
+        <text x="43" y="58" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#ffffff">00:35:00</text>
+        <text x="43" y="74" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" letter-spacing="1">CHECK</text>
+      </g>
+      <g transform="translate(94, 94)">
+        <rect width="86" height="86" rx="6" fill="#b3b9c1"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">10m</text>
+        <text x="43" y="46" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Blueberry</text>
+        <text x="43" y="62" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#1a1a1a">Ready</text>
+      </g>
+      <g transform="translate(188, 94)">
+        <rect width="86" height="86" rx="6" fill="#ef4444"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">4m</text>
+        <text x="80" y="14" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" fill-opacity="0.85">11.2/12.2</text>
+        <text x="43" y="44" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Protein</text>
+        <text x="43" y="58" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#ffffff">00:18:00</text>
+        <text x="43" y="74" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" letter-spacing="1">CHECK</text>
+      </g>
+      <g transform="translate(282, 94)">
+        <rect width="86" height="86" rx="6" fill="#22c55e"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">6m</text>
+        <text x="80" y="14" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" fill-opacity="0.85">5.2/11.2</text>
+        <text x="43" y="44" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Chia</text>
+        <text x="43" y="58" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#ffffff">01:44:00</text>
+        <text x="43" y="74" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" letter-spacing="1">FRESH</text>
+      </g>
+      <!-- Row 3 -->
+      <g transform="translate(0, 188)">
+        <rect width="86" height="86" rx="6" fill="#b3b9c1"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">8m</text>
+        <text x="43" y="46" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Granola</text>
+        <text x="43" y="62" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#1a1a1a">Ready</text>
+      </g>
+      <g transform="translate(94, 188)">
+        <rect width="86" height="86" rx="6" fill="#ef4444"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">10m</text>
+        <text x="43" y="44" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Honey</text>
+        <text x="43" y="58" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#ffffff">00:18:00</text>
+        <text x="43" y="74" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" letter-spacing="1">CHECK</text>
+      </g>
+      <g transform="translate(188, 188)">
+        <rect width="86" height="86" rx="6" fill="#f59e0b"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">15m</text>
+        <text x="43" y="44" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#1a1a1a">Caramel</text>
+        <text x="43" y="58" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#1a1a1a">00:53:00</text>
+        <text x="43" y="74" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#1a1a1a" letter-spacing="1">ALERT</text>
+      </g>
+      <g transform="translate(282, 188)">
+        <rect width="86" height="86" rx="6" fill="#ef4444"/>
+        <rect x="6" y="6" width="22" height="14" rx="3" fill="#ea580c" fill-opacity="0.9"/>
+        <text x="17" y="16" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" font-weight="700" fill="#ffffff">20m</text>
+        <text x="43" y="44" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="700" fill="#ffffff">Coconut</text>
+        <text x="43" y="58" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#ffffff">00:18:00</text>
+        <text x="43" y="74" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#ffffff" letter-spacing="1">CHECK</text>
+      </g>
+    </g>
+
+    <!-- Footer -->
+    <g transform="translate(0, 510)">
+      <line x1="0" y1="0" x2="368" y2="0" stroke="#e0e0e0"/>
+      <text x="0" y="18" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#666666" letter-spacing="2">PREP  ·  TICKING  ·  DONE</text>
+      <text x="0" y="34" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#1a1a1a" font-weight="600">Built alongside the kitchen team, not for them.</text>
     </g>
   </g>
-  <g transform="translate(48, 580)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#525252">
-    <text x="0" y="0">BUILT ALONGSIDE THE KITCHEN TEAM.</text>
-    <text x="0" y="18">NOT FOR THEM.</text>
-  </g>
-  <g transform="translate(48, 720)">
-    <text font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#404040" letter-spacing="2">PT UNICORN · INTERNAL · 04/05</text>
-  </g>
+
+  <text x="20" y="780" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#666666" letter-spacing="2">PT UNICORN · INTERNAL · 04/05</text>
 </svg>

@@ -1,46 +1,204 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
   <defs>
-    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#34d399" stop-opacity="0.7"/>
-      <stop offset="100%" stop-color="#10b981" stop-opacity="0.1"/>
+    <linearGradient id="pc-line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4F46E5" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#4F46E5" stop-opacity="0.05"/>
     </linearGradient>
   </defs>
-  <rect width="600" height="800" fill="#171717"/>
-  <rect x="0" y="0" width="600" height="4" fill="url(#g3)"/>
-  <g transform="translate(48, 120)">
-    <text x="0" y="0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="42" font-weight="700" fill="#fafafa" letter-spacing="-2">PEOPLE &amp;</text>
-    <text x="0" y="48" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="42" font-weight="700" fill="#fafafa" letter-spacing="-2">CULTURE</text>
-    <text x="0" y="86" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#34d399" letter-spacing="3">HR  ·  WORKFORCE</text>
-  </g>
-  <g transform="translate(48, 280)">
-    <g>
-      <circle cx="40" cy="40" r="20" fill="#262626"/>
-      <circle cx="40" cy="32" r="8" fill="#525252"/>
-      <path d="M22 52 Q22 42 40 42 Q58 42 58 52 L58 60 L22 60 Z" fill="#525252"/>
-      <rect x="20" y="76" width="40" height="2" fill="#34d399"/>
-      <text x="40" y="92" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#a3a3a3">ONBOARD</text>
+  <!-- bg -->
+  <rect width="600" height="800" fill="#f8fafc"/>
+  <rect x="0" y="0" width="600" height="4" fill="url(#pc-line)"/>
+
+  <!-- Glass top bar -->
+  <g transform="translate(0, 0)">
+    <rect width="600" height="56" fill="#ffffff" fill-opacity="0.9"/>
+    <line x1="0" y1="56" x2="600" y2="56" stroke="#e2e8f0"/>
+    <text x="20" y="34" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#94a3b8" letter-spacing="2">← PORTFOLIO</text>
+    <!-- brand tile -->
+    <g transform="translate(132, 14)">
+      <rect width="28" height="28" rx="6" fill="#4F46E5"/>
+      <text x="14" y="20" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="-0.5">PC</text>
     </g>
-    <g transform="translate(160, 0)">
-      <circle cx="40" cy="40" r="20" fill="#262626"/>
-      <circle cx="40" cy="32" r="8" fill="#525252"/>
-      <path d="M22 52 Q22 42 40 42 Q58 42 58 52 L58 60 L22 60 Z" fill="#525252"/>
-      <rect x="20" y="76" width="40" height="2" fill="#34d399"/>
-      <text x="40" y="92" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#a3a3a3">RECORDS</text>
+    <text x="170" y="34" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a">PeopleOS</text>
+    <rect x="262" y="20" width="60" height="20" rx="4" fill="#4F46E5" fill-opacity="0.1" stroke="#4F46E5" stroke-opacity="0.4"/>
+    <text x="292" y="34" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" font-weight="600" fill="#4F46E5">v1.0</text>
+
+    <!-- outlet picker -->
+    <g transform="translate(360, 12)">
+      <rect width="92" height="32" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="46" y="20" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#0f172a" font-weight="600">All outlets</text>
     </g>
-    <g transform="translate(320, 0)">
-      <circle cx="40" cy="40" r="20" fill="#262626"/>
-      <circle cx="40" cy="32" r="8" fill="#525252"/>
-      <path d="M22 52 Q22 42 40 42 Q58 42 58 52 L58 60 L22 60 Z" fill="#525252"/>
-      <rect x="20" y="76" width="40" height="2" fill="#34d399"/>
-      <text x="40" y="92" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#a3a3a3">LIFECYCLE</text>
+    <!-- notification bell -->
+    <g transform="translate(466, 18)">
+      <circle cx="14" cy="14" r="3" fill="#4F46E5"/>
+    </g>
+    <!-- user avatar -->
+    <g transform="translate(500, 12)">
+      <circle cx="14" cy="14" r="14" fill="#4F46E5"/>
+      <text x="14" y="18" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="600" fill="#ffffff">AC</text>
+      <text x="36" y="12" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="#0f172a">Alex Chen</text>
+      <text x="36" y="24" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#64748b">PEOPLE &amp; CULTURE</text>
     </g>
   </g>
-  <g transform="translate(48, 420)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#525252">
-    <text x="0" y="0">FOR THE PEOPLE &amp; CULTURE TEAM</text>
-    <text x="0" y="18">TO RUN THE WORKFORCE</text>
-    <text x="0" y="36">— AND NOTHING ELSE.</text>
+
+  <!-- Sidebar with indigo left-bar active item -->
+  <g transform="translate(0, 56)">
+    <rect width="200" height="744" fill="#ffffff"/>
+    <line x1="200" y1="0" x2="200" y2="744" stroke="#e2e8f0"/>
+    <text x="20" y="22" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#64748b" letter-spacing="2">WORKFORCE</text>
+    <g font-family="Inter, system-ui, sans-serif" font-size="11" fill="#0f172a">
+      <g transform="translate(0, 36)">
+        <text x="22" y="14">Directory</text>
+      </g>
+      <g transform="translate(0, 64)">
+        <rect width="200" height="28" fill="#4F46E5" fill-opacity="0.06"/>
+        <rect width="3" height="28" fill="#4F46E5"/>
+        <text x="22" y="18" font-weight="600" fill="#4F46E5">Onboarding</text>
+      </g>
+      <g transform="translate(0, 92)">
+        <text x="22" y="14">Roster</text>
+      </g>
+      <g transform="translate(0, 120)">
+        <text x="22" y="14">Time off</text>
+      </g>
+      <g transform="translate(0, 148)">
+        <text x="22" y="14">Overview</text>
+      </g>
+    </g>
+    <text x="20" y="190" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#64748b" letter-spacing="2">SELF-SERVICE</text>
+    <g font-family="Inter, system-ui, sans-serif" font-size="11" fill="#0f172a">
+      <text x="22" y="216">My profile</text>
+      <text x="22" y="244">My pay</text>
+    </g>
+    <text x="20" y="282" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#64748b" letter-spacing="2">ADMIN</text>
+    <g font-family="Inter, system-ui, sans-serif" font-size="11" fill="#94a3b8">
+      <text x="22" y="308">Documents</text>
+      <text x="22" y="336">Announcements</text>
+      <text x="22" y="364">Settings</text>
+    </g>
   </g>
-  <g transform="translate(48, 720)">
-    <text font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#404040" letter-spacing="2">PT UNICORN · INTERNAL · 03/05</text>
+
+  <!-- Main: onboarding wizard 9 steps -->
+  <g transform="translate(216, 80)">
+    <text x="0" y="14" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#4F46E5" letter-spacing="2">LIFECYCLE · ONBOARDING</text>
+    <text x="0" y="42" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="700" fill="#0f172a" letter-spacing="-0.5">Onboarding wizard</text>
+    <text x="0" y="60" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#64748b">Walk Erik A. through the nine onboarding stages</text>
+
+    <!-- 9-step wizard sidebar -->
+    <g transform="translate(0, 80)" font-family="Inter, system-ui, sans-serif">
+      <rect width="184" height="402" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="12" y="20" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#64748b" letter-spacing="2">WIZARD</text>
+      <!-- Step 1: Done -->
+      <g transform="translate(12, 32)">
+        <circle cx="11" cy="11" r="11" fill="#16a34a"/>
+        <text x="11" y="15" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#ffffff">✓</text>
+        <text x="32" y="13" font-size="10" font-weight="600" fill="#0f172a">Offer &amp; contract</text>
+        <text x="32" y="24" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#94a3b8">3/3 tasks</text>
+      </g>
+      <!-- Step 2: Done -->
+      <g transform="translate(12, 70)">
+        <circle cx="11" cy="11" r="11" fill="#16a34a"/>
+        <text x="11" y="15" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#ffffff">✓</text>
+        <text x="32" y="13" font-size="10" font-weight="600" fill="#0f172a">Paperwork &amp; IDs</text>
+        <text x="32" y="24" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#94a3b8">2/3 tasks</text>
+      </g>
+      <!-- Step 3: Active -->
+      <g transform="translate(0, 100)">
+        <rect width="184" height="36" fill="#4F46E5" fill-opacity="0.06"/>
+        <rect width="3" height="36" fill="#4F46E5"/>
+        <circle cx="23" cy="18" r="11" fill="#4F46E5"/>
+        <text x="23" y="22" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#ffffff">5</text>
+        <text x="44" y="20" font-size="10" font-weight="600" fill="#4F46E5">Compliance training</text>
+        <text x="44" y="31" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#4F46E5">0/3 tasks</text>
+      </g>
+      <!-- Steps 4-9 -->
+      <g transform="translate(12, 150)">
+        <circle cx="11" cy="11" r="11" fill="none" stroke="#cbd5e1"/>
+        <text x="11" y="15" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" font-weight="600" fill="#64748b">4</text>
+        <text x="32" y="13" font-size="10" fill="#64748b">Uniform &amp; access</text>
+        <text x="32" y="24" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#94a3b8">0/2 tasks</text>
+      </g>
+      <g transform="translate(12, 188)">
+        <circle cx="11" cy="11" r="11" fill="none" stroke="#cbd5e1"/>
+        <text x="11" y="15" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" font-weight="600" fill="#64748b">5</text>
+        <text x="32" y="13" font-size="10" fill="#64748b">IT setup</text>
+        <text x="32" y="24" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#94a3b8">0/3 tasks</text>
+      </g>
+      <g transform="translate(12, 226)">
+        <circle cx="11" cy="11" r="11" fill="none" stroke="#cbd5e1"/>
+        <text x="11" y="15" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" font-weight="600" fill="#64748b">6</text>
+        <text x="32" y="13" font-size="10" fill="#64748b">Training modules</text>
+      </g>
+      <g transform="translate(12, 264)">
+        <circle cx="11" cy="11" r="11" fill="none" stroke="#cbd5e1"/>
+        <text x="11" y="15" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" font-weight="600" fill="#64748b">7</text>
+        <text x="32" y="13" font-size="10" fill="#64748b">First shift</text>
+      </g>
+      <g transform="translate(12, 302)">
+        <circle cx="11" cy="11" r="11" fill="none" stroke="#cbd5e1"/>
+        <text x="11" y="15" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" font-weight="600" fill="#64748b">8</text>
+        <text x="32" y="13" font-size="10" fill="#64748b">30/60/90 reviews</text>
+      </g>
+      <g transform="translate(12, 340)">
+        <circle cx="11" cy="11" r="11" fill="none" stroke="#cbd5e1"/>
+        <text x="11" y="15" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" font-weight="600" fill="#64748b">9</text>
+        <text x="32" y="13" font-size="10" fill="#64748b">Benefits enrollment</text>
+      </g>
+    </g>
+
+    <!-- Right detail panel -->
+    <g transform="translate(204, 80)">
+      <rect width="180" height="402" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+      <!-- header -->
+      <g transform="translate(16, 16)">
+        <text x="0" y="14" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#64748b" letter-spacing="1">STEP 5 OF 9</text>
+        <text x="0" y="36" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="700" fill="#0f172a">Compliance training</text>
+        <text x="0" y="52" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#64748b">Workplace safety, anti-harassment, data privacy.</text>
+      </g>
+      <line x1="16" y1="76" x2="164" y2="76" stroke="#e2e8f0"/>
+      <!-- task rows -->
+      <g transform="translate(16, 88)" font-family="Inter, system-ui, sans-serif">
+        <g>
+          <circle cx="6" cy="6" r="6" fill="#f59e0b"/>
+          <circle cx="6" cy="6" r="2" fill="#ffffff"/>
+          <text x="20" y="9" font-size="10" fill="#0f172a">Workplace safety module</text>
+          <rect x="100" y="-2" width="60" height="14" rx="3" fill="#f59e0b" fill-opacity="0.18"/>
+          <text x="130" y="8" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" font-weight="600" fill="#b45309">IN PROGRESS</text>
+        </g>
+        <g transform="translate(0, 26)">
+          <circle cx="6" cy="6" r="6" fill="none" stroke="#cbd5e1" stroke-dasharray="2 2"/>
+          <text x="20" y="9" font-size="10" fill="#0f172a">Anti-harassment training</text>
+          <rect x="100" y="-2" width="48" height="14" rx="3" fill="#94a3b8" fill-opacity="0.18"/>
+          <text x="124" y="8" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" font-weight="600" fill="#64748b">PENDING</text>
+        </g>
+        <g transform="translate(0, 52)">
+          <circle cx="6" cy="6" r="6" fill="none" stroke="#cbd5e1" stroke-dasharray="2 2"/>
+          <text x="20" y="9" font-size="10" fill="#0f172a">Data privacy &amp; security</text>
+          <rect x="100" y="-2" width="48" height="14" rx="3" fill="#94a3b8" fill-opacity="0.18"/>
+          <text x="124" y="8" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" font-weight="600" fill="#64748b">PENDING</text>
+        </g>
+      </g>
+      <!-- progress bar -->
+      <g transform="translate(16, 188)">
+        <text x="0" y="0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#64748b" letter-spacing="1">PROGRESS</text>
+        <text x="148" y="0" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#4F46E5" font-weight="600">19%</text>
+        <rect y="8" width="148" height="6" rx="3" fill="#e2e8f0"/>
+        <rect y="8" width="28" height="6" rx="3" fill="#4F46E5"/>
+        <text x="0" y="28" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#94a3b8">5 of 26 tasks done</text>
+      </g>
+      <!-- footer cta -->
+      <g transform="translate(16, 360)">
+        <rect width="148" height="28" rx="6" fill="#4F46E5"/>
+        <text x="74" y="18" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="600" fill="#ffffff">Mark step complete →</text>
+      </g>
+    </g>
   </g>
+
+  <!-- footer -->
+  <g transform="translate(216, 640)">
+    <line x1="0" y1="0" x2="384" y2="0" stroke="#e2e8f0"/>
+    <text x="0" y="20" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#64748b" letter-spacing="2">220 EMPLOYEES  ·  9-STEP ONBOARDING  ·  26 TASKS</text>
+    <text x="0" y="36" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#0f172a" font-weight="600">For the People &amp; Culture team to run the workforce.</text>
+  </g>
+  <text x="20" y="780" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#94a3b8" letter-spacing="2">PT UNICORN · INTERNAL · 03/05</text>
 </svg>

@@ -1,54 +1,194 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800">
   <defs>
-    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#34d399" stop-opacity="0.7"/>
-      <stop offset="100%" stop-color="#10b981" stop-opacity="0.1"/>
+    <linearGradient id="if-grad-top" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a2e4a"/>
+      <stop offset="100%" stop-color="#09182b"/>
+    </linearGradient>
+    <linearGradient id="if-line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#112239" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#112239" stop-opacity="0.1"/>
     </linearGradient>
   </defs>
-  <rect width="600" height="800" fill="#171717"/>
-  <rect x="0" y="0" width="600" height="4" fill="url(#g2)"/>
-  <g transform="translate(48, 80)">
-    <text x="0" y="0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="64" font-weight="700" fill="#fafafa" letter-spacing="-3">INVENFLOW</text>
-    <text x="0" y="36" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#34d399" letter-spacing="3">INVENTORY  ·  WAREHOUSE  ·  MULTI-OUTLET</text>
-  </g>
-  <g transform="translate(48, 200)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#a3a3a3">
-    <text x="0" y="0">PURCHASING BOARD</text>
-  </g>
-  <g transform="translate(48, 220)">
-    <g>
-      <rect width="110" height="240" fill="#0a0a0a" stroke="#262626"/>
-      <text x="8" y="14" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373">NEW</text>
-      <rect x="8" y="22" width="94" height="32" fill="#171717" stroke="#34d399" stroke-width="0.5"/>
-      <rect x="8" y="60" width="94" height="32" fill="#171717" stroke="#34d399" stroke-width="0.5"/>
-      <rect x="8" y="98" width="94" height="32" fill="#171717" stroke="#34d399" stroke-width="0.5"/>
+  <!-- bg -->
+  <rect width="600" height="800" fill="#0a0a0a"/>
+  <rect width="600" height="800" fill="url(#if-grad-top)" opacity="0.18"/>
+  <rect x="0" y="0" width="600" height="4" fill="url(#if-line)"/>
+
+  <!-- Sidebar preview (gradient navy) -->
+  <g transform="translate(0, 0)">
+    <rect x="0" y="0" width="180" height="800" fill="url(#if-grad-top)"/>
+    <rect x="0" y="0" width="180" height="800" fill="#09182b" opacity="0.45"/>
+    <!-- Brand tile -->
+    <g transform="translate(20, 24)">
+      <rect width="32" height="32" rx="6" fill="#fafafa"/>
+      <text x="16" y="22" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" font-weight="700" fill="#112239" letter-spacing="-0.5">IF</text>
     </g>
-    <g transform="translate(120, 0)">
-      <rect width="110" height="240" fill="#0a0a0a" stroke="#262626"/>
-      <text x="8" y="14" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373">APPROVE</text>
-      <rect x="8" y="22" width="94" height="32" fill="#171717" stroke="#262626"/>
-      <rect x="8" y="60" width="94" height="32" fill="#171717" stroke="#262626"/>
+    <text x="60" y="44" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#fafafa">Invenflow</text>
+    <text x="20" y="74" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#94a3b8" letter-spacing="2">WORKSPACE</text>
+    <!-- Nav items -->
+    <g font-family="Inter, system-ui, sans-serif" font-size="11" fill="#cbd5e1">
+      <text x="20" y="100">Dashboard</text>
+      <text x="20" y="124">Inbox</text>
+      <text x="20" y="148" fill="#fafafa" font-weight="600">Inventory</text>
+      <rect x="0" y="138" width="3" height="14" fill="#fafafa"/>
+      <text x="20" y="172">Stocktake</text>
+      <text x="20" y="196">Analytics</text>
+      <text x="20" y="220">Movements</text>
+      <text x="20" y="244">Bulk Movements</text>
+      <text x="20" y="268">Locations</text>
     </g>
-    <g transform="translate(240, 0)">
-      <rect width="110" height="240" fill="#0a0a0a" stroke="#262626"/>
-      <text x="8" y="14" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373">PURCHASE</text>
-      <rect x="8" y="22" width="94" height="32" fill="#171717" stroke="#34d399" stroke-width="0.5"/>
-      <rect x="8" y="60" width="94" height="32" fill="#171717" stroke="#34d399" stroke-width="0.5"/>
-      <rect x="8" y="98" width="94" height="32" fill="#171717" stroke="#34d399" stroke-width="0.5"/>
-      <rect x="8" y="136" width="94" height="32" fill="#171717" stroke="#34d399" stroke-width="0.5"/>
+    <text x="20" y="304" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#94a3b8" letter-spacing="2">BOARDS</text>
+    <g font-family="Inter, system-ui, sans-serif" font-size="11" fill="#cbd5e1">
+      <text x="20" y="328">Board Purchasing</text>
+      <text x="20" y="352">Board Receiving</text>
+      <text x="20" y="376">Board Payment Request</text>
     </g>
-    <g transform="translate(360, 0)">
-      <rect width="110" height="240" fill="#0a0a0a" stroke="#262626"/>
-      <text x="8" y="14" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373">RECEIVING</text>
-      <rect x="8" y="22" width="94" height="32" fill="#171717" stroke="#262626"/>
+    <text x="20" y="412" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#94a3b8" letter-spacing="2">MANAGE</text>
+    <g font-family="Inter, system-ui, sans-serif" font-size="11" fill="#cbd5e1">
+      <text x="20" y="436">Issues</text>
+      <text x="20" y="460">Suppliers</text>
+      <text x="20" y="484">Categories</text>
+      <text x="20" y="508">Tags</text>
+      <text x="20" y="532">Team Members</text>
+    </g>
+    <!-- Footer -->
+    <rect x="0" y="700" width="180" height="100" fill="#09182b" opacity="0.6"/>
+    <text x="20" y="730" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#cbd5e1" letter-spacing="1">v1.0</text>
+    <text x="20" y="746" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#64748b">Last sync · 2h ago</text>
+    <circle cx="22" cy="766" r="3" fill="#22c55e"/>
+    <text x="32" y="770" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#64748b">LIVE SNAPSHOT</text>
+  </g>
+
+  <!-- Main content area -->
+  <g transform="translate(204, 32)">
+    <text x="0" y="0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#94a3b8" letter-spacing="3">WORKFLOW · PURCHASING</text>
+    <text x="0" y="36" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700" fill="#fafafa" letter-spacing="-0.5">Purchase orders</text>
+
+    <!-- 4 stat tiles -->
+    <g transform="translate(0, 60)">
+      <g>
+        <rect width="92" height="56" rx="4" fill="#0a0a0a" stroke="#262626"/>
+        <text x="10" y="16" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373" letter-spacing="1">OPEN ORDERS</text>
+        <text x="10" y="40" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="700" fill="#fafafa">110</text>
+      </g>
+      <g transform="translate(100, 0)">
+        <rect width="92" height="56" rx="4" fill="#0a0a0a" stroke="#262626"/>
+        <text x="10" y="16" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373" letter-spacing="1">IN FLIGHT</text>
+        <text x="10" y="40" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="700" fill="#3b82f6">28</text>
+      </g>
+      <g transform="translate(200, 0)">
+        <rect width="92" height="56" rx="4" fill="#0a0a0a" stroke="#262626"/>
+        <text x="10" y="16" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373" letter-spacing="1">SPEND</text>
+        <text x="10" y="40" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700" fill="#22c55e">Rp 1.6M</text>
+      </g>
+      <g transform="translate(300, 0)">
+        <rect width="92" height="56" rx="4" fill="#0a0a0a" stroke="#262626"/>
+        <text x="10" y="16" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373" letter-spacing="1">URGENT</text>
+        <text x="10" y="40" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="700" fill="#ef4444">11</text>
+      </g>
+    </g>
+
+    <!-- Kanban: 4 columns -->
+    <g transform="translate(0, 140)" font-family="Inter, system-ui, sans-serif" font-size="9" fill="#fafafa">
+      <!-- Col 1 -->
+      <g>
+        <rect width="92" height="420" rx="4" fill="#0a0a0a" stroke="#262626"/>
+        <text x="8" y="14" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#94a3b8" letter-spacing="1">NEW REQUEST</text>
+        <text x="80" y="14" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373">28</text>
+        <line x1="0" y1="20" x2="92" y2="20" stroke="#404040"/>
+        <g transform="translate(6, 28)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#94a3b8">PO-2026-101</text>
+          <text x="6" y="26" font-weight="600">Atlas Beverage</text>
+          <text x="6" y="38" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#737373">Rp 631.199</text>
+        </g>
+        <g transform="translate(6, 76)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#94a3b8">PO-2026-102</text>
+          <text x="6" y="26" font-weight="600">Borneo Pack.</text>
+        </g>
+        <g transform="translate(6, 124)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#94a3b8">PO-2026-103</text>
+          <text x="6" y="26" font-weight="600">Citra Beans</text>
+        </g>
+        <g transform="translate(6, 172)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#94a3b8">PO-2026-104</text>
+          <text x="6" y="26" font-weight="600">Delta Cleaning</text>
+        </g>
+      </g>
+      <!-- Col 2 -->
+      <g transform="translate(100, 0)">
+        <rect width="92" height="420" rx="4" fill="#0a0a0a" stroke="#f59e0b"/>
+        <text x="8" y="14" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#f59e0b" letter-spacing="1">APPROVED</text>
+        <text x="80" y="14" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373">28</text>
+        <line x1="0" y1="20" x2="92" y2="20" stroke="#f59e0b"/>
+        <g transform="translate(6, 28)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#94a3b8">PO-2026-115</text>
+          <text x="6" y="26" font-weight="600">Equator Equip.</text>
+        </g>
+        <g transform="translate(6, 76)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#94a3b8">PO-2026-130</text>
+          <text x="6" y="26" font-weight="600">Lombok Cocoa</text>
+        </g>
+      </g>
+      <!-- Col 3 -->
+      <g transform="translate(200, 0)">
+        <rect width="92" height="420" rx="4" fill="#0a0a0a" stroke="#3b82f6"/>
+        <text x="8" y="14" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#3b82f6" letter-spacing="1">PURCHASED</text>
+        <text x="80" y="14" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373">24</text>
+        <line x1="0" y1="20" x2="92" y2="20" stroke="#3b82f6"/>
+        <g transform="translate(6, 28)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#3b82f6">IN TRANSIT</text>
+          <text x="6" y="26" font-weight="600">Flores Flavor</text>
+        </g>
+        <g transform="translate(6, 76)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#3b82f6">IN TRANSIT</text>
+          <text x="6" y="26" font-weight="600">Makmur Snack</text>
+        </g>
+        <g transform="translate(6, 124)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#3b82f6">IN TRANSIT</text>
+          <text x="6" y="26" font-weight="600">Riau Ice</text>
+        </g>
+      </g>
+      <!-- Col 4 -->
+      <g transform="translate(300, 0)">
+        <rect width="92" height="420" rx="4" fill="#0a0a0a" stroke="#22c55e"/>
+        <text x="8" y="14" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#22c55e" letter-spacing="1">RECEIVED</text>
+        <text x="80" y="14" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="8" fill="#737373">30</text>
+        <line x1="0" y1="20" x2="92" y2="20" stroke="#22c55e"/>
+        <g transform="translate(6, 28)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#22c55e">RECEIVED</text>
+          <text x="6" y="26" font-weight="600">Riau Ice</text>
+        </g>
+        <g transform="translate(6, 76)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#22c55e">RECEIVED</text>
+          <text x="6" y="26" font-weight="600">Borneo Pack.</text>
+        </g>
+        <g transform="translate(6, 124)">
+          <rect width="80" height="42" rx="3" fill="#171717" stroke="#525252"/>
+          <text x="6" y="12" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="7" fill="#22c55e">RECEIVED</text>
+          <text x="6" y="26" font-weight="600">Zeus Tech</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- Footer status -->
+    <g transform="translate(0, 600)">
+      <line x1="0" y1="0" x2="392" y2="0" stroke="#262626"/>
+      <text x="0" y="18" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#94a3b8">5 OUTLETS  ·  1 WAREHOUSE  ·  REAL-TIME</text>
+      <text x="0" y="34" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#525252">EXPENSE / ASSET / COGS / CONSUMABLE</text>
     </g>
   </g>
-  <g transform="translate(48, 520)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#525252">
-    <text x="0" y="0">MOVEMENT  ·  STOCK TAKE  ·  EXPENSE / ASSET / COGS</text>
-  </g>
-  <g transform="translate(48, 580)">
-    <text font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#525252" letter-spacing="2">5 OUTLETS · 1 WAREHOUSE · REAL-TIME</text>
-  </g>
-  <g transform="translate(48, 720)">
-    <text font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#404040" letter-spacing="2">PT UNICORN · INTERNAL · 02/05</text>
-  </g>
+
+  <!-- Bottom credit -->
+  <text x="48" y="780" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="9" fill="#525252" letter-spacing="2">PT UNICORN · INTERNAL · 02/05</text>
 </svg>
