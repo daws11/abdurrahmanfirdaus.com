@@ -1,0 +1,226 @@
+// src/demos/channelflow/screens/Ai.tsx
+// @ts-nocheck
+//
+// AI Agent activity feed — production-style stub mirroring the
+// /ai page (Sparkles icon). Lists recent AI actions with status pills
+// (running / done / failed), per-action token counts, USD cost, and a
+// per-channel KPI strip at the top. Clicking a row deep-links into the
+// inbox conversation.
+
+import { useMemo, useState } from "react";
+import { Sparkles, Zap, AlertTriangle, Bot } from "lucide-react";
+import {
+  AI_ACTIVITY,
+  ANALYTICS,
+  channelBgClass,
+  channelLabel,
+  type AiActivity,
+} from "../mocks";
+import { Badge } from "@/demos/_shared/Badge";
+import { StatTile } from "@/demos/_shared/StatTile";
+import { DataTable, type Column } from "@/demos/_shared/DataTable";
+import { setDemoHash } from "@/demos/router";
+
+const ACTION_LABEL: Record<AiActivity["action"], string> = {
+  draft_reply: "Draft reply",
+  categorize: "Categorize",
+  summarize: "Summarize thread",
+  suggest_booking: "Suggest booking",
+  resolve: "Auto-resolve",
+};
+
+const STATUS_TONE: Record<AiActivity["status"], "ok" | "warn" | "bad"> = {
+  running: "warn",
+  done: "ok",
+  failed: "bad",
+};
+
+export function Ai() {
+  const [statusFilter, setStatusFilter] = useState<"all" | AiActivity["status"]>("all");
+
+  const rows = useMemo(
+    () => AI_ACTIVITY.filter((a) => statusFilter === "all" || a.status === statusFilter),
+    [statusFilter],
+  );
+
+  const totals = useMemo(() => {
+    const tokens = AI_ACTIVITY.reduce((s, a) => s + a.tokens, 0);
+    const cost = AI_ACTIVITY.reduce((s, a) => s + a.cost, 0);
+    const failed = AI_ACTIVITY.filter((a) => a.status === "failed").length;
+    const running = AI_ACTIVITY.filter((a) => a.status === "running").length;
+    return { tokens, cost, failed, running };
+  }, []);
+
+  const columns: Column<AiActivity>[] = [
+    {
+      key: "id",
+      header: "Run",
+      sortBy: (r) => r.id,
+      cell: (r) => (
+        <button
+          type="button"
+          onClick={() => setDemoHash("channelflow", "queue")}
+          className="font-mono text-[11px] tabular-nums underline-offset-2 hover:underline"
+          style={{ color: "var(--accent)" }}
+        >
+          {r.id}
+        </button>
+      ),
+    },
+    {
+      key: "guest",
+      header: "Conversation",
+      sortBy: (r) => r.guestName,
+      cell: (r) => (
+        <div className="flex items-center gap-2">
+          <span
+            className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-white ${channelBgClass(r.channel)}`}
+            aria-label={channelLabel(r.channel)}
+          >
+            <span className="text-[10px] font-semibold">
+              {r.guestName.split(/\s+/).slice(0, 2).map((w) => w[0]).join("")}
+            </span>
+          </span>
+          <div className="flex flex-col">
+            <span className="text-sm font-medium">{r.guestName}</span>
+            <span className="font-mono text-[10px]" style={{ color: "var(--muted)" }}>
+              {r.conversationId}
+            </span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: "action",
+      header: "Action",
+      sortBy: (r) => r.action,
+      cell: (r) => (
+        <span className="inline-flex items-center gap-1 text-[12px]" style={{ color: "var(--fg)" }}>
+          <Bot className="h-3 w-3" strokeWidth={2.25} style={{ color: "var(--accent)" }} />
+          {ACTION_LABEL[r.action]}
+        </span>
+      ),
+    },
+    {
+      key: "tokens",
+      header: "Tokens",
+      align: "right",
+      sortBy: (r) => r.tokens,
+      cell: (r) => <span className="tabular-nums">{r.tokens.toLocaleString()}</span>,
+    },
+    {
+      key: "cost",
+      header: "Cost",
+      align: "right",
+      sortBy: (r) => r.cost,
+      cell: (r) => (
+        <span className="font-mono text-[11px] tabular-nums" style={{ color: "var(--muted)" }}>
+          ${r.cost.toFixed(4)}
+        </span>
+      ),
+    },
+    {
+      key: "duration",
+      header: "Duration",
+      align: "right",
+      sortBy: (r) => r.durationMs,
+      cell: (r) => (
+        <span className="font-mono text-[11px] tabular-nums" style={{ color: "var(--muted)" }}>
+          {(r.durationMs / 1000).toFixed(2)}s
+        </span>
+      ),
+    },
+    {
+      key: "status",
+      header: "Status",
+      cell: (r) => <Badge tone={STATUS_TONE[r.status]}>{r.status}</Badge>,
+    },
+  ];
+
+  return (
+    <div className="flex h-full flex-col">
+      <header
+        className="flex items-end justify-between gap-3 border-b px-5 pb-3 pt-4"
+        style={{ borderColor: "var(--border)" }}
+      >
+        <div>
+          <div
+            className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em]"
+            style={{ color: "var(--accent)" }}
+          >
+            AI Agent
+          </div>
+          <h1 className="text-xl font-semibold tracking-tight">Activity &amp; runs</h1>
+          <p className="text-xs" style={{ color: "var(--muted)" }}>
+            Drafts, categorization, and auto-replies generated by the agent.
+          </p>
+        </div>
+      </header>
+
+      <div className="grid grid-cols-2 gap-3 px-5 py-4 md:grid-cols-4">
+        <StatTile
+          label="AI-handled"
+          value={ANALYTICS.aiHandled}
+          detail="conversations"
+          tone="accent"
+          icon={<Sparkles className="h-3.5 w-3.5" />}
+        />
+        <StatTile
+          label="Deflection rate"
+          value={`${Math.round(ANALYTICS.deflection * 100)}%`}
+          detail="AI auto-resolved"
+          tone="ok"
+          icon={<Zap className="h-3.5 w-3.5" />}
+        />
+        <StatTile
+          label="Tokens (24h)"
+          value={totals.tokens.toLocaleString()}
+          detail={`$${totals.cost.toFixed(2)} spent`}
+          tone="info"
+        />
+        <StatTile
+          label="Failed runs"
+          value={totals.failed}
+          detail={`${totals.running} running`}
+          tone={totals.failed > 0 ? "warn" : "neutral"}
+          icon={<AlertTriangle className="h-3.5 w-3.5" />}
+        />
+      </div>
+
+      <div
+        className="flex flex-wrap items-center gap-2 border-b px-5 py-2.5"
+        style={{ borderColor: "var(--border)" }}
+      >
+        <span className="text-[10px] uppercase tracking-wider" style={{ color: "var(--muted)" }}>
+          Status
+        </span>
+        {(["all", "running", "done", "failed"] as const).map((s) => (
+          <button
+            key={s}
+            type="button"
+            onClick={() => setStatusFilter(s)}
+            className="inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-xs font-medium"
+            style={{
+              backgroundColor: statusFilter === s ? "var(--surface)" : "transparent",
+              borderColor: statusFilter === s ? "var(--accent)" : "var(--border)",
+              color: statusFilter === s ? "var(--accent)" : "var(--muted)",
+            }}
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-5 py-4">
+        <DataTable
+          rows={rows}
+          columns={columns}
+          rowKey={(r) => r.id}
+          initialSort={{ key: "tokens", dir: "desc" }}
+          emptyTitle="No AI runs yet"
+          emptyDescription="Runs will appear here once the agent starts replying."
+        />
+      </div>
+    </div>
+  );
+}

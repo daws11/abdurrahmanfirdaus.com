@@ -3,7 +3,7 @@
 // Top-level shell + screen router for People & Culture. The PeopleOS brand
 // uses an indigo-600 active state with a 3px left bar (rather than just a
 // text color) — applied here via a CSS hook. The sidebar groups items into
-// "Workforce", "Lifecycle", and "Admin" so it reads like a real product.
+// 4 production-mapped groups: Workforce, Lifecycle, Admin, Self-service.
 
 import { useMemo } from "react";
 import {
@@ -16,6 +16,9 @@ import {
   Sparkles,
   Bell,
   Settings,
+  CalendarDays,
+  UserCircle2,
+  Wallet,
   type LucideIcon,
 } from "lucide-react";
 import { Shell } from "@/demos/_shared/Shell";
@@ -32,6 +35,10 @@ import { Directory } from "./screens/Directory";
 import { EmployeeRecord } from "./screens/EmployeeRecord";
 import { OnboardingFlow } from "./screens/OnboardingFlow";
 import { WorkforceOverview } from "./screens/WorkforceOverview";
+import { Roster } from "./screens/Roster";
+import { TimeOff } from "./screens/TimeOff";
+import { MyProfile } from "./screens/MyProfile";
+import { MyPay } from "./screens/MyPay";
 
 interface NavDef {
   id: string;
@@ -44,11 +51,14 @@ interface NavDef {
   disabled?: boolean;
 }
 
+// 4 sidebar groups matching production's PeopleOS nav order.
 const NAV_GROUPS: { label: string; items: NavDef[] }[] = [
   {
     label: "Workforce",
     items: [
       { id: "directory", label: "Directory", icon: Users, href: "directory" },
+      { id: "roster", label: "Roster", icon: CalendarDays, href: "roster" },
+      { id: "time-off", label: "Time off", icon: Calendar, href: "time-off" },
       { id: "workforce", label: "Overview", icon: Building2, href: "workforce" },
     ],
   },
@@ -57,7 +67,6 @@ const NAV_GROUPS: { label: string; items: NavDef[] }[] = [
     items: [
       { id: "onboarding", label: "Onboarding", icon: ClipboardCheck, href: "onboarding" },
       { id: "training", label: "Training", icon: GraduationCap, disabled: true },
-      { id: "time-off", label: "Time off", icon: Calendar, disabled: true },
     ],
   },
   {
@@ -69,12 +78,23 @@ const NAV_GROUPS: { label: string; items: NavDef[] }[] = [
       { id: "settings", label: "Settings", icon: Settings, disabled: true },
     ],
   },
+  {
+    label: "Self-service",
+    items: [
+      { id: "my-profile", label: "My profile", icon: UserCircle2, href: "my-profile" },
+      { id: "my-pay", label: "My pay", icon: Wallet, href: "my-pay" },
+    ],
+  },
 ];
 
 const SCREEN_ICONS: Record<PeopleCultureScreen, LucideIcon> = {
   directory: Users,
+  roster: CalendarDays,
+  "time-off": Calendar,
   onboarding: ClipboardCheck,
   workforce: Building2,
+  "my-profile": UserCircle2,
+  "my-pay": Wallet,
 };
 
 export function PeopleCulture({
@@ -210,10 +230,18 @@ export function PeopleCulture({
     switch (screen) {
       case "directory":
         return <Directory />;
+      case "roster":
+        return <Roster />;
+      case "time-off":
+        return <TimeOff />;
       case "onboarding":
         return <OnboardingFlow />;
       case "workforce":
         return <WorkforceOverview />;
+      case "my-profile":
+        return <MyProfile />;
+      case "my-pay":
+        return <MyPay />;
       default:
         return <Directory />;
     }

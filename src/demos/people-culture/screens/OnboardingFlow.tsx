@@ -32,13 +32,8 @@ import type {
   TaskStatus,
 } from "../mocks";
 
-const STEP_IDS: OnboardingStepId[] = [
-  "offer",
-  "paperwork",
-  "uniform",
-  "training",
-  "first-shift",
-];
+// 9 steps — derived from the flow so the wizard stays in sync with mocks.
+const STEP_IDS: OnboardingStepId[] = ONBOARDING_FLOW.steps.map((s) => s.id);
 
 export function OnboardingFlow() {
   const employee = findEmployee(ONBOARDING_FLOW.employeeCode);
@@ -127,7 +122,7 @@ export function OnboardingFlow() {
             >
               {employee?.name ?? ONBOARDING_FLOW.employeeCode}
             </button>{" "}
-            through the five onboarding stages. Mark tasks done as they
+            through the nine onboarding stages. Mark tasks done as they
             clear, then send them on to the next step.
           </p>
         </div>
@@ -463,10 +458,18 @@ function nextStepHint(activeStepId: OnboardingStepId): string {
       return "Banking details feed into payroll. Tax ID is verified against the government database within 24h.";
     case "uniform":
       return "POS role provisioning takes effect on the next shift. Outlet lead is CC'd on the access email.";
+    case "it-setup":
+      return "Hardware asset tag is logged in IT inventory. Return-on-exit policy is acknowledged in the portal.";
+    case "compliance":
+      return "Compliance training is auto-assigned with a 14-day window. Overdue assignments escalate to People & Culture.";
     case "training":
       return "Modules are assigned with a 7-day deadline. Quiz scores are surfaced on the training analytics page.";
     case "first-shift":
       return "The 30-day check-in is scheduled automatically. People & Culture will be notified if it slips.";
+    case "reviews":
+      return "Probation conversion is triggered once the 90-day review is approved by both the outlet lead and P&C.";
+    case "benefits":
+      return "BPJS deductions appear on the next pay slip. Health insurance coverage starts the 1st of the following month.";
   }
 }
 

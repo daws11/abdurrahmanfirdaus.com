@@ -293,18 +293,23 @@ function payFor(role: Role, employmentType: EmploymentType): Employee["payroll"]
 
 // ---------- Roster ----------
 
-export const EMPLOYEES: Employee[] = Array.from({ length: 60 }, (_, i) => {
+// Total headcount — bumped to 220 (vs the v2 stub of 60) so the directory
+// and roster screens feel like a real People & Culture dataset.
+const TOTAL = 220;
+
+export const EMPLOYEES: Employee[] = Array.from({ length: TOTAL }, (_, i) => {
   const n = i + 1;
   const code = `EMP-${String(n).padStart(3, "0")}`;
   const first = FIRST_NAMES[i % FIRST_NAMES.length];
   const initial = LAST_INITIALS[Math.floor(i / FIRST_NAMES.length) % LAST_INITIALS.length];
   const name = `${first} ${initial}.`;
-  const role = ROLE_ROTATION[i];
+  // Cycle through each rotation so the index never goes out of range.
+  const role = ROLE_ROTATION[i % ROLE_ROTATION.length];
   const department = ROLE_DEPARTMENT[role];
-  const outletId = OUTLET_ROTATION[i];
-  const status = STATUS_ROTATION[i];
-  const employmentType = EMPLOYMENT_ROTATION[i];
-  const joinedAt = JOIN_DATES[i];
+  const outletId = OUTLET_ROTATION[i % OUTLET_ROTATION.length];
+  const status = STATUS_ROTATION[i % STATUS_ROTATION.length];
+  const employmentType = EMPLOYMENT_ROTATION[i % EMPLOYMENT_ROTATION.length];
+  const joinedAt = JOIN_DATES[i % JOIN_DATES.length];
   const tenureMonths = monthsBetween(joinedAt);
   const email = `${code.toLowerCase()}@example.test`;
   const phone = `+0000${String(1000 + n).slice(-4)}`;
@@ -406,8 +411,12 @@ export type OnboardingStepId =
   | "offer"
   | "paperwork"
   | "uniform"
+  | "it-setup"
+  | "compliance"
   | "training"
-  | "first-shift";
+  | "first-shift"
+  | "reviews"
+  | "benefits";
 
 export interface OnboardingStep {
   id: OnboardingStepId;
@@ -526,6 +535,68 @@ function buildFlow(emp: Employee): OnboardingFlow {
       ],
     },
     {
+      id: "it-setup",
+      label: "IT setup",
+      description: "Email, hardware issued, MFA enrollment.",
+      tasks: [
+        {
+          id: `${emp.code}-T8a`,
+          step: "it-setup",
+          title: "Email account provisioned",
+          detail: "2FA required, password reset sent to personal email.",
+          status: emp.status === "onboarding" ? "in-progress" : "done",
+          dueLabel: "Day 1",
+        },
+        {
+          id: `${emp.code}-T8b`,
+          step: "it-setup",
+          title: "Hardware issued (laptop/tablet)",
+          detail: "Asset tag logged, return-on-exit policy acknowledged.",
+          status: emp.status === "onboarding" ? "pending" : "done",
+          dueLabel: "Day 3",
+        },
+        {
+          id: `${emp.code}-T8c`,
+          step: "it-setup",
+          title: "MFA + SSO enrollment",
+          detail: "Authenticator app paired, SSO groups added by IT.",
+          status: emp.status === "onboarding" ? "pending" : "done",
+          dueLabel: "Day 2",
+        },
+      ],
+    },
+    {
+      id: "compliance",
+      label: "Compliance training",
+      description: "Workplace safety, anti-harassment, data privacy.",
+      tasks: [
+        {
+          id: `${emp.code}-T8d`,
+          step: "compliance",
+          title: "Workplace safety module",
+          detail: "30-min course: emergency exits, fire equipment, incident reporting.",
+          status: emp.status === "onboarding" ? "in-progress" : "done",
+          dueLabel: "Week 1",
+        },
+        {
+          id: `${emp.code}-T8e`,
+          step: "compliance",
+          title: "Anti-harassment training",
+          detail: "Policy overview, reporting channels, bystander intervention basics.",
+          status: emp.status === "onboarding" ? "pending" : "done",
+          dueLabel: "Week 1",
+        },
+        {
+          id: `${emp.code}-T8f`,
+          step: "compliance",
+          title: "Data privacy & security",
+          detail: "Customer PII handling, password hygiene, BYOD rules.",
+          status: emp.status === "onboarding" ? "pending" : "done",
+          dueLabel: "Week 2",
+        },
+      ],
+    },
+    {
       id: "training",
       label: "Training modules",
       description: "Role-specific training and orientation videos.",
@@ -580,10 +651,72 @@ function buildFlow(emp: Employee): OnboardingFlow {
         {
           id: `${emp.code}-T14`,
           step: "first-shift",
+          title: "Tax briefing complete",
+          detail: "Walkthrough of monthly withholding and annual SPT filing.",
+          status: "pending",
+          dueLabel: "Week 2",
+        },
+      ],
+    },
+    {
+      id: "reviews",
+      label: "30 / 60 / 90 reviews",
+      description: "Milestone check-ins with outlet lead + People & Culture.",
+      tasks: [
+        {
+          id: `${emp.code}-T15`,
+          step: "reviews",
           title: "30-day check-in",
-          detail: "One-on-one with outlet lead + People & Culture.",
+          detail: "One-on-one with outlet lead + P&C. Goals + blockers.",
           status: "pending",
           dueLabel: "Day 30",
+        },
+        {
+          id: `${emp.code}-T16`,
+          step: "reviews",
+          title: "60-day review",
+          detail: "Mid-probation check-in. Goal alignment + open feedback.",
+          status: "pending",
+          dueLabel: "Day 60",
+        },
+        {
+          id: `${emp.code}-T17`,
+          step: "reviews",
+          title: "90-day review",
+          detail: "Final probation review. Confirms conversion to active.",
+          status: "pending",
+          dueLabel: "Day 90",
+        },
+      ],
+    },
+    {
+      id: "benefits",
+      label: "Benefits enrollment",
+      description: "Health insurance, BPJS, retirement plan setup.",
+      tasks: [
+        {
+          id: `${emp.code}-T18`,
+          step: "benefits",
+          title: "Health insurance enrolled",
+          detail: "Private + outpatient coverage; dependents added to plan.",
+          status: "pending",
+          dueLabel: "Day 14",
+        },
+        {
+          id: `${emp.code}-T19`,
+          step: "benefits",
+          title: "BPJS Ketenagakerjaan + Kesehatan",
+          detail: "Government social-security enrollment confirmed.",
+          status: "pending",
+          dueLabel: "Day 14",
+        },
+        {
+          id: `${emp.code}-T20`,
+          step: "benefits",
+          title: "Retirement plan (DPLK) opted in",
+          detail: "Monthly contribution rate set; first deduction on next payroll.",
+          status: "pending",
+          dueLabel: "Day 21",
         },
       ],
     },
@@ -591,9 +724,9 @@ function buildFlow(emp: Employee): OnboardingFlow {
   return {
     employeeCode: emp.code,
     startedAt: emp.joinedAt,
-    expectedCompletionAt: addDays(emp.joinedAt, 30),
+    expectedCompletionAt: addDays(emp.joinedAt, 90),
     steps,
-    activeStepIndex: 3,
+    activeStepIndex: emp.status === "onboarding" ? 4 : 6,
   };
 }
 

@@ -11,7 +11,7 @@
 // status from thresholds (alertThreshold=70%, checkThreshold=30%).
 
 import type { OutletId } from "@/demos/_shared/fixtures/inventory";
-export { OUTLETS } from "@/demos/_shared/fixtures/inventory";
+export { OUTLETS, findOutlet } from "@/demos/_shared/fixtures/inventory";
 
 // ---------- Prep item lifecycle ----------
 
@@ -37,6 +37,10 @@ export interface PrepItem {
   status: PrepStatus;
   /** Optional prep window in minutes (label "~5 min"). */
   prepMinutes?: number;
+  /** Category bucket — added for v3 categorization. */
+  category?: PrepCategory;
+  /** Demand badge numerator (served / par) — added for v3. */
+  demand?: { served: number; par: number };
   /**
    * Minutes since the timer started (0 if empty). Used to derive the
    * freshness status against `expirationMinutes`.
@@ -476,3 +480,187 @@ function buildHandoff(): ShiftHandoff[] {
 }
 
 export const SHIFT_HANDOFFS: ShiftHandoff[] = buildHandoff();
+// ---------- v3 stubs (categories, dishes, activity logs, label batches, settings) ----------
+
+export type PrepCategory = "base" | "beverage" | "sauce" | "garnish" | "dairy" | "cleaning" | "other";
+
+export const PREP_CATEGORY_META: Record<PrepCategory, { label: string; color: string; dot: string }> = {
+  base: { label: "Bases & Purées", color: "#f97316", dot: "#fb923c" },
+  beverage: { label: "Beverages", color: "#0ea5e9", dot: "#38bdf8" },
+  sauce: { label: "Sauces & Drizzles", color: "#f59e0b", dot: "#fbbf24" },
+  garnish: { label: "Garnish & Toppings", color: "#a855f7", dot: "#c084fc" },
+  dairy: { label: "Dairy & Alternatives", color: "#22c55e", dot: "#4ade80" },
+  cleaning: { label: "Cleaning & Sanitizer", color: "#94a3b8", dot: "#cbd5e1" },
+  other: { label: "Other", color: "#64748b", dot: "#94a3b8" },
+};
+
+export function getPrepCategoryMeta(cat: string): { label: string; color: string; dot: string } {
+  return (PREP_CATEGORY_META as Record<string, { label: string; color: string; dot: string }>)[cat] ?? PREP_CATEGORY_META.other;
+}
+
+export interface DishDefinition {
+  id: string;
+  name: string;
+  category: PrepCategory;
+  prepMinutes: number;
+  shelfLifeMinutes: number;
+  outletIds: OutletId[];
+  notes?: string;
+  posCode?: string;
+  defaultDurationMinutes?: number;
+  isActive?: boolean;
+}
+
+export const DISHES: DishDefinition[] = [
+  { id: "DISH-001", name: "Acai Signature Bowl", category: "base", prepMinutes: 8, shelfLifeMinutes: 120, outletIds: ["O1", "O2", "O3", "O4", "O5"] },
+  { id: "DISH-002", name: "Matcha Latte", category: "beverage", prepMinutes: 5, shelfLifeMinutes: 90, outletIds: ["O1", "O2", "O3", "O4", "O5"] },
+  { id: "DISH-003", name: "Espresso Tonic", category: "beverage", prepMinutes: 4, shelfLifeMinutes: 60, outletIds: ["O1", "O2", "O3", "O4", "O5"] },
+  { id: "DISH-004", name: "Caramel Drizzle Parfait", category: "sauce", prepMinutes: 6, shelfLifeMinutes: 180, outletIds: ["O1", "O2", "O3", "O4", "O5"] },
+  { id: "DISH-005", name: "Berry Compote Bowl", category: "garnish", prepMinutes: 10, shelfLifeMinutes: 240, outletIds: ["O1", "O2"] },
+  { id: "DISH-006", name: "Honey Almond Bowl", category: "dairy", prepMinutes: 7, shelfLifeMinutes: 120, outletIds: ["O3", "O4", "O5"] },
+  { id: "DISH-007", name: "Counter Sanitizer Mix", category: "cleaning", prepMinutes: 3, shelfLifeMinutes: 720, outletIds: ["O1", "O2", "O3", "O4", "O5"] },
+  { id: "DISH-008", name: "Chia Pudding Cup", category: "base", prepMinutes: 12, shelfLifeMinutes: 360, outletIds: ["O1", "O2", "O3"] },
+  { id: "DISH-009", name: "Protein Power Bowl", category: "base", prepMinutes: 8, shelfLifeMinutes: 120, outletIds: ["O1", "O2", "O3", "O4", "O5"] },
+  { id: "DISH-010", name: "Lemon Mint Refresher", category: "garnish", prepMinutes: 5, shelfLifeMinutes: 90, outletIds: ["O1", "O2", "O3", "O4", "O5"] },
+  { id: "DISH-011", name: "Peanut Butter Cup", category: "sauce", prepMinutes: 4, shelfLifeMinutes: 180, outletIds: ["O1", "O2", "O3", "O4", "O5"] },
+  { id: "DISH-012", name: "Coconut Yogurt Parfait", category: "dairy", prepMinutes: 6, shelfLifeMinutes: 240, outletIds: ["O1", "O2", "O3"] },
+  { id: "DISH-013", name: "Banana Oat Bowl", category: "base", prepMinutes: 7, shelfLifeMinutes: 120, outletIds: ["O1", "O2", "O3", "O4", "O5"] },
+  { id: "DISH-014", name: "Chocolate Drizzle Waffle", category: "sauce", prepMinutes: 9, shelfLifeMinutes: 90, outletIds: ["O1", "O2", "O3"] },
+  { id: "DISH-015", name: "Counter Sanitizer Top-up", category: "cleaning", prepMinutes: 2, shelfLifeMinutes: 720, outletIds: ["O1", "O2", "O3", "O4", "O5"] },
+];
+
+export interface CategoryDefinition {
+  id: string;
+  name: string;
+  parentId: string | null;
+  color: string;
+  skuCount: number;
+  share: number;
+  active: boolean;
+  /** Optional aliases some screens use. */
+  label?: string;
+  category?: PrepCategory;
+  dishCount?: number;
+  stockCount?: number;
+  avgPrepMin?: number;
+}
+
+export const CATEGORIES: CategoryDefinition[] = [
+  { id: "CAT-01", name: "Acai Bowls", parentId: null, color: "#a855f7", skuCount: 14, share: 22, active: true },
+  { id: "CAT-02", name: "Coffee", parentId: null, color: "#92400e", skuCount: 18, share: 18, active: true },
+  { id: "CAT-03", name: "Matcha & Tea", parentId: null, color: "#22c55e", skuCount: 9, share: 11, active: true },
+  { id: "CAT-04", name: "Smoothies", parentId: null, color: "#06b6d4", skuCount: 12, share: 14, active: true },
+  { id: "CAT-05", name: "Pastries", parentId: null, color: "#f59e0b", skuCount: 22, share: 16, active: true },
+  { id: "CAT-06", name: "Toppings", parentId: null, color: "#ec4899", skuCount: 31, share: 6, active: true },
+  { id: "CAT-07", name: "Cleaning Supplies", parentId: null, color: "#94a3b8", skuCount: 8, share: 3, active: true },
+  { id: "CAT-08", name: "Packaging", parentId: null, color: "#64748b", skuCount: 12, share: 4, active: true },
+  { id: "CAT-09", name: "Beverages (non-coffee)", parentId: null, color: "#0ea5e9", skuCount: 6, share: 4, active: true },
+  { id: "CAT-10", name: "Merchandise", parentId: null, color: "#f43f5e", skuCount: 4, share: 2, active: false },
+  // Coffee Beans sub-categories
+  { id: "CAT-11", name: "Single Origin", parentId: "CAT-02", color: "#b45309", skuCount: 7, share: 8, active: true },
+  { id: "CAT-12", name: "Blend", parentId: "CAT-02", color: "#9a3412", skuCount: 6, share: 6, active: true },
+  { id: "CAT-13", name: "Decaf", parentId: "CAT-02", color: "#7c2d12", skuCount: 3, share: 2, active: true },
+  { id: "CAT-14", name: "Cold Brew Concentrate", parentId: "CAT-02", color: "#451a03", skuCount: 2, share: 2, active: true },
+];
+
+export interface ActivityLogEntry {
+  id: string;
+  at: string;
+  outletId: OutletId;
+  action: "prep" | "restock" | "waste" | "shift" | "alert" | "menu";
+  dish?: string;
+  actor: string;
+  detail: string;
+  tone: "ok" | "warn" | "bad" | "info";
+}
+
+export const ACTIVITY_LOGS: ActivityLogEntry[] = [
+  { id: "LOG-001", at: "2026-08-03T08:12:00", outletId: "O1", action: "prep", dish: "Acai Base", actor: "Person 02", detail: "Batched 4L, freshness 95%", tone: "ok" },
+  { id: "LOG-002", at: "2026-08-03T08:24:00", outletId: "O1", action: "restock", actor: "Person 04", detail: "Branded cups 80pcs received from PO-2026-031", tone: "info" },
+  { id: "LOG-003", at: "2026-08-03T09:01:00", outletId: "O2", action: "alert", dish: "Espresso Shot", actor: "System", detail: "Crossed 70% freshness threshold", tone: "warn" },
+  { id: "LOG-004", at: "2026-08-03T09:18:00", outletId: "O2", action: "waste", dish: "Brown Sugar Pack", actor: "Person 07", detail: "Marked 1.5kg expired and discarded", tone: "bad" },
+  { id: "LOG-005", at: "2026-08-03T10:42:00", outletId: "O3", action: "prep", dish: "Matcha Paste", actor: "Person 11", detail: "Batched 2.5L", tone: "ok" },
+  { id: "LOG-006", at: "2026-08-03T11:05:00", outletId: "O3", action: "menu", actor: "Person 02", detail: "Added seasonal Honey Almond Bowl to menu", tone: "info" },
+  { id: "LOG-007", at: "2026-08-03T11:33:00", outletId: "O4", action: "alert", dish: "Cleaning Solution", actor: "System", detail: "Par level reached, re-order queued", tone: "warn" },
+  { id: "LOG-008", at: "2026-08-03T12:01:00", outletId: "O4", action: "prep", dish: "Berry Compote Bowl", actor: "Person 18", detail: "Batched 3kg, freshness 92%", tone: "ok" },
+  { id: "LOG-009", at: "2026-08-03T12:48:00", outletId: "O5", action: "restock", actor: "Person 22", detail: "Branded stickers 12 rolls received from PO-2026-027", tone: "info" },
+  { id: "LOG-010", at: "2026-08-03T13:14:00", outletId: "O5", action: "waste", dish: "Banana Puree", actor: "Person 25", detail: "Marked 0.8kg expired", tone: "bad" },
+  { id: "LOG-011", at: "2026-08-03T13:55:00", outletId: "WH", action: "shift", actor: "Person 02", detail: "Morning shift closed — closing inventory snapshot saved", tone: "info" },
+  { id: "LOG-012", at: "2026-08-03T14:22:00", outletId: "O1", action: "alert", dish: "Granola Mix", actor: "System", detail: "Crossed 30% freshness threshold — replace now", tone: "bad" },
+];
+
+export interface LabelBatch {
+  id: string;
+  at: string;
+  outletId: OutletId;
+  dish: string;
+  qty: number;
+  printedBy: string;
+  /** Optional aliases — some screens use these names instead. */
+  printedAt?: string;
+  dishName?: string;
+  count?: number;
+  expirationMinutes?: number;
+  /** Some screens read `outlet` as an alias for `outletId`. */
+  outlet?: OutletId;
+  /** Some screens reference the POS code of the dish. */
+  posCode?: string;
+}
+
+export const LABEL_BATCHES: LabelBatch[] = [
+  { id: "LBL-001", at: "2026-08-03T08:01:00", outletId: "O1", dish: "Acai Base", qty: 24, printedBy: "Person 02" },
+  { id: "LBL-002", at: "2026-08-03T08:35:00", outletId: "O2", dish: "Espresso Shot", qty: 18, printedBy: "Person 05" },
+  { id: "LBL-003", at: "2026-08-03T09:12:00", outletId: "O1", dish: "Matcha Paste", qty: 12, printedBy: "Person 02" },
+  { id: "LBL-004", at: "2026-08-03T10:25:00", outletId: "O3", dish: "Berry Compote Bowl", qty: 8, printedBy: "Person 14" },
+  { id: "LBL-005", at: "2026-08-03T11:48:00", outletId: "O4", dish: "Protein Scoop", qty: 30, printedBy: "Person 18" },
+];
+
+export const FRESHNESS_HEX: Record<FreshnessStatus, string> = {
+  empty: "#b3b9c1",
+  good: "#22c55e",
+  alert: "#f59e0b",
+  check: "#ef4444",
+  replace: "#dc2626",
+};
+
+export interface KitchenFreshSettings {
+  expirationMinutes: number;
+  gridCols: number;
+  gridRows: number;
+  alertThreshold: number;
+  checkThreshold: number;
+  demandForecastWindowDays: number;
+  demandForecastSameWeekdayOnly: boolean;
+  thresholds: { alert: number; check: number };
+  integrations: { iSeller: boolean; teaspoon: boolean; whatsapp: boolean; salesExport: boolean };
+}
+
+export const DEFAULT_THRESHOLDS = { alert: 70, check: 30 } as const;
+export const DEFAULT_SETTINGS: KitchenFreshSettings = {
+  expirationMinutes: 120,
+  gridCols: 4,
+  gridRows: 3,
+  alertThreshold: 70,
+  checkThreshold: 30,
+  demandForecastWindowDays: 30,
+  demandForecastSameWeekdayOnly: true,
+  thresholds: { alert: 70, check: 30 },
+  integrations: { iSeller: true, teaspoon: true, whatsapp: false, salesExport: true },
+};
+
+// ---------- v3 type extensions to satisfy screens written before mocks landed ----------
+
+declare module "./mocks" {}
+
+export interface DishDefinitionV3 extends DishDefinition {
+  posCode?: string;
+  defaultDurationMinutes?: number;
+  isActive?: boolean;
+}
+
+export interface LabelBatchV3 extends LabelBatch {
+  printedAt?: string;
+  dishName?: string;
+  count?: number;
+  expirationMinutes?: number;
+}

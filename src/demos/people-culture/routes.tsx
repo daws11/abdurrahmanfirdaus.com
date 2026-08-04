@@ -3,16 +3,24 @@
 // Typed sub-routes for the People & Culture demo. URL shape:
 //   #/demos/people-culture/directory     — default landing
 //   #/demos/people-culture/employee/:code
-//   #/demos/people-culture/onboarding
+//   #/demos/people-culture/roster        — weekly outlet roster
+//   #/demos/people-culture/time-off      — time off requests table
 //   #/demos/people-culture/workforce
+//   #/demos/people-culture/onboarding
+//   #/demos/people-culture/my-profile    — self profile view
+//   #/demos/people-culture/my-pay        — pay stubs + history
 //
 // The router in src/demos/router.tsx passes the parsed `sub` to the
 // PeopleCulture component, which switches on it via `getScreenLabel` below.
 
 export type PeopleCultureScreen =
   | "directory"
+  | "roster"
+  | "time-off"
   | "onboarding"
-  | "workforce";
+  | "workforce"
+  | "my-profile"
+  | "my-pay";
 
 export interface PeopleCultureScreenMeta {
   id: PeopleCultureScreen;
@@ -21,8 +29,12 @@ export interface PeopleCultureScreenMeta {
 
 export const PEOPLE_CULTURE_SCREENS: PeopleCultureScreenMeta[] = [
   { id: "directory", label: "Directory" },
+  { id: "roster", label: "Roster" },
+  { id: "time-off", label: "Time off" },
   { id: "onboarding", label: "Onboarding" },
   { id: "workforce", label: "Workforce" },
+  { id: "my-profile", label: "My profile" },
+  { id: "my-pay", label: "My pay" },
 ];
 
 export function getScreenLabel(

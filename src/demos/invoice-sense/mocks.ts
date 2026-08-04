@@ -41,6 +41,8 @@ export interface StockEntry {
 
 export interface Invoice {
   id: string;
+  /** Production's "Invoice #" field — same value as `id` for the demo. */
+  invoiceNumber?: string;
   vendor: string;
   vendorCode: string;
   /** Whether the supplier is marked as on the reconcile list. */
@@ -1249,6 +1251,11 @@ export const INVOICES: Invoice[] = [
     ],
   },
 ];
+
+// Mirror `id` into `invoiceNumber` for every invoice (production uses both labels).
+for (const inv of INVOICES) {
+  if (!inv.invoiceNumber) inv.invoiceNumber = inv.id;
+}
 
 // ---------------------------------------------------------------------------
 // Receiving log — 60 entries spanning all 5 outlets + 12 SKUs
