@@ -332,7 +332,8 @@ export const projects: FocusRailItem[] = [
     description:
       "One inbox for every invoice. Auto-cross-checks against Inventory entries and bank balance.",
     imageSrc: "/assets/images/projects/invoice-sense.svg",
-    href: "https://github.com/PTUNICORN/Invoice-Sense",
+    href: "#/demos/invoice-sense",
+    privateRepoHref: "https://github.com/PTUNICORN/Invoice-Sense",
     caseStudyId: "invoice",
   },
   {
@@ -342,7 +343,8 @@ export const projects: FocusRailItem[] = [
     description:
       "Purchasing board, receiving, stocktake, and inter-outlet movement — replaces WhatsApp ops.",
     imageSrc: "/assets/images/projects/invenflow.svg",
-    href: "https://github.com/PTUNICORN/invenflow",
+    href: "#/demos/invenflow",
+    privateRepoHref: "https://github.com/PTUNICORN/invenflow",
     caseStudyId: "invenflow",
   },
   {
@@ -352,7 +354,8 @@ export const projects: FocusRailItem[] = [
     description:
       "Internal workforce module for the People & Culture team — onboarding, records, lifecycle.",
     imageSrc: "/assets/images/projects/people-culture.svg",
-    href: "https://github.com/PTUNICORN/people-and-culture-app",
+    href: "#/demos/people-culture",
+    privateRepoHref: "https://github.com/PTUNICORN/people-and-culture-app",
   },
   {
     id: "inv-04",
@@ -361,7 +364,8 @@ export const projects: FocusRailItem[] = [
     description:
       "Daily kitchen ops for outlets — built alongside the kitchen team, not for them.",
     imageSrc: "/assets/images/projects/kitchen-fresh.svg",
-    href: "https://github.com/PTUNICORN/kitchen-fresh",
+    href: "#/demos/kitchen-fresh",
+    privateRepoHref: "https://github.com/PTUNICORN/kitchen-fresh",
   },
   {
     id: "inv-05",
@@ -370,7 +374,8 @@ export const projects: FocusRailItem[] = [
     description:
       "Tis Bali reservations across WhatsApp, IG, Email, TikTok — with a tour-guide commission track.",
     imageSrc: "/assets/images/projects/channelflow.svg",
-    href: "https://github.com/PTUNICORN/channelflow",
+    href: "#/demos/channelflow",
+    privateRepoHref: "https://github.com/PTUNICORN/channelflow",
     caseStudyId: "channelflow",
   },
 ];

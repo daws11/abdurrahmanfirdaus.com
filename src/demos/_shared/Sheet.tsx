@@ -1,18 +1,22 @@
 // src/demos/_shared/Sheet.tsx
 import { type ReactNode, useEffect } from "react";
 import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function Sheet({
   open,
   onClose,
   title,
   children,
+  footer,
   width = 420,
 }: {
   open: boolean;
   onClose: () => void;
   title?: string;
   children: ReactNode;
+  /** Optional pinned footer area (e.g. action buttons). */
+  footer?: ReactNode;
   width?: number;
 }) {
   useEffect(() => {
@@ -54,7 +58,15 @@ export function Sheet({
             <X className="h-4 w-4" />
           </button>
         </header>
-        <div className="h-[calc(100%-3rem)] overflow-y-auto p-4">{children}</div>
+        <div className={cn("overflow-y-auto p-4", footer ? "h-[calc(100%-3rem-3.5rem)]" : "h-[calc(100%-3rem)]")}>{children}</div>
+        {footer && (
+          <div
+            className="flex h-14 items-center justify-end gap-2 border-t px-4"
+            style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
+          >
+            {footer}
+          </div>
+        )}
       </aside>
     </div>
   );

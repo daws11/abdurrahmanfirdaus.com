@@ -9,10 +9,13 @@ export function Sidebar({
   theme,
   children,
   others,
+  footerSlot,
 }: {
   theme: DemoTheme;
   children: ReactNode;
   others: { id: string; name: string; status: "live" | "soon" }[];
+  /** Replace the default "Other demos" footer with a custom slot. */
+  footerSlot?: ReactNode;
 }) {
   const isIconOnly = theme.shell.sidebarWidth === theme.shell.sidebarCollapsedWidth;
   const [collapsed, setCollapsed] = useState(false);
@@ -72,29 +75,33 @@ export function Sidebar({
             borderColor: useGradient ? "rgba(148,163,184,0.16)" : "var(--border)",
           }}
         >
-          <div
-            className="mb-2 text-[10px] font-medium uppercase tracking-widest"
-            style={{ color: useGradient ? "#8ea1b8" : "var(--muted)" }}
-          >
-            Other demos
-          </div>
-          <ul className="space-y-1">
-            {others.map((d) => (
-              <li key={d.id}>
-                <a
-                  href={`#/demos/${d.id}`}
-                  className="flex items-center justify-between rounded-md px-2 py-1.5 text-xs hover:bg-black/5"
-                  style={{
-                    color: useGradient ? "#d8e3f1" : "var(--muted)",
-                    // people-culture active row would normally get a 3px left bar
-                    // override — left as a hook for the per-app sidebar items.
-                  }}
-                >
-                  <span className="truncate">{d.name}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+          {footerSlot ?? (
+            <>
+              <div
+                className="mb-2 text-[10px] font-medium uppercase tracking-widest"
+                style={{ color: useGradient ? "#8ea1b8" : "var(--muted)" }}
+              >
+                Other demos
+              </div>
+              <ul className="space-y-1">
+                {others.map((d) => (
+                  <li key={d.id}>
+                    <a
+                      href={`#/demos/${d.id}`}
+                      className="flex items-center justify-between rounded-md px-2 py-1.5 text-xs hover:bg-black/5"
+                      style={{
+                        color: useGradient ? "#d8e3f1" : "var(--muted)",
+                        // people-culture active row would normally get a 3px left bar
+                        // override — left as a hook for the per-app sidebar items.
+                      }}
+                    >
+                      <span className="truncate">{d.name}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       )}
       {peopleCultureActive && (

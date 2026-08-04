@@ -29,11 +29,13 @@ export function Shell({
   children,
   nav,
   rightSlot,
+  footerSlot,
 }: {
   theme: DemoTheme;
   children: ReactNode;
   nav: ReactNode;
   rightSlot?: ReactNode;
+  footerSlot?: ReactNode;
 }) {
   const showSidebar = theme.shell.sidebarWidth > 0;
   const showTopBar = theme.shell.topBarHeight > 0;
@@ -48,6 +50,7 @@ export function Shell({
         <Sidebar
           theme={theme}
           others={others.map((d) => ({ id: d.id, name: d.title, status: d.status }))}
+          footerSlot={footerSlot}
         >
           {nav}
         </Sidebar>
@@ -64,6 +67,10 @@ export function Shell({
     </div>
   );
 }
+
+// (default right slot used to be a "Synthetic data · no backend" pill —
+// removed so per-app screens can supply their own context without a
+// disclaimer leaking into the chrome.)
 
 // ---------- Legacy DemoShell (kept for back-compat until T10) ----------
 

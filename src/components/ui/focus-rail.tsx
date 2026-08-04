@@ -17,6 +17,8 @@ export type FocusRailItem = {
   meta?: string;
   /** Optional id linking to a CaseStudy (used to render a "→ Case study" badge). */
   caseStudyId?: string;
+  /** URL of the real (private, NDA) repo. Rendered as a disabled "NDA" badge. */
+  privateRepoHref?: string;
 };
 
 interface FocusRailProps {
@@ -311,9 +313,17 @@ export function FocusRail({
                 href={activeItem.href}
                 className="group flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-black transition-transform hover:scale-105 active:scale-95"
               >
-                Explore
+                {activeItem.href.startsWith("#/demos/") ? "Open demo" : "Explore"}
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
+            )}
+            {activeItem.privateRepoHref && !activeItem.href?.startsWith("#/demos/") && (
+              <span
+                title="NDA — repo private"
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-[10px] font-medium uppercase tracking-wider text-white/60"
+              >
+                NDA · repo private
+              </span>
             )}
           </div>
         </div>

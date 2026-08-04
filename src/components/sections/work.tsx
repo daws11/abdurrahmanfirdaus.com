@@ -72,9 +72,14 @@ function CaseStudyArticle({
             alt={`${study.id} placeholder`}
             className="block aspect-[3/4] w-full object-cover"
           />
-          {/* Placeholder label — honest about what this is. */}
+          {/* Placeholder label — links to live UI prototype. */}
           <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-gradient-to-t from-neutral-950/90 to-transparent px-4 py-3 text-[10px] font-mono uppercase tracking-widest text-neutral-500">
-            <span>UI / UX prototype · placeholder</span>
+            <a
+              href={`#/demos/${study.id === "invoice" ? "invoice-sense" : study.id}`}
+              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/5 px-2.5 py-0.5 text-emerald-400 transition-colors hover:bg-emerald-400/10"
+            >
+              Try demo →
+            </a>
             <span className="text-emerald-400">
               {String(index + 1).padStart(2, "0")} / 03
             </span>
