@@ -2,6 +2,15 @@ import { useProjectRoute } from "@/lib/use-project-route";
 
 export function ProjectNotFound() {
   const route = useProjectRoute();
+
+  // When route.id is null, distinguish "no id at all" from "invalid id".
+  // useProjectRoute collapses unknown ids to null, so peek at the hash directly.
+  let rawId: string | null = null;
+  if (!route.id && typeof window !== "undefined") {
+    const m = window.location.hash.match(/^#\/projects\/([^/?#]+)/);
+    if (m) rawId = m[1];
+  }
+
   return (
     <div className="flex min-h-[60vh] items-center justify-center bg-neutral-950 px-6 text-white">
       <div className="max-w-md text-center">
@@ -12,9 +21,11 @@ export function ProjectNotFound() {
           That project page isn't on the shelf.
         </h1>
         <p className="mt-3 text-sm text-neutral-400 md:text-base">
-          {route.id
-            ? `No case study found for "${route.id}".`
-            : "Open a project from the case studies section."}
+          {rawId
+            ? `No case study found for "${rawId}".`
+            : route.id
+              ? `No case study found for "${route.id}".`
+              : "Open a project from the case studies section."}
         </p>
         <div className="mt-6 flex items-center justify-center gap-3 text-sm">
           <a
