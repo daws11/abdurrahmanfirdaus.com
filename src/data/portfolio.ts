@@ -335,7 +335,7 @@ export const projects: FocusRailItem[] = [
     imageSrc: "/assets/images/projects/invoice-sense.svg",
     href: "#/demos/invoice-sense",
     privateRepoHref: "https://github.com/PTUNICORN/Invoice-Sense",
-    caseStudyId: "invoice",
+    caseStudyId: "invoice-sense",
   },
   {
     id: "inv-02",
@@ -357,6 +357,7 @@ export const projects: FocusRailItem[] = [
     imageSrc: "/assets/images/projects/people-culture.svg",
     href: "#/demos/people-culture",
     privateRepoHref: "https://github.com/PTUNICORN/people-and-culture-app",
+    caseStudyId: "people-culture",
   },
   {
     id: "inv-04",
@@ -367,6 +368,7 @@ export const projects: FocusRailItem[] = [
     imageSrc: "/assets/images/projects/kitchen-fresh.svg",
     href: "#/demos/kitchen-fresh",
     privateRepoHref: "https://github.com/PTUNICORN/kitchen-fresh",
+    caseStudyId: "kitchen-fresh",
   },
   {
     id: "inv-05",
