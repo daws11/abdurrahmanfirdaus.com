@@ -488,6 +488,58 @@ export const projectStories: ProjectStory[] = [
     duration: "Oct 2025 – present",
     teamSize: "Solo + 1 booking",
   },
+  {
+    id: "kitchen-fresh",
+    projectHref: "https://github.com/PTUNICORN/kitchen-fresh",
+    division: "Kitchen · Outlet Ops",
+    kicker: "Three weeks with the head chef and finance. Then one dashboard that runs the kitchen and the books in the same breath.",
+    fdeCallout:
+      "I didn't sit down to build a dashboard until I understood why purchasing was running on yesterday's guess and finance was closing the month on a different number than the kitchen was cooking against. The product wasn't a dashboard — it was a shared number.",
+    story:
+      "**Discovery.** Sales lived in iSeller. Prep lists lived in Teaspoon Lab. COGS lived in finance spreadsheets. Each team was making decisions from their own number, and the numbers disagreed more often than they agreed. I sat with the head chef and the finance lead for three weeks before I opened my editor — watching the morning prep run, watching the closing reconciliation, watching the daily purchase order get drafted against a number from yesterday because today's wasn't ready yet.\n\n**Built.** Kitchen Fresh bridges iSeller and Teaspoon Lab into one real-time dashboard. Sales per outlet, COGS per outlet, and margin per outlet — visible the same day, on the same screen. The head chef sees usage from yesterday and writes tomorrow's purchase order from it; finance sees margin without waiting for a manual reconciliation pass; when ingredient costs shift, the menu prices shift to match because the cost side is on the same dashboard as the price side.\n\n**Outcome.** Purchasing orders now track yesterday's actual usage, not yesterday's guess. Margin is visible per outlet, per day, from one screen. When ingredient costs change, menu prices can move in the same place the team is already looking. The head chef drafts next month's production plan against the same numbers finance is closing against.",
+    impact: [
+      { label: "Reconciliation", value: "daily → live" },
+      { label: "Outlets", value: "unified view" },
+    ],
+    outcomes: [
+      "iSeller sales + Teaspoon Lab usage unified into one real-time dashboard",
+      "Per-outlet margin visible without manual reconciliation pass",
+      "Daily purchase order driven by yesterday's actual usage, not yesterday's guess",
+      "Menu pricing can move with ingredient costs on the same surface",
+      "Head chef plans the next month from the same numbers finance closes against",
+    ],
+    stack: ["React", "TypeScript", "Teaspoon Lab API", "iSeller API", "PostgreSQL"],
+    integrations: ["iSeller", "Teaspoon Lab"],
+    heroSrc: "/assets/images/projects/kitchen-fresh.svg",
+    duration: "Aug 2025 – present",
+    teamSize: "Solo",
+  },
+  {
+    id: "people-culture",
+    projectHref: "https://github.com/PTUNICORN/people-and-culture-app",
+    division: "HR · Workforce",
+    kicker: "HR cost was scaling with headcount. So we replaced the vendor.",
+    fdeCallout:
+      "I sat with HR for a week and watched them reconcile a forgotten clock-out into an overtime claim — a two-day back-and-forth between one employee and the People Ops team because the system couldn't tell the difference. The product wasn't the HR app. It was the missing tap.",
+    story:
+      "**Discovery.** The third-party HRM bill was scaling with every new hire — fifteen million rupiah a month and climbing. That wasn't the only problem, but it was the one the stakeholders put on the table first. I sat with HR for a week to understand what was actually inside the rental app we were paying for: onboarding, attendance, shift scheduling, payroll, training, announcements. The list was clear and the requirements were straightforward — until I watched HR reconcile a forgotten clock-out into an overtime claim, a two-day back-and-forth between one employee and the People Ops team because the system couldn't tell the difference.\n\n**Built.** PeopleOS is end-to-end HRM, in-house. Hiring → onboarding → employee records → geofenced clock-in/clock-out with GPS → shift swap and day-off requests → announcements → training (video + quiz, HR-scored) → payroll + overtime, all driven from a shift schedule admin can build with AI assistance or fully by hand (including split shifts, because hospitality doesn't take Sundays off). Admins run it from a web console; employees use a mobile app distributed via Apple App Store unlisted and Google Play private channel, mandatory install. Geofences are admin-defined — employees can only clock-in from inside the circle.\n\n**Outcome.** The vendor bill is gone. Headcount growth no longer drags an HRM line with it. But the bigger shift is operational: HR stopped reconciling forgotten clock-outs into overtime claims because the app now catches them — if an employee exits the geofence without clocking out, the app pings them so they can clock out from outside the circle within a grace window. No more two-day email threads over a forgotten tap.",
+    impact: [
+      { label: "Vendor cost", value: "scaling → flat" },
+      { label: "Lifecycle", value: "hire → payroll" },
+    ],
+    outcomes: [
+      "In-house HRM replaces third-party bill that scaled with every hire",
+      "End-to-end lifecycle: hiring, onboarding, records, attendance, shifts, training, payroll",
+      "Geofenced clock-in/out with mandatory mobile install (App Store unlisted, Play private)",
+      "AI-assisted shift scheduling plus fully custom splits for hospitality",
+      "Forgot-to-clock-out notifications cut a recurring HR reconciliation loop",
+    ],
+    stack: ["React", "Next.js", "TypeScript", "React Native", "PostgreSQL"],
+    integrations: [],
+    heroSrc: "/assets/images/projects/people-culture.svg",
+    duration: "Aug 2025 – present",
+    teamSize: "Solo",
+  },
 ];
 
 /** Anchor sections for the navbar (in order of appearance). */
