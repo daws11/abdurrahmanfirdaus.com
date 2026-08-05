@@ -189,7 +189,7 @@ export const sectionCopy = {
   },
   work: {
     heading: "Inside the work.",
-    subheading: "Three of the five systems, told in detail. Problem → Built → Outcome, plus what it actually meant to be in the room.",
+    subheading: "Five systems, told in detail. Click any project for the full case study.",
   },
   contact: {
     heading: "Let's build something that gets used.",
