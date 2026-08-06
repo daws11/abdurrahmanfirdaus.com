@@ -51,10 +51,6 @@ export const social = {
     "https://drive.google.com/file/d/1x74YWG3ccHtRvtvw0k66npw54lZR-HfK/view?usp=sharing",
 } as const;
 
-/** Hero copy — FDE positioning. */
-export const heroHeadline =
-  "I ship into the business — then I sit with the people who use it until adoption sticks.";
-
 export const heroGlitchText = "ABDURRAHMAN FIRDAUS";
 
 /** Phrases cycled by the hero "I Am Into …" typewriter. */

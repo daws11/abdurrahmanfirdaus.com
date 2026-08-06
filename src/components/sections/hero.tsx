@@ -7,7 +7,6 @@ import { GlitchText } from "@/components/ui/glitch-text";
 import {
   profile,
   projects,
-  heroHeadline,
   heroGlitchText,
   heroTyping,
 } from "@/data/portfolio";
@@ -112,20 +111,6 @@ export function Hero() {
             </div>
           </div>
         </motion.div>
-
-        {heroHeadline && (
-          <motion.div
-            className="md:mt-40 mt-10 flex flex-col items-center"
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            transition={{ duration: 0.6, delay: 0.55 }}
-          >
-            <p className="mx-auto max-w-2xl text-center text-xl font-medium tracking-tight text-white md:text-2xl">
-              {heroHeadline}
-            </p>
-          </motion.div>
-        )}
 
         <motion.div
           className="mt-32 flex justify-center pt-6 md:mt-40"
