@@ -30,7 +30,7 @@ export const profile = {
   name: "Abdurrahman Firdaus",
   nickname: "Daus",
   title: "Forward Deployed Engineer & Lead Full-Stack Developer",
-  bio: "Forward Deployed Engineer at PT Unicorn Food and Service in Bali. I sit with the team, find what's actually broken, ship the smallest fix that unsticks it, and stay until they reach for it without thinking.",
+  bio: "Forward Deployed Engineer based in Bali. I sit with the team, find what's actually broken, ship the smallest fix that unsticks it, and stay until they reach for it without thinking.",
   email: "hello@abdurrahmanfirdaus.com",
   location: "Bali, Indonesia",
   photo: "/assets/images/daws.jpg",
