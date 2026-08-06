@@ -1,7 +1,7 @@
 // src/demos/_shared/DemoHub.tsx
 //
 // Hub page rendered at `#/demos` (no specific demo). Shows all 5 demos as
-// cards, each using its own brand color + monogram.
+// cards, each with a real prototype screenshot + themed Brand tile.
 
 import { ArrowRight, FlaskConical } from "lucide-react";
 import { type DemoMeta } from "../_index";
@@ -26,7 +26,7 @@ export function DemoHub({ demos }: { demos: DemoMeta[] }) {
           scratch.
         </p>
       </header>
-      <div className="mx-auto mt-10 grid max-w-5xl grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="mx-auto mt-10 grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {demos.map((d) => {
           const theme = THEMES[d.id];
           return (
@@ -35,22 +35,35 @@ export function DemoHub({ demos }: { demos: DemoMeta[] }) {
               type="button"
               onClick={() => setDemoHash(d.id)}
               disabled={d.status === "soon"}
-              className="group block rounded-md border border-border bg-card p-5 text-left transition hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
+              className="group flex flex-col overflow-hidden rounded-md border border-border bg-card text-left transition hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <div className="flex items-center gap-2">
-                <Brand theme={theme} size="sm" showName={false} />
-                <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                  {d.division}
-                </span>
+              {/* Prototype screenshot */}
+              <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-border bg-muted">
+                <img
+                  src={`/assets/images/demos/${d.id}.png`}
+                  alt={`${d.title} prototype screenshot`}
+                  className="block h-full w-full object-cover object-top"
+                />
               </div>
-              <h2 className="mt-3 text-lg font-semibold">{d.title}</h2>
-              <p className="mt-2 text-sm text-muted-foreground">{d.blurb}</p>
-              <div
-                className="mt-4 inline-flex items-center gap-1 text-xs font-medium"
-                style={{ color: theme.tokens["--accent"] }}
-              >
-                Open demo
-                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+
+              {/* Brand + content */}
+              <div className="flex flex-col gap-3 p-5">
+                <div className="flex items-center justify-between gap-2">
+                  <Brand theme={theme} size="md" showName={true} />
+                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                    {d.division}
+                  </span>
+                </div>
+
+                <p className="text-sm text-muted-foreground">{d.blurb}</p>
+
+                <div
+                  className="mt-1 inline-flex items-center gap-1 text-xs font-medium"
+                  style={{ color: theme.tokens["--accent"] }}
+                >
+                  Open demo
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                </div>
               </div>
             </button>
           );
