@@ -9,6 +9,7 @@ import {
   projects,
   heroGlitchText,
   heroTyping,
+  aboutPullQuote,
 } from "@/data/portfolio";
 
 const fadeUp: Variants = {
@@ -63,21 +64,22 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="absolute -bottom-10 left-0 right-0 text-center text-[0.7rem] tracking-[0.5px] sm:text-lg sm:tracking-[2px] md:text-xl lg:text-2xl lg:tracking-[3px] xl:tracking-[4px]"
+            className="mt-2 text-center text-[0.7rem] tracking-[0.5px] sm:text-lg sm:tracking-[2px] md:text-xl lg:text-2xl lg:tracking-[3px] xl:tracking-[4px]"
           >
             <HeroTyping phrases={heroTyping} />
           </motion.div>
         </div>
 
         <motion.div
-          className="grid relative pt-16 md:pt-24"
+          className="grid relative"
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.35, ease: "easeOut" }}
         >
-          <div className="mx-auto grid w-full grid-cols-[auto_auto] items-center justify-center gap-3 md:grid-cols-[1fr_auto] md:justify-start md:gap-10">
+          {/* ponytail: auto cols so the divisions box hugs its text and butts against the photo */}
+          <div className="mx-auto mt-6 grid w-fit grid-cols-[auto_auto] items-center justify-center md:mt-0">
             {/* Left — division list */}
-            <div className="bg-secondary w-fit p-4 font-bold text-lg sm:p-6 sm:text-xl md:w-full md:p-8 md:text-2xl lg:text-3xl">
+            <div className="bg-secondary h-full content-center px-4 py-5 font-bold text-base md:px-10 md:py-12 md:text-2xl lg:text-3xl">
               <div className="space-y-1 font-semibold">
                 <div>/ IDEATE</div>
                 <div>/ DESIGN</div>
@@ -91,17 +93,27 @@ export function Hero() {
               <img
                 src={profile.photo}
                 alt={profile.name}
-                className="h-32 w-auto object-contain grayscale sm:h-40 md:h-72 md:transition-all md:duration-500 md:hover:grayscale-0"
+                className="h-56 w-auto object-cover grayscale transition-all duration-500 md:h-[26rem] hover:grayscale-0"
               />
-              <div className="hidden md:block rotate-180 p-2 text-left text-xs font-medium tracking-widest [writing-mode:vertical-rl]">
+              <div className="rotate-180 p-1.5 text-left text-[0.6rem] font-medium tracking-widest [writing-mode:vertical-rl] md:p-2 md:text-xs">
                 BASED IN BALI, INDONESIA
               </div>
             </div>
           </div>
         </motion.div>
 
+        <motion.p
+          className="mx-auto mt-12 max-w-xl text-center font-mono text-xs uppercase leading-relaxed tracking-[1px] text-muted-foreground sm:text-sm md:mt-16"
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          {aboutPullQuote}
+        </motion.p>
+
         <motion.div
-          className="mt-20 flex justify-center pt-6 md:mt-32"
+          className="mt-8 flex justify-center"
           variants={fadeUp}
           initial="hidden"
           animate="show"
