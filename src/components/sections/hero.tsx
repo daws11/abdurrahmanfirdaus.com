@@ -75,9 +75,9 @@ export function Hero() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.35, ease: "easeOut" }}
         >
-          <div className="mx-auto grid w-full max-w-4xl grid-cols-[1fr_auto] items-center gap-3 md:gap-10">
+          <div className="mx-auto grid w-full grid-cols-[auto_auto] items-center justify-center gap-3 md:grid-cols-[1fr_auto] md:justify-start md:gap-10">
             {/* Left — division list */}
-            <div className="bg-secondary w-full p-4 font-bold text-lg sm:p-6 sm:text-xl md:p-8 md:text-2xl lg:text-3xl">
+            <div className="bg-secondary w-fit p-4 font-bold text-lg sm:p-6 sm:text-xl md:w-full md:p-8 md:text-2xl lg:text-3xl">
               <div className="space-y-1 font-semibold">
                 <div>/ IDEATE</div>
                 <div>/ DESIGN</div>
@@ -91,7 +91,7 @@ export function Hero() {
               <img
                 src={profile.photo}
                 alt={profile.name}
-                className="h-36 w-auto object-contain grayscale sm:h-48 md:h-72 md:transition-all md:duration-500 md:hover:grayscale-0"
+                className="h-32 w-auto object-contain grayscale sm:h-40 md:h-72 md:transition-all md:duration-500 md:hover:grayscale-0"
               />
               <div className="hidden md:block rotate-180 p-2 text-left text-xs font-medium tracking-widest [writing-mode:vertical-rl]">
                 BASED IN BALI, INDONESIA
@@ -101,7 +101,7 @@ export function Hero() {
         </motion.div>
 
         <motion.div
-          className="mt-32 flex justify-center pt-6 md:mt-40"
+          className="mt-20 flex justify-center pt-6 md:mt-32"
           variants={fadeUp}
           initial="hidden"
           animate="show"
