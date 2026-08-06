@@ -87,45 +87,6 @@ export const tickerItems: string[] = [
   "SFTP",
 ];
 
-/** Headline stat shown beneath the hero. */
-export interface Metric {
-  value: string;
-  label: string;
-  detail: string;
-  /** Numeric value for count-up animation. Undefined = no count-up. */
-  numericValue?: number;
-  /** Featured metrics get the hero treatment (large, warm accent). */
-  featured?: boolean;
-}
-
-export const metrics: Metric[] = [
-  {
-    value: "5",
-    label: "Production apps adopted",
-    detail: "Invoice · Inventory · People & Culture · Kitchen Fresh · Channelflow",
-    numericValue: 5,
-    featured: true,
-  },
-  {
-    value: "5",
-    label: "Outlets on one stack",
-    detail: "Real-time inventory, finance, and ops in one place",
-    numericValue: 5,
-  },
-  {
-    value: "10+",
-    label: "Integrations live",
-    detail: "Xero · iSeller · Teaspoon · WhatsApp · IG · TikTok · Mastra AI · n8n",
-    numericValue: 10,
-  },
-  {
-    value: "1",
-    label: "Teammate (booking)",
-    detail: "Solo + agentic for the rest. Multi-session Claude Code workflow.",
-    numericValue: 1,
-  },
-];
-
 export interface Skill {
   name: string;
   icon: string;
@@ -183,10 +144,6 @@ export const sectionCopy = {
     heading: "The trail",
     subheading: "Where I've been useful.",
   },
-  projects: {
-    heading: "Five apps. Five outlets. One kitchen.",
-    subheading: "Everything below was built to be used — by finance, warehouse, kitchen, HR, and ops, every day.",
-  },
   work: {
     heading: "Inside the work.",
     subheading: "Five systems, told in detail. Click any project for the full case study.",
@@ -198,10 +155,6 @@ export const sectionCopy = {
   about: {
     heading: "About",
     subheading: "Forward Deployed Engineer & Tech Lead · Bali, Indonesia",
-  },
-  metrics: {
-    heading: "Receipts",
-    subheading: "Outcomes, not promises.",
   },
 } as const;
 
@@ -548,7 +501,6 @@ export const projectStories: ProjectStory[] = [
 export const navLinks = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Projects", href: "#projects" },
   { label: "Work", href: "#work" },
   { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
