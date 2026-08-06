@@ -8,7 +8,6 @@ import {
   profile,
   projects,
   heroHeadline,
-  heroSubheadline,
   heroGlitchText,
   heroTyping,
 } from "@/data/portfolio";
@@ -114,7 +113,7 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {(heroHeadline || heroSubheadline) && (
+        {heroHeadline && (
           <motion.div
             className="md:mt-40 mt-10 flex flex-col items-center"
             variants={fadeUp}
@@ -122,16 +121,9 @@ export function Hero() {
             animate="show"
             transition={{ duration: 0.6, delay: 0.55 }}
           >
-            {heroHeadline && (
-              <p className="mx-auto max-w-2xl text-center text-xl font-medium tracking-tight text-white md:text-2xl">
-                {heroHeadline}
-              </p>
-            )}
-            {heroSubheadline && (
-              <p className="mx-auto mt-4 max-w-xl text-center text-base text-neutral-400 md:text-lg">
-                {heroSubheadline}
-              </p>
-            )}
+            <p className="mx-auto max-w-2xl text-center text-xl font-medium tracking-tight text-white md:text-2xl">
+              {heroHeadline}
+            </p>
           </motion.div>
         )}
 

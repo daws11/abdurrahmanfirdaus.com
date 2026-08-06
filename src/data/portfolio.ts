@@ -55,9 +55,6 @@ export const social = {
 export const heroHeadline =
   "I ship into the business — then I sit with the people who use it until adoption sticks.";
 
-export const heroSubheadline =
-  "Forward Deployed Engineer at PT Unicorn Food and Service. Five production apps. One kitchen. Five outlets. Solo + agentic, with a single teammate on booking.";
-
 export const heroGlitchText = "ABDURRAHMAN FIRDAUS";
 
 /** Phrases cycled by the hero "I Am Into …" typewriter. */
