@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <style>
+    .bar { fill: #112239; }
+    @media (prefers-color-scheme: dark) { .bar { fill: #ffffff; } }
+  </style>
+  <path class="bar" d="M5 28 L13 25 L13 40 L5 40 Z"/>
+  <path class="bar" d="M15.5 21 L23.5 18 L23.5 40 L15.5 40 Z"/>
+  <path class="bar" d="M26 14 L34 11 L34 40 L26 40 Z"/>
+  <path fill="#2563eb" d="M5.9 34.5 L8.1 37.5 L34.1 18 L35.7 20.1 L38.6 12.3 L30.3 12.9 L31.9 15 Z"/>
+</svg>
