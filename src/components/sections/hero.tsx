@@ -55,7 +55,7 @@ export function Hero() {
             <GlitchText
               as="h1"
               text={heroGlitchText}
-              className="z-20 text-primary relative font-bold text-center tracking-[-7px] text-7xl md:text-9xl xl:tracking-[-1rem] md:tracking-[-14px] xl:text-[10rem]"
+              className="z-20 text-primary relative font-bold text-center tracking-[-2px] text-[2.75rem] leading-[0.95] sm:text-6xl sm:tracking-[-3px] md:tracking-[-14px] md:text-9xl xl:tracking-[-1rem] xl:text-[10rem]"
             />
           </motion.div>
 
@@ -63,7 +63,7 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="absolute -bottom-10 left-0 right-0 text-center text-base sm:text-lg md:text-xl lg:text-2xl font-thin tracking-[2px] lg:tracking-[3px] xl:tracking-[4px]"
+            className="absolute -bottom-10 left-0 right-0 text-center text-[0.7rem] tracking-[0.5px] sm:text-lg sm:tracking-[2px] md:text-xl lg:text-2xl lg:tracking-[3px] xl:tracking-[4px]"
           >
             <HeroTyping phrases={heroTyping} />
           </motion.div>
