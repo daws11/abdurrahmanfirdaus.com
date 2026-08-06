@@ -42,7 +42,7 @@ export function DemoHub({ demos }: { demos: DemoMeta[] }) {
                 <img
                   src={`/assets/images/demos/${d.id}.png`}
                   alt={`${d.title} prototype screenshot`}
-                  className="block h-full w-full object-cover object-top"
+                  className="block h-full w-full object-contain"
                 />
               </div>
 

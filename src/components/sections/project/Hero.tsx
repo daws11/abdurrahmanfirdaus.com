@@ -11,7 +11,7 @@ export function Hero({ id, heroSrc, division, duration }: HeroProps) {
       <img
         src={heroSrc}
         alt={`${id} placeholder`}
-        className="block aspect-[3/4] w-full object-cover object-top"
+        className="block aspect-[16/10] w-full bg-neutral-800 object-contain"
       />
       <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-gradient-to-t from-neutral-950/90 to-transparent px-4 py-3 text-[10px] font-mono uppercase tracking-widest text-neutral-500">
         <span>{division}</span>
