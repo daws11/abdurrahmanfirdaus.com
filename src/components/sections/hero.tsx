@@ -79,10 +79,10 @@ export function Hero() {
             {/* Left — division list */}
             <div className="bg-secondary w-full p-6 font-bold text-xl md:p-8 md:text-2xl lg:text-3xl">
               <div className="space-y-1 font-semibold">
-                <div>/ INVENTORY &amp; OPS</div>
-                <div>/ FINANCE &amp; ANALYTICS</div>
-                <div>/ HR &amp; WORKFORCE</div>
-                <div>/ INTEGRATIONS &amp; APIs</div>
+                <div>/ DEBUG</div>
+                <div>/ PROMPT</div>
+                <div>/ AGENT</div>
+                <div>/ SHIP</div>
               </div>
             </div>
 
