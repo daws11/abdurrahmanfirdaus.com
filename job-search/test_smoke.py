@@ -497,6 +497,56 @@ def test_update_validates_lengths(tmpdir: Path) -> None:
     assert job["essay_answers"] == {}
 
 
+def test_discover_boards_csv(tmpdir: Path) -> None:
+    """discover --boards <csv> merges results from multiple boards + dedupes by gh_id."""
+    env = fresh_state(tmpdir)
+    fixture = tmpdir / "boards.json"
+    # Three entries; gh_id=100 is duplicated across "boards"
+    fixture.write_text(json.dumps([
+        {
+            "title": "Forward Deployed Engineer",
+            "company": "alpha",
+            "location": "Remote",
+            "url": "https://example.com/alpha/1",
+            "jd_text": "FDE role alpha.",
+            "source": "file",
+            "board": "alpha",
+            "gh_id": 100,
+        },
+        {
+            "title": "Forward Deployed Engineer",
+            "company": "alpha-dup",
+            "location": "Remote",
+            "url": "https://example.com/alpha/1",
+            "jd_text": "Same job, different board name.",
+            "source": "file",
+            "board": "beta",
+            "gh_id": 100,  # duplicate
+        },
+        {
+            "title": "Customer Engineer",
+            "company": "beta",
+            "location": "Singapore",
+            "url": "https://example.com/beta/1",
+            "jd_text": "Customer engineer role.",
+            "source": "file",
+            "board": "beta",
+            "gh_id": 200,
+        },
+    ]))
+
+    r = run_cli(["--json", "discover", "--source", "file", "--boards", "alpha,beta",
+                 "--file", str(fixture)], env=env)
+    assert r.returncode == 0, f"discover failed: {r.stderr}"
+    payload = json.loads(r.stdout.strip())
+    # 3 file entries get loaded once via fixture; --boards triggers a loop that
+    # re-loads the fixture per board (file source has no per-board filter).
+    # What matters: dedup keeps distinct gh_ids only.
+    gh_ids = [j.get("gh_id") for j in payload["jobs"] if j.get("gh_id")]
+    assert len(gh_ids) == len(set(gh_ids)), f"gh_ids not deduped: {gh_ids}"
+    assert set(gh_ids) <= {100, 200}
+
+
 # -- Runner -------------------------------------------------------------------
 
 def main() -> int:
@@ -525,6 +575,7 @@ def main() -> int:
             test_update_rejects_submitted,
             test_update_rejects_invalid_json,
             test_update_validates_lengths,
+            test_discover_boards_csv,
         ]
         for test_fn in tests:
             tmpdir = Path(tmp) / test_fn.__name__

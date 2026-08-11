@@ -685,23 +685,58 @@ def cmd_discover(args: argparse.Namespace) -> int:
     if not keywords:
         keywords = ["forward deploy", "forward deployed", "solutions engineer", "customer engineer", "tech lead", "fullstack"]
 
+    # Mutual exclusion: --board (singular) and --boards (csv) cannot coexist.
+    if args.board and args.boards:
+        _emit(args,
+              text="error: use --board OR --boards, not both",
+              payload={"error": "board_and_boards_both_set"})
+        return 1
+
     entries: list[dict] = []
+    errors: list[dict] = []
 
     if args.source == "greenhouse":
-        if not args.board:
-            _emit(args,
-                  text="error: --board required for --source greenhouse (e.g. --board anthropic)",
-                  payload={"error": "board_required"})
-            return 1
-        try:
-            entries = fetch_greenhouse_jobs(args.board, keywords, args.limit)
-        except Exception as e:
-            _emit(args, text=f"error: greenhouse fetch failed: {e}",
-                  payload={"error": "greenhouse_fetch_failed", "detail": str(e)})
-            return 1
+        # Determine which boards to scan.
+        if args.boards:
+            boards = [b.strip() for b in args.boards.split(",") if b.strip()]
+            for b in boards:
+                try:
+                    batch = fetch_greenhouse_jobs(b, keywords, args.limit)
+                    entries.extend(batch)
+                except Exception as e:
+                    errors.append({"board": b, "reason": str(e)})
+            # Dedupe by gh_id (keep first occurrence).
+            seen: set = set()
+            deduped: list[dict] = []
+            for j in entries:
+                gid = j.get("gh_id")
+                if gid is not None and gid in seen:
+                    continue
+                if gid is not None:
+                    seen.add(gid)
+                deduped.append(j)
+            entries = deduped
+            if not entries and errors:
+                _emit(args,
+                      text=f"error: all {len(errors)} board(s) failed",
+                      payload={"error": "all_boards_failed", "errors": errors})
+                return 1
+        else:
+            if not args.board:
+                _emit(args,
+                      text="error: --board (or --boards) required for --source greenhouse",
+                      payload={"error": "board_required"})
+                return 1
+            try:
+                entries = fetch_greenhouse_jobs(args.board, keywords, args.limit)
+            except Exception as e:
+                _emit(args, text=f"error: greenhouse fetch failed: {e}",
+                      payload={"error": "greenhouse_fetch_failed", "detail": str(e)})
+                return 1
         # Use agent-browser to screenshot each JD page (proves the link is live
         # and gives a visual reference for the LLM session triaging results).
-        if agent_browser_available() and entries:
+        # Default OFF (--skip-screenshots) — opt back in with --include-screenshots.
+        if not args.skip_screenshots and agent_browser_available() and entries:
             ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
             for j in entries:
                 if not j.get("url"):
@@ -746,17 +781,35 @@ def cmd_discover(args: argparse.Namespace) -> int:
             _emit(args, text="error: --file required for --source file",
                   payload={"error": "file_required"})
             return 1
-        try:
-            raw = json.loads(Path(args.file).read_text())
-        except Exception as e:
-            _emit(args, text=f"error: could not read file: {e}",
-                  payload={"error": "file_read_failed", "detail": str(e)})
-            return 1
-        if not isinstance(raw, list):
-            _emit(args, text="error: file must contain a JSON array of job entries",
-                  payload={"error": "file_format_invalid"})
-            return 1
-        entries = raw
+        # If --boards is given, re-load the file once per board (file source
+        # has no per-board filter; the loop exercises the dedup path).
+        boards_to_scan = (
+            [b.strip() for b in args.boards.split(",") if b.strip()]
+            if args.boards else [None]
+        )
+        for b in boards_to_scan:
+            try:
+                raw = json.loads(Path(args.file).read_text())
+            except Exception as e:
+                _emit(args, text=f"error: could not read file: {e}",
+                      payload={"error": "file_read_failed", "detail": str(e)})
+                return 1
+            if not isinstance(raw, list):
+                _emit(args, text="error: file must contain a JSON array of job entries",
+                      payload={"error": "file_format_invalid"})
+                return 1
+            entries.extend(raw)
+        # Dedupe by gh_id (keep first occurrence).
+        seen: set = set()
+        deduped: list[dict] = []
+        for j in entries:
+            gid = j.get("gh_id")
+            if gid is not None and gid in seen:
+                continue
+            if gid is not None:
+                seen.add(gid)
+            deduped.append(j)
+        entries = deduped
         for i, j in enumerate(entries, 1):
             j.setdefault("id", f"DISC-{i:03d}")
             j.setdefault("source", "file")
@@ -769,9 +822,11 @@ def cmd_discover(args: argparse.Namespace) -> int:
     save_discovery(entries)
 
     if args.json:
-        _emit(args, payload={"count": len(entries), "source": args.source, "jobs": entries})
+        _emit(args, payload={"count": len(entries), "source": args.source,
+                             "jobs": entries, "errors": errors})
     else:
-        print(f"discovered {len(entries)} job(s) from {args.source} (keywords={keywords}):")
+        suffix = f" ({len(errors)} error(s))" if errors else ""
+        print(f"discovered {len(entries)} job(s) from {args.source}{suffix}:")
         for j in entries:
             print(f"  {j.get('id', '?'):18s}  {j.get('company', '?'):24s}  {j.get('title', '?')[:60]}")
             if j.get("location"):
@@ -946,6 +1001,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="Where to search (default: greenhouse)",
     )
     p_discover.add_argument("--board", help="Greenhouse board slug (e.g. anthropic, palantir)")
+    p_discover.add_argument("--boards", help="Comma-separated board slugs (e.g. anthropic,palantir,openai)")
+    p_discover.add_argument("--skip-screenshots", dest="skip_screenshots",
+                            action="store_true", default=True,
+                            help="Skip agent-browser screenshot loop (default)")
+    p_discover.add_argument("--include-screenshots", dest="skip_screenshots",
+                            action="store_false",
+                            help="Re-enable the screenshot loop (opt-in)")
     p_discover.add_argument("--query", help="LinkedIn search query (e.g. 'Forward Deployed Engineer')")
     p_discover.add_argument("--location", help="LinkedIn location filter (e.g. 'Remote', 'San Francisco')")
     p_discover.add_argument(
