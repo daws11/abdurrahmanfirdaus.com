@@ -547,6 +547,26 @@ def test_discover_boards_csv(tmpdir: Path) -> None:
     assert set(gh_ids) <= {100, 200}
 
 
+def test_discover_boards_rejects_linkedin(tmpdir: Path) -> None:
+    """discover --boards with --source linkedin is rejected (boards is greenhouse/file only)."""
+    env = fresh_state(tmpdir)
+    r = run_cli(["--json", "discover", "--source", "linkedin",
+                 "--boards", "anthropic,palantir"], env=env)
+    assert r.returncode != 0, "--boards with linkedin should fail"
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "boards_only_for_greenhouse"
+
+
+def test_discover_board_and_boards_rejected(tmpdir: Path) -> None:
+    """discover --board and --boards together is a mutual-exclusion error."""
+    env = fresh_state(tmpdir)
+    r = run_cli(["--json", "discover", "--source", "greenhouse",
+                 "--board", "anthropic", "--boards", "anthropic,palantir"], env=env)
+    assert r.returncode != 0
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "board_and_boards_both_set"
+
+
 # -- Runner -------------------------------------------------------------------
 
 def main() -> int:
@@ -576,6 +596,8 @@ def main() -> int:
             test_update_rejects_invalid_json,
             test_update_validates_lengths,
             test_discover_boards_csv,
+            test_discover_boards_rejects_linkedin,
+            test_discover_board_and_boards_rejected,
         ]
         for test_fn in tests:
             tmpdir = Path(tmp) / test_fn.__name__

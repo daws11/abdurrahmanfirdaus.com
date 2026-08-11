@@ -692,6 +692,15 @@ def cmd_discover(args: argparse.Namespace) -> int:
               payload={"error": "board_and_boards_both_set"})
         return 1
 
+    # --boards is only meaningful for greenhouse + file sources (each board slug
+    # maps to a Greenhouse API call or a re-read of the fixture). Reject for
+    # linkedin since linkedin search is already multi-board by nature.
+    if args.boards and args.source == "linkedin":
+        _emit(args,
+              text="error: --boards is only supported for greenhouse and file sources",
+              payload={"error": "boards_only_for_greenhouse"})
+        return 1
+
     entries: list[dict] = []
     errors: list[dict] = []
 
