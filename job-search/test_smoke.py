@@ -433,6 +433,70 @@ def test_update_rejects_submitted(tmpdir: Path) -> None:
     assert json.loads(r.stdout.strip())["error"] == "wrong_status"
 
 
+def test_update_rejects_invalid_json(tmpdir: Path) -> None:
+    """update with malformed --essay-answers fails before any mutation."""
+    env = fresh_state(tmpdir)
+    job_id = add_job(env, "JSON Co")
+
+    # Malformed JSON
+    r = run_cli(["--json", "update", job_id,
+                 "--essay-answers", '{not valid'], env=env)
+    assert r.returncode != 0, "malformed JSON should fail"
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "essay_json_invalid"
+
+    # Valid JSON but not an object (array)
+    r = run_cli(["--json", "update", job_id,
+                 "--essay-answers", '[1,2,3]'], env=env)
+    assert r.returncode != 0
+    assert json.loads(r.stdout.strip())["error"] == "essay_json_not_object"
+
+    # Value is not a string
+    r = run_cli(["--json", "update", job_id,
+                 "--essay-answers", '{"k": 123}'], env=env)
+    assert r.returncode != 0
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "essay_value_not_string"
+    assert payload["key"] == "k"
+
+    # State unchanged (no mutation)
+    state = json.loads((tmpdir / "state.json").read_text())
+    job = next(j for j in state["jobs"] if j["id"] == job_id)
+    assert job["essay_answers"] == {}
+    assert job["updated_at"] is None
+
+
+def test_update_validates_lengths(tmpdir: Path) -> None:
+    """update rejects cover_letter > 10000 chars and essay value > 5000 chars."""
+    env = fresh_state(tmpdir)
+    job_id = add_job(env, "Long Co")
+
+    # cover_letter too long (10001 chars)
+    too_long = "x" * 10001
+    r = run_cli(["--json", "update", job_id, "--cover-letter", too_long], env=env)
+    assert r.returncode != 0
+    assert json.loads(r.stdout.strip())["error"] == "cover_letter_too_long"
+
+    # essay value too long (5001 chars)
+    r = run_cli(["--json", "update", job_id,
+                 "--essay-answers", json.dumps({"k": "y" * 5001})], env=env)
+    assert r.returncode != 0
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "essay_value_too_long"
+    assert payload["key"] == "k"
+
+    # No update fields at all
+    r = run_cli(["--json", "update", job_id], env=env)
+    assert r.returncode != 0
+    assert json.loads(r.stdout.strip())["error"] == "no_fields_to_update"
+
+    # State unchanged
+    state = json.loads((tmpdir / "state.json").read_text())
+    job = next(j for j in state["jobs"] if j["id"] == job_id)
+    assert job["cover_letter"] == ""
+    assert job["essay_answers"] == {}
+
+
 # -- Runner -------------------------------------------------------------------
 
 def main() -> int:
@@ -459,6 +523,8 @@ def main() -> int:
             # Update (drafts)
             test_update_sets_cover_letter,
             test_update_rejects_submitted,
+            test_update_rejects_invalid_json,
+            test_update_validates_lengths,
         ]
         for test_fn in tests:
             tmpdir = Path(tmp) / test_fn.__name__
