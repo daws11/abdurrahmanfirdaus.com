@@ -172,6 +172,7 @@ class Job:
     submitted_at: str | None = None
     submit_id: str | None = None
     submit_notes: str | None = None
+    updated_at: str | None = None
 
 
 def next_job_id(existing: list[dict]) -> str:
