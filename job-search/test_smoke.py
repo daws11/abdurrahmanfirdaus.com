@@ -373,6 +373,34 @@ def test_rolling_backup_recovery(tmpdir: Path) -> None:
     assert "First Co" in companies, f"recovery missed 'First Co': {companies}"
 
 
+def test_update_sets_cover_letter(tmpdir: Path) -> None:
+    """update sets cover_letter + essay_answers + updated_at; JSON output correct."""
+    env = fresh_state(tmpdir)
+    job_id = add_job(env, "Update Co")
+
+    essays = json.dumps({
+        "why_company": "Mission-aligned work on AI agents in production.",
+        "why_you": "Shipped Mastra agent handling 4 channels end-to-end.",
+        "deployment_story": "Situation: 4 inbound channels fragmented. Task: unify. Action: built Mastra agent. Result: 24/7 booking, no human in loop.",
+    })
+    r = run_cli(["--json", "update", job_id,
+                 "--cover-letter", "Dear Hiring Team,\n\nI write to apply...",
+                 "--essay-answers", essays], env=env)
+    assert r.returncode == 0, f"update failed: {r.stderr}"
+    payload = json.loads(r.stdout.strip())
+    assert payload["id"] == job_id
+    assert "cover_letter" in payload["updated_fields"]
+    assert "essay_answers" in payload["updated_fields"]
+
+    # Verify state.json was actually updated
+    state = json.loads((tmpdir / "state.json").read_text())
+    job = next(j for j in state["jobs"] if j["id"] == job_id)
+    assert job["cover_letter"].startswith("Dear Hiring Team")
+    assert job["essay_answers"]["why_company"].startswith("Mission-aligned")
+    assert job["updated_at"] is not None
+    assert "T" in job["updated_at"]  # ISO 8601 contains 'T' separator
+
+
 # -- Runner -------------------------------------------------------------------
 
 def main() -> int:
@@ -396,6 +424,8 @@ def main() -> int:
             # Discover
             test_discover_from_file,
             test_discover_greenhouse_real,
+            # Update (drafts)
+            test_update_sets_cover_letter,
         ]
         for test_fn in tests:
             tmpdir = Path(tmp) / test_fn.__name__

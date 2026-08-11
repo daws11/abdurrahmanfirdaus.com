@@ -781,6 +781,100 @@ def cmd_discover(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_update(args: argparse.Namespace) -> int:
+    """Update fields on an existing job (cover_letter, essay_answers, resume_variant)."""
+    if not (args.cover_letter or args.essay_answers or args.resume_variant):
+        _emit(args,
+              text="error: at least one of --cover-letter / --essay-answers / --resume-variant is required",
+              payload={"error": "no_fields_to_update"})
+        return 1
+
+    # Validate essay-answers JSON early (before lock).
+    essay_dict: dict | None = None
+    if args.essay_answers:
+        try:
+            essay_dict = json.loads(args.essay_answers)
+        except json.JSONDecodeError as e:
+            _emit(args,
+                  text=f"error: --essay-answers is not valid JSON: {e}",
+                  payload={"error": "essay_json_invalid", "detail": str(e)})
+            return 1
+        if not isinstance(essay_dict, dict):
+            _emit(args,
+                  text="error: --essay-answers must be a JSON object",
+                  payload={"error": "essay_json_not_object"})
+            return 1
+        if len(essay_dict) > 20:
+            _emit(args,
+                  text=f"error: --essay-answers has {len(essay_dict)} keys (max 20)",
+                  payload={"error": "too_many_essay_keys",
+                           "count": len(essay_dict), "max": 20})
+            return 1
+        for k, v in essay_dict.items():
+            if not isinstance(v, str):
+                _emit(args,
+                      text=f"error: essay_answers[{k!r}] must be a string",
+                      payload={"error": "essay_value_not_string", "key": k})
+                return 1
+            if len(v) > 5000:
+                _emit(args,
+                      text=f"error: essay_answers[{k!r}] is {len(v)} chars (max 5000)",
+                      payload={"error": "essay_value_too_long",
+                               "key": k, "max": 5000})
+                return 1
+
+    if args.cover_letter and len(args.cover_letter) > 10000:
+        _emit(args,
+              text=f"error: --cover-letter is {len(args.cover_letter)} chars (max 10000)",
+              payload={"error": "cover_letter_too_long", "max": 10000})
+        return 1
+
+    with _state_lock():
+        state = load_state()
+        job = next((j for j in state["jobs"] if j["id"] == args.job_id), None)
+        if job is None:
+            _emit(args,
+                  text=f"error: {args.job_id} not found",
+                  payload={"error": "not_found", "job_id": args.job_id})
+            return 1
+        if job["status"] not in ("draft", "approved"):
+            _emit(args,
+                  text=f"error: {args.job_id} is {job['status']!r}, only draft/approved are updatable",
+                  payload={"error": "wrong_status",
+                           "job_id": args.job_id, "status": job["status"]})
+            return 1
+
+        updated_fields: list[str] = []
+        if args.cover_letter:
+            job["cover_letter"] = args.cover_letter
+            updated_fields.append("cover_letter")
+        if essay_dict is not None:
+            job["essay_answers"].update(essay_dict)
+            updated_fields.append("essay_answers")
+        if args.resume_variant:
+            choices = _profile_variants()
+            if args.resume_variant not in choices:
+                _emit(args,
+                      text=f"error: --resume-variant {args.resume_variant!r} not in profile.json",
+                      payload={"error": "unknown_variant",
+                               "variant": args.resume_variant,
+                               "choices": choices})
+                return 1
+            job["resume_variant"] = args.resume_variant
+            updated_fields.append("resume_variant")
+
+        job["updated_at"] = _now_iso()
+        save_state(state)
+
+    payload = {"id": args.job_id, "updated_fields": updated_fields,
+               "status": job["status"]}
+    if args.json:
+        _emit(args, payload=payload)
+    else:
+        print(f"updated {args.job_id} ({', '.join(updated_fields)})")
+    return 0
+
+
 # -- Parser -------------------------------------------------------------------
 
 def build_parser() -> argparse.ArgumentParser:
@@ -830,6 +924,16 @@ def build_parser() -> argparse.ArgumentParser:
     p_confirm.add_argument("--submit-id", help="External ID from the ATS confirmation page")
     p_confirm.add_argument("--notes", help="Free-form notes (e.g. confirmation email subject)")
     p_confirm.set_defaults(func=cmd_confirm)
+
+    p_update = sub.add_parser("update", help="Update fields on an existing job")
+    p_update.add_argument("job_id", help="e.g. JOB-2026-08-12-001")
+    p_update.add_argument("--cover-letter", type=_arg_non_empty("--cover-letter"),
+                          help="Cover letter text (max 10000 chars)")
+    p_update.add_argument("--essay-answers", type=_arg_non_empty("--essay-answers"),
+                          help="JSON object of essay answers (max 20 keys, 5000 chars each)")
+    p_update.add_argument("--resume-variant", choices=_profile_variants(),
+                          help="Override resume variant (must exist in profile.json)")
+    p_update.set_defaults(func=cmd_update)
 
     p_delete = sub.add_parser("delete", help="Delete a job (requires --force)")
     p_delete.add_argument("job_id", help="e.g. JOB-2026-08-11-001")
