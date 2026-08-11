@@ -1,0 +1,11 @@
+# Runtime state — generated, never committed
+state.json
+state.json.bak
+
+# Pre-submit screenshots, debug artifacts
+artifacts/
+__pycache__/
+*.pyc
+
+# Local overrides
+.env.local

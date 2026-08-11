@@ -1,0 +1,43 @@
+{
+  "default_personal": {
+    "name": "Abdurrahman Firdaus",
+    "nickname": "Daus",
+    "email": "hello@abdurrahmanfirdaus.com",
+    "location": "Bali, Indonesia",
+    "linkedin": "https://www.linkedin.com/in/abdurrahman-firdaus/",
+    "github": "https://github.com/daws11",
+    "portfolio": "https://abdurrahmanfirdaus.com",
+    "resume_url": "https://drive.google.com/file/d/1x74YWG3ccHtRvtvw0k66npw54lZR-HfK/view?usp=sharing",
+    "title_default": "Forward Deployed Engineer & Lead Full-Stack Developer"
+  },
+  "variants": {
+    "ai-startup": {
+      "tagline": "Forward Deployed Engineer who ships AI agents into real customer flows.",
+      "highlights": [
+        "Mastra AI agent handling WhatsApp Business, Instagram Graph, Email, TikTok DMs for Tis Bali (Channelflow) — booking flow end-to-end, no human in the loop",
+        "Four inbound channels unified into one queue; tour-guide commission ledger auto-applied (10% on groups of 6+)",
+        "AI-assisted shift scheduling at PeopleOS",
+        "Discovery-then-ship: rule-based NLP → migrated to Mastra AI when the customer-facing pattern emerged"
+      ]
+    },
+    "enterprise-ops": {
+      "tagline": "Forward Deployed Engineer for ops-heavy businesses: discovery at the desk, not on the whiteboard.",
+      "highlights": [
+        "Invenflow (5 outlets + warehouse): purchasing kanban, real-time inventory across locations, stocktake demoted from event to routine. Built after a week at the warehouse manager's side.",
+        "Invoice Sense (Finance): replaced 3-tab reconciliation with single inbox. Xero ledger + iSeller payments cross-checked in real time. Field-level mismatch surfacing.",
+        "Kitchen Fresh: iSeller sales + Teaspoon Lab usage → one dashboard, daily margin per outlet. COGS continuity.",
+        "PeopleOS: in-house HRM replacing scaling-cost vendor. Geofenced clock-in/clock-out with GPS + forgot-to-tap notifications."
+      ]
+    },
+    "general-fde": {
+      "tagline": "I sit with the team, find what's actually broken, ship the smallest fix that unsticks it, and stay until they reach for it without thinking.",
+      "highlights": [
+        "Five production apps adopted by kitchen, finance, and PC teams at PT Unicorn Food and Service",
+        "End-to-end delivery: PRDs → roadmaps → management calls → real-time integrations",
+        "Discovery before code: 1–3 weeks at the desk before opening the editor, every time",
+        "Full-stack: React/Next.js/TypeScript, Supabase/Postgres, Docker CI/CD, integrations with Xero, iSeller, Teaspoon Lab, WhatsApp Business, Instagram Graph, TikTok",
+        "Standardized one-command releases; promoted from Fullstack Developer to Tech Lead in 2 months"
+      ]
+    }
+  }
+}

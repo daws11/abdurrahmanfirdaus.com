@@ -27,3 +27,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .vercel
+
+# job-search tool (local state — never commit)
+/job-search/state.json
+/job-search/state.json.bak
+/job-search/artifacts/
+/job-search/__pycache__/
+/job-search/*.pyc
