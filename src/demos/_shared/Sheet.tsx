@@ -38,7 +38,7 @@ export function Sheet({
       <aside
         className="relative h-full border-l"
         style={{
-          width,
+          width: `min(${width}px, 100vw)`,
           backgroundColor: "var(--bg)",
           borderColor: "var(--border)",
           color: "var(--fg)",

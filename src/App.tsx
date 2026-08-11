@@ -8,6 +8,7 @@ import { ProjectPage } from "@/components/sections/ProjectPage";
 import { Analytics } from "@vercel/analytics/react";
 import { DemoRouter } from "@/demos/router";
 import { DemoGate } from "@/demos/_shared/DemoGate";
+import { Resume } from "@/routes/Resume";
 
 const MarketingSite = (
   <div className="min-h-screen bg-neutral-950 text-white">
@@ -34,6 +35,9 @@ const ProjectSite = (
 );
 
 function App() {
+  if (typeof window !== "undefined" && window.location.pathname === "/resume") {
+    return <Resume />;
+  }
   return (
     <DemoGate demo={<DemoRouter />} marketing={MarketingSite} project={ProjectSite} />
   );

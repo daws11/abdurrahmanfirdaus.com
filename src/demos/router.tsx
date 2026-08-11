@@ -16,6 +16,7 @@ import { DEMOS, getDemoById, type DemoId } from "./_index";
 import type { DemoTheme } from "./_shared/theme";
 import { DemoHub } from "./_shared/DemoHub";
 import { DemoNotFound } from "./_shared/DemoNotFound";
+import { MobileViewportNotice } from "./_shared/MobileViewportNotice";
 import { Invenflow } from "./invenflow";
 import { InvoiceSense } from "./invoice-sense";
 import { Channelflow } from "./channelflow";
@@ -92,7 +93,12 @@ export function DemoRouter() {
   }
 
   const Demo = DEMO_COMPONENTS[route.id];
-  return <Demo sub={route.sub} theme={meta.theme} />;
+  return (
+    <>
+      <Demo sub={route.sub} theme={meta.theme} />
+      <MobileViewportNotice />
+    </>
+  );
 }
 
 function ComingSoon({ meta }: { meta: { id: string; title: string; division: string; blurb: string } }) {

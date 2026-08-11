@@ -1,6 +1,10 @@
 # Runtime state — generated, never committed
 state.json
 state.json.bak
+state.json.bak.1
+state.json.bak.2
+state.lock
+discovery.json
 
 # Pre-submit screenshots, debug artifacts
 artifacts/

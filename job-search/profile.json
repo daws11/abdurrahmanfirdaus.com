@@ -7,14 +7,23 @@
     "linkedin": "https://www.linkedin.com/in/abdurrahman-firdaus/",
     "github": "https://github.com/daws11",
     "portfolio": "https://abdurrahmanfirdaus.com",
-    "resume_url": "https://drive.google.com/file/d/1x74YWG3ccHtRvtvw0k66npw54lZR-HfK/view?usp=sharing",
-    "title_default": "Forward Deployed Engineer & Lead Full-Stack Developer"
+    "resume_url": "https://www.abdurrahmanfirdaus.com/CV.pdf",
+    "phone": "+6285603520775",
+    "title_default": "Forward Deployed Engineer & Tech Lead",
+    "school": "Telkom University",
+    "degree": "Bachelor of Software Engineering",
+    "graduation_year": 2025,
+    "certifications": [
+      "Certified in Crystal Agile Methodology",
+      "MERN Stack Full-Stack Development Certification",
+      "Professional Certificate in Project Management"
+    ]
   },
   "variants": {
     "ai-startup": {
       "tagline": "Forward Deployed Engineer who ships AI agents into real customer flows.",
       "highlights": [
-        "Mastra AI agent handling WhatsApp Business, Instagram Graph, Email, TikTok DMs for Tis Bali (Channelflow) — booking flow end-to-end, no human in the loop",
+        "Mastra AI agent handling WhatsApp Business, Instagram Graph, Email, TikTok DMs for This is Bali (Channelflow) — booking flow end-to-end, no human in the loop",
         "Four inbound channels unified into one queue; tour-guide commission ledger auto-applied (10% on groups of 6+)",
         "AI-assisted shift scheduling at PeopleOS",
         "Discovery-then-ship: rule-based NLP → migrated to Mastra AI when the customer-facing pattern emerged"

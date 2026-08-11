@@ -41,6 +41,7 @@ import {
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/demos/_shared/Button";
 import { StatTile } from "@/demos/_shared/StatTile";
 import { EmptyState } from "@/demos/_shared/EmptyState";
@@ -160,6 +161,14 @@ export function Inbox() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [detailOpen, setDetailOpen] = useState<boolean>(false);
   const [zoom, setZoom] = useState(100);
+  // Below md, the 3-pane surface shows one pane at a time instead of
+  // squeezing list/document/data into fixed-percentage columns.
+  const [mobilePane, setMobilePane] = useState<"list" | "document" | "data">("list");
+
+  function selectInvoice(id: string) {
+    setSelectedId(id);
+    setMobilePane("document");
+  }
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -245,18 +254,70 @@ export function Inbox() {
         />
       </div>
 
-      {/* 3-column surface — fills the remaining height */}
+      {/* Mobile-only pane switcher — back to list + document/data tabs.
+          Desktop shows all 3 panes side by side, so this stays hidden there. */}
+      {mobilePane !== "list" && (
+        <div
+          className="mt-4 flex items-center gap-2 border-t px-4 py-2 md:hidden"
+          style={{ borderColor: "var(--border)" }}
+        >
+          <button
+            type="button"
+            onClick={() => setMobilePane("list")}
+            className="flex items-center gap-1 text-[12px] font-medium"
+            style={{ color: "var(--muted)" }}
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back
+          </button>
+          <div
+            className="ml-auto flex gap-1 rounded-md p-0.5"
+            style={{ backgroundColor: "var(--surface)" }}
+          >
+            <button
+              type="button"
+              onClick={() => setMobilePane("document")}
+              className="rounded px-2 py-1 text-[11px] font-medium"
+              style={{
+                backgroundColor: mobilePane === "document" ? "var(--bg)" : "transparent",
+                color: mobilePane === "document" ? "var(--fg)" : "var(--muted)",
+              }}
+            >
+              Document
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobilePane("data")}
+              className="rounded px-2 py-1 text-[11px] font-medium"
+              style={{
+                backgroundColor: mobilePane === "data" ? "var(--bg)" : "transparent",
+                color: mobilePane === "data" ? "var(--fg)" : "var(--muted)",
+              }}
+            >
+              Data
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 3-column surface — fills the remaining height. Below md, only the
+          active mobilePane is shown; at md+ all 3 columns render side by side. */}
       <div
-        className="mt-4 grid flex-1 min-h-0 overflow-hidden border-t"
+        className={cn(
+          "grid flex-1 min-h-0 overflow-hidden md:grid-cols-[25%_1fr_30%]",
+          mobilePane === "list" && "mt-4 border-t",
+        )}
         style={{
-          gridTemplateColumns: "25% 1fr 30%",
           borderColor: "var(--border)",
           backgroundColor: "var(--bg)",
         }}
       >
         {/* ---------- Column 1: Invoice list ---------- */}
         <aside
-          className="flex min-w-0 flex-col border-r"
+          className={cn(
+            mobilePane === "list" ? "flex" : "hidden",
+            "min-w-0 flex-col md:flex md:border-r",
+          )}
           style={{ borderColor: "var(--border)", backgroundColor: "var(--bg)" }}
         >
           {/* List header: payment type switcher + search + filter */}
@@ -394,7 +455,7 @@ export function Inbox() {
                 return (
                   <li
                     key={inv.id}
-                    onClick={() => setSelectedId(inv.id)}
+                    onClick={() => selectInvoice(inv.id)}
                     className="cursor-pointer border-b px-4 py-3 transition-colors"
                     style={{
                       borderColor: "var(--border)",
@@ -487,7 +548,10 @@ export function Inbox() {
 
         {/* ---------- Column 2: Document preview ---------- */}
         <section
-          className="flex min-w-0 flex-col border-r"
+          className={cn(
+            mobilePane === "document" ? "flex" : "hidden",
+            "min-w-0 flex-col md:flex md:border-r",
+          )}
           style={{ borderColor: "var(--border)", backgroundColor: "var(--bg)" }}
         >
           <header
@@ -586,7 +650,10 @@ export function Inbox() {
         </section>
 
         {/* ---------- Column 3: Data panel ---------- */}
-        <aside className="flex min-w-0 flex-col" style={{ backgroundColor: "var(--bg)" }}>
+        <aside
+          className={cn(mobilePane === "data" ? "flex" : "hidden", "min-w-0 flex-col md:flex")}
+          style={{ backgroundColor: "var(--bg)" }}
+        >
           <header
             className="flex h-12 flex-shrink-0 items-center gap-2 border-b px-4"
             style={{ borderColor: "var(--border)", backgroundColor: "var(--bg)" }}
@@ -865,6 +932,7 @@ export function Inbox() {
                 className="overflow-hidden rounded-md border"
                 style={{ borderColor: "var(--border)" }}
               >
+                <div className="overflow-x-auto">
                 <table className="w-full text-[11px]">
                   <thead>
                     <tr
@@ -943,6 +1011,7 @@ export function Inbox() {
                     })}
                   </tbody>
                 </table>
+                </div>
               </div>
             </div>
 

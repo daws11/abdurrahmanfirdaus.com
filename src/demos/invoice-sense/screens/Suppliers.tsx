@@ -31,7 +31,7 @@ export function Suppliers() {
   return (
     <div className="mx-auto max-w-5xl">
       <div
-        className="mb-4 flex items-end justify-between rounded-md border p-4"
+        className="mb-4 flex flex-col gap-2 rounded-md border p-4 sm:flex-row sm:items-end sm:justify-between"
         style={{
           borderColor: "var(--border)",
           backgroundColor: "var(--surface)",
@@ -52,14 +52,11 @@ export function Suppliers() {
             the right code on approval.
           </p>
         </div>
-        <div className="flex items-center gap-2 text-[11px]"
+        <div className="flex shrink-0 items-center gap-2 whitespace-nowrap text-[11px]"
           style={{ color: "var(--muted)" }}
         >
           <span>{rows.length} suppliers</span>
-          <span aria-hidden="true">·</span>
-          <span>
-            {rows.filter((r) => r.active).length} active
-          </span>
+          <span>· {rows.filter((r) => r.active).length} active</span>
         </div>
       </div>
 
@@ -67,6 +64,7 @@ export function Suppliers() {
         className="overflow-hidden rounded-md border"
         style={{ borderColor: "var(--border)" }}
       >
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr
@@ -147,6 +145,7 @@ export function Suppliers() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       <Sheet

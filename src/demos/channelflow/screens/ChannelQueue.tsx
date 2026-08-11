@@ -15,6 +15,7 @@ import {
   CheckCheck,
   Bot,
   ChevronDown,
+  ChevronLeft,
   MapPin,
   Calendar,
   Users,
@@ -123,6 +124,8 @@ export function ChannelQueue() {
   const [draft, setDraft] = useState("");
   const [transcript, setTranscript] = useState<Record<string, ChatMessage[]>>(MESSAGES);
   const [search, setSearch] = useState("");
+  // Below lg, show the thread list OR the open conversation, not both stacked.
+  const [mobilePane, setMobilePane] = useState<"list" | "thread">("list");
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -225,7 +228,10 @@ export function ChannelQueue() {
       <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[minmax(0,340px)_1fr]">
         {/* Thread list — production-style aside */}
         <aside
-          className="flex min-h-0 flex-col border-r"
+          className={cn(
+            mobilePane === "thread" ? "hidden" : "flex",
+            "min-h-0 flex-col lg:flex lg:border-r",
+          )}
           style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
         >
           <div
@@ -300,6 +306,7 @@ export function ChannelQueue() {
                   isOpen={t.id === openId}
                   onSelect={() => {
                     setOpenId(t.id);
+                    setMobilePane("thread");
                     if (t.unread) {
                       setThreads((prev) =>
                         prev.map((x) => (x.id === t.id ? { ...x, unread: false } : x)),
@@ -313,26 +320,31 @@ export function ChannelQueue() {
         </aside>
 
         {/* Conversation panel */}
-        {openThread ? (
-          <ConversationPanel
-            thread={openThread}
-            messages={transcript[openThread.id] ?? []}
-            draft={draft}
-            setDraft={setDraft}
-            onAdvance={() => advanceStatus(openThread.id)}
-            onSend={sendReply}
-          />
-        ) : (
-          <div
-            className="flex items-center justify-center"
-            style={{ backgroundColor: "var(--bg)", color: "var(--muted)" }}
-          >
-            <EmptyState
-              title="Pick a conversation to start"
-              description="Select a thread on the left to view messages and reply."
+        <div
+          className={cn(mobilePane === "thread" ? "flex" : "hidden", "min-h-0 flex-col lg:flex")}
+        >
+          {openThread ? (
+            <ConversationPanel
+              thread={openThread}
+              messages={transcript[openThread.id] ?? []}
+              draft={draft}
+              setDraft={setDraft}
+              onAdvance={() => advanceStatus(openThread.id)}
+              onSend={sendReply}
+              onBack={() => setMobilePane("list")}
             />
-          </div>
-        )}
+          ) : (
+            <div
+              className="flex flex-1 items-center justify-center"
+              style={{ backgroundColor: "var(--bg)", color: "var(--muted)" }}
+            >
+              <EmptyState
+                title="Pick a conversation to start"
+                description="Select a thread on the left to view messages and reply."
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -458,6 +470,7 @@ function ConversationPanel({
   setDraft,
   onAdvance,
   onSend,
+  onBack,
 }: {
   thread: Thread;
   messages: ChatMessage[];
@@ -465,16 +478,26 @@ function ConversationPanel({
   setDraft: (v: string) => void;
   onAdvance: () => void;
   onSend: () => void;
+  onBack: () => void;
 }) {
   const guide = thread.tourGuideCode
     ? TOUR_GUIDES.find((g) => g.code === thread.tourGuideCode)
     : null;
   return (
-    <div className="flex min-h-0 flex-col" style={{ backgroundColor: "var(--bg)" }}>
+    <div className="flex min-h-0 flex-1 flex-col" style={{ backgroundColor: "var(--bg)" }}>
       <header
         className="flex items-center gap-2 border-b px-4 py-3"
         style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
       >
+        <button
+          type="button"
+          onClick={onBack}
+          aria-label="Back to conversations"
+          className="-ml-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-md lg:hidden"
+          style={{ color: "var(--muted)" }}
+        >
+          <ChevronLeft className="h-4.5 w-4.5" />
+        </button>
         <div className="relative shrink-0">
           <span
             aria-label={channelLabel(thread.channel)}
@@ -492,7 +515,7 @@ function ConversationPanel({
               {thread.guestName}
             </h2>
             <span
-              className="font-mono text-[10px] uppercase tracking-wider"
+              className="hidden font-mono text-[10px] uppercase tracking-wider sm:inline"
               style={{ color: "var(--muted)" }}
             >
               · {channelLabel(thread.channel)}
@@ -547,11 +570,12 @@ function ConversationPanel({
           }}
         >
           <Bot className="h-3.5 w-3.5" strokeWidth={2.25} />
-          AI on
+          <span className="hidden lg:inline">AI on</span>
         </button>
         <button
           type="button"
           onClick={onAdvance}
+          aria-label="Advance status"
           className="inline-flex items-center gap-1 rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors"
           style={{
             borderColor: "var(--border)",
@@ -560,7 +584,7 @@ function ConversationPanel({
           }}
         >
           <CheckCheck className="h-3.5 w-3.5" style={{ color: "var(--accent)" }} />
-          Advance
+          <span className="hidden lg:inline">Advance</span>
         </button>
       </header>
 

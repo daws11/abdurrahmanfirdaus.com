@@ -46,7 +46,7 @@ export function InvoiceSense({
               key={s.id}
               type="button"
               onClick={() => setDemoHash(theme.id, s.id)}
-              className="rounded-md px-3 text-[12px] font-medium transition-colors"
+              className="shrink-0 whitespace-nowrap rounded-md px-3 text-[12px] font-medium transition-colors"
               style={{
                 height: 32,
                 backgroundColor: active ? "var(--surface)" : "transparent",
@@ -70,9 +70,9 @@ export function InvoiceSense({
       <div className="flex items-center gap-2">
         <Button size="sm" variant="primary">
           <Plus className="h-3.5 w-3.5" />
-          Upload Invoices
+          <span className="hidden sm:inline">Upload Invoices</span>
         </Button>
-        <div className="ml-2 h-6 w-px" style={{ backgroundColor: "var(--border)" }} />
+        <div className="ml-2 hidden h-6 w-px sm:block" style={{ backgroundColor: "var(--border)" }} />
         <button
           type="button"
           aria-label="Settings"
@@ -134,18 +134,18 @@ export function InvoiceSense({
         {/* Back link → portfolio */}
         <a
           href="/"
-          className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-wider opacity-60 hover:opacity-100"
+          className="flex shrink-0 items-center gap-1.5 text-[12px] font-medium uppercase tracking-wider opacity-60 hover:opacity-100"
           style={{ color: "var(--muted)" }}
         >
           <ArrowLeft className="h-3.5 w-3.5" />
-          Portfolio
+          <span className="hidden sm:inline">Portfolio</span>
         </a>
 
         {/* Divider */}
-        <div className="ml-1 flex h-5 w-px" style={{ backgroundColor: "var(--border)" }} />
+        <div className="ml-1 hidden h-5 w-px sm:flex" style={{ backgroundColor: "var(--border)" }} />
 
         {/* Logo tile + brand title — mirrors production "bg-primary FileText" */}
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           <div
             className="flex items-center justify-center rounded-md"
             style={{
@@ -156,9 +156,9 @@ export function InvoiceSense({
           >
             <FileText className="h-4 w-4" />
           </div>
-          <span className="text-base font-bold">Invoice Sense</span>
+          <span className="hidden text-base font-bold sm:inline">Invoice Sense</span>
           <span
-            className="rounded-md border px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider"
+            className="hidden rounded-md border px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider sm:inline-block"
             style={{
               borderColor: "var(--border)",
               backgroundColor: "var(--surface)",
@@ -169,11 +169,11 @@ export function InvoiceSense({
           </span>
         </div>
 
-        {/* Tab nav */}
-        <div className="ml-4 flex items-center gap-1">{tabs}</div>
+        {/* Tab nav — scrolls horizontally instead of forcing the header wider */}
+        <div className="ml-2 flex min-w-0 flex-1 items-center gap-1 overflow-x-auto sm:ml-4">{tabs}</div>
 
         {/* Right-side actions */}
-        <div className="ml-auto flex items-center gap-3">{rightActions}</div>
+        <div className="ml-auto flex shrink-0 items-center gap-3">{rightActions}</div>
       </header>
 
       {/* Main content area — full width, no padding (screens own their layout) */}

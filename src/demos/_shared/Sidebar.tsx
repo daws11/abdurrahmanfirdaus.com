@@ -10,12 +10,17 @@ export function Sidebar({
   children,
   others,
   footerSlot,
+  mobileOpen = false,
+  onMobileClose,
 }: {
   theme: DemoTheme;
   children: ReactNode;
   others: { id: string; name: string; status: "live" | "soon" }[];
   /** Replace the default "Other demos" footer with a custom slot. */
   footerSlot?: ReactNode;
+  /** Below the md breakpoint, the sidebar becomes an off-canvas drawer. */
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
 }) {
   const isIconOnly = theme.shell.sidebarWidth === theme.shell.sidebarCollapsedWidth;
   const [collapsed, setCollapsed] = useState(false);
@@ -26,9 +31,18 @@ export function Sidebar({
   const peopleCultureActive = theme.id === "people-culture";
 
   return (
-    <aside
+    <>
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+          onClick={onMobileClose}
+          aria-hidden="true"
+        />
+      )}
+      <aside
       className={cn(
-        "shrink-0 border-r transition-[width] duration-200",
+        "fixed inset-y-0 left-0 z-50 shrink-0 border-r transition-[width,transform] duration-200 md:static md:z-auto md:translate-x-0",
+        mobileOpen ? "translate-x-0" : "-translate-x-full",
       )}
       style={{
         width,
@@ -67,7 +81,9 @@ export function Sidebar({
           </button>
         )}
       </div>
-      <nav className="flex-1 overflow-y-auto py-2">{children}</nav>
+      <nav className="flex-1 overflow-y-auto py-2" onClick={onMobileClose}>
+        {children}
+      </nav>
       {!hideLabels && (
         <div
           className="border-t px-3 py-3"
@@ -122,6 +138,7 @@ export function Sidebar({
           }
         `}</style>
       )}
-    </aside>
+      </aside>
+    </>
   );
 }

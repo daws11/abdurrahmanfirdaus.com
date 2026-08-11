@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cv": "npm run build && node scripts/render-cv.mjs"
   },
   "dependencies": {
     "@aliimam/icons": "^1.1.3",

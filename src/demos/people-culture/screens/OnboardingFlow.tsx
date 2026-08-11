@@ -138,56 +138,56 @@ export function OnboardingFlow() {
       </div>
 
       <div
-        className="flex items-center gap-3 rounded-2xl border p-4 shadow-sm"
+        className="flex flex-col gap-3 rounded-2xl border p-4 shadow-sm sm:flex-row sm:items-center"
         style={{
           borderColor: "var(--border)",
           backgroundColor: "var(--surface)",
         }}
       >
-        <div
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[12px] font-semibold"
-          style={{
-            backgroundColor: "rgba(79,70,229,0.10)",
-            color: "#4F46E5",
-          }}
-          aria-hidden="true"
-        >
-          {employee?.name
-            .split(/\s+/)
-            .slice(0, 2)
-            .map((p) => p[0])
-            .join("")
-            .toUpperCase()}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[14px] font-semibold">
-              {employee?.name ?? "Unknown employee"}
-            </span>
-            <span
-              className="font-mono text-[11px]"
+        <div className="flex min-w-0 flex-1 items-center gap-3">
+          <div
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[12px] font-semibold"
+            style={{
+              backgroundColor: "rgba(79,70,229,0.10)",
+              color: "#4F46E5",
+            }}
+            aria-hidden="true"
+          >
+            {employee?.name
+              .split(/\s+/)
+              .slice(0, 2)
+              .map((p) => p[0])
+              .join("")
+              .toUpperCase()}
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[14px] font-semibold">
+                {employee?.name ?? "Unknown employee"}
+              </span>
+              <span
+                className="font-mono text-[11px]"
+                style={{ color: "var(--muted)" }}
+              >
+                {employee?.code}
+              </span>
+              <Badge tone="accent">{employee?.role}</Badge>
+              <Badge tone="warn">Onboarding</Badge>
+            </div>
+            <div
+              className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px]"
               style={{ color: "var(--muted)" }}
             >
-              {employee?.code}
-            </span>
-            <Badge tone="accent">{employee?.role}</Badge>
-            <Badge tone="warn">Onboarding</Badge>
-          </div>
-          <div
-            className="mt-1 flex flex-wrap items-center gap-3 text-[11px]"
-            style={{ color: "var(--muted)" }}
-          >
-            <span className="flex items-center gap-1">
-              <Calendar className="h-3 w-3" />
-              Started {flow.startedAt}
-            </span>
-            <span aria-hidden="true">·</span>
-            <span>Target completion {flow.expectedCompletionAt}</span>
-            <span aria-hidden="true">·</span>
-            <span>{summary.total} tasks total</span>
+              <span className="flex items-center gap-1">
+                <Calendar className="h-3 w-3" />
+                Started {flow.startedAt}
+              </span>
+              <span>· Target completion {flow.expectedCompletionAt}</span>
+              <span>· {summary.total} tasks total</span>
+            </div>
           </div>
         </div>
-        <div className="w-40">
+        <div className="w-full sm:w-40">
           <div
             className="flex items-center justify-between text-[10.5px] font-medium uppercase tracking-wider"
             style={{ color: "var(--muted)" }}

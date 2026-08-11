@@ -232,7 +232,7 @@ export default function Stocktake() {
         className="overflow-hidden rounded-md border border-[var(--border)]"
         style={{ backgroundColor: "var(--surface)" }}
       >
-        <div className="max-h-[28rem] overflow-y-auto">
+        <div className="max-h-[28rem] overflow-x-auto overflow-y-auto">
           <table className="w-full text-sm">
             <thead className="sticky top-0 z-10">
               <tr

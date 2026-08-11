@@ -11,6 +11,7 @@
 import { useState, type ReactNode } from "react";
 import {
   ArrowLeft,
+  Menu,
   PanelLeftClose,
   PanelLeftOpen,
   Search,
@@ -20,6 +21,7 @@ import { cn } from "@/lib/utils";
 import type { DemoTheme } from "./theme";
 import { TopBar } from "./TopBar";
 import { Sidebar } from "./Sidebar";
+import { Brand } from "./Brand";
 import { DEMOS, type DemoMeta } from "../_index";
 
 // ---------- New brand-aware Shell ----------
@@ -37,6 +39,7 @@ export function Shell({
   rightSlot?: ReactNode;
   footerSlot?: ReactNode;
 }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
   const showSidebar = theme.shell.sidebarWidth > 0;
   const showTopBar = theme.shell.topBarHeight > 0;
   const others = DEMOS.filter((d) => d.id !== theme.id);
@@ -51,12 +54,37 @@ export function Shell({
           theme={theme}
           others={others.map((d) => ({ id: d.id, name: d.title, status: d.status }))}
           footerSlot={footerSlot}
+          mobileOpen={mobileOpen}
+          onMobileClose={() => setMobileOpen(false)}
         >
           {nav}
         </Sidebar>
       )}
       <div className="flex min-w-0 flex-1 flex-col">
-        {showTopBar && <TopBar theme={theme} rightSlot={rightSlot} />}
+        {showTopBar && (
+          <TopBar
+            theme={theme}
+            rightSlot={rightSlot}
+            onMenuClick={showSidebar ? () => setMobileOpen(true) : undefined}
+          />
+        )}
+        {showSidebar && !showTopBar && (
+          <div
+            className="flex h-12 shrink-0 items-center gap-2 border-b px-3 md:hidden"
+            style={{ borderColor: "var(--border)", backgroundColor: "var(--bg)" }}
+          >
+            <button
+              type="button"
+              onClick={() => setMobileOpen(true)}
+              aria-label="Open menu"
+              className="flex h-8 w-8 items-center justify-center rounded-md"
+              style={{ color: "var(--muted)" }}
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <Brand theme={theme} size="sm" />
+          </div>
+        )}
         <main
           className="flex-1 overflow-y-auto px-4 py-4 md:px-6 md:py-6"
           style={{ backgroundColor: "var(--bg)" }}
