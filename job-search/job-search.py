@@ -21,7 +21,9 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 
-STATE_DIR = Path(os.environ.get("JOB_SEARCH_STATE_DIR") or Path.home() / ".job-search")
+# Default: state.json lives next to job-search.py (in the tool directory).
+# Override via JOB_SEARCH_STATE_DIR env var (used by tests + when relocating the tool).
+STATE_DIR = Path(os.environ.get("JOB_SEARCH_STATE_DIR") or Path(__file__).resolve().parent)
 STATE_PATH = STATE_DIR / "state.json"
 STATE_VERSION = 1
 
