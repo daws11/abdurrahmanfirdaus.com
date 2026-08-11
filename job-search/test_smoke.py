@@ -401,6 +401,38 @@ def test_update_sets_cover_letter(tmpdir: Path) -> None:
     assert "T" in job["updated_at"]  # ISO 8601 contains 'T' separator
 
 
+def test_update_rejects_submitted(tmpdir: Path) -> None:
+    """update on a submitted or rejected job returns wrong_status, no mutation."""
+    env = fresh_state(tmpdir)
+    job_id = add_job(env, "Locked Co")
+    # approve then confirm so status=submitted
+    run_cli(["--json", "review", job_id, "approve"], env=env)
+    run_cli(["--json", "confirm", job_id, "--notes", "done"], env=env)
+
+    # Capture state before the rejected update
+    before = json.loads((tmpdir / "state.json").read_text())
+    cover_before = next(j for j in before["jobs"] if j["id"] == job_id)["cover_letter"]
+
+    r = run_cli(["--json", "update", job_id,
+                 "--cover-letter", "should not stick"], env=env)
+    assert r.returncode != 0, "update on submitted job should fail"
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "wrong_status"
+    assert payload["status"] == "submitted"
+
+    # State unchanged
+    after = json.loads((tmpdir / "state.json").read_text())
+    cover_after = next(j for j in after["jobs"] if j["id"] == job_id)["cover_letter"]
+    assert cover_after == cover_before, "cover_letter must not change on rejected update"
+
+    # Also rejected: rejected status is read-only
+    job_id_2 = add_job(env, "Rejected Co")
+    run_cli(["--json", "review", job_id_2, "reject", "--reason", "title mismatch"], env=env)
+    r = run_cli(["--json", "update", job_id_2, "--cover-letter", "x"], env=env)
+    assert r.returncode != 0
+    assert json.loads(r.stdout.strip())["error"] == "wrong_status"
+
+
 # -- Runner -------------------------------------------------------------------
 
 def main() -> int:
@@ -426,6 +458,7 @@ def main() -> int:
             test_discover_greenhouse_real,
             # Update (drafts)
             test_update_sets_cover_letter,
+            test_update_rejects_submitted,
         ]
         for test_fn in tests:
             tmpdir = Path(tmp) / test_fn.__name__
