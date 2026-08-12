@@ -260,11 +260,11 @@ All validation runs BEFORE lock release with any mutation.
 | Condition | Output | Exit |
 |---|---|---|
 | Both `--board` and `--boards` | `{"error": "board_and_boards_both_set"}` | 1 |
-| `--boards` with `--source linkedin` | `{"error": "boards_only_for_greenhouse"}` | 1 |
+| `--boards` with non-greenhouse source (linkedin OR file) | `{"error": "boards_only_for_greenhouse"}` | 1 |
 | One board fails | continue, emit `errors: [...]` | 0 |
 | All boards fail | `{"error": "all_boards_failed", "errors": [...]}` | 1 |
 | agent-browser missing + screenshots requested | `{"error": "agent_browser_missing", "note": "screenshot loop skipped"}` | 0 |
-| Duplicate gh_id | dedupe, log "deduped: N jobs" | 0 |
+| Duplicate gh_id | dedupe (keep first), log "deduped: N jobs" | 0 |
 
 ### State file safety (unchanged)
 

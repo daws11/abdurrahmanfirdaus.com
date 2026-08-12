@@ -61,6 +61,25 @@ DEFAULT_FORM_FIELDS = {
     "portfolio": "https://abdurrahmanfirdaus.com",
     "resume_url": "https://www.abdurrahmanfirdaus.com/CV.pdf",
 }
+# Limits enforced by `cmd_update`. Loose enough to hold real cover letters and
+# per-question essays; tight enough to keep state.json bounded.
+MAX_COVER_LETTER_CHARS = 10000
+MAX_ESSAY_VALUE_CHARS = 5000
+MAX_ESSAY_KEYS = 20
+
+
+def _dedupe_by_gh_id(entries: list[dict]) -> list[dict]:
+    """Drop entries whose gh_id was already seen; keep first occurrence."""
+    seen: set = set()
+    out: list[dict] = []
+    for j in entries:
+        gid = j.get("gh_id")
+        if gid is not None:
+            if gid in seen:
+                continue
+            seen.add(gid)
+        out.append(j)
+    return out
 
 
 # -- Helpers ------------------------------------------------------------------
@@ -692,12 +711,12 @@ def cmd_discover(args: argparse.Namespace) -> int:
               payload={"error": "board_and_boards_both_set"})
         return 1
 
-    # --boards is only meaningful for greenhouse + file sources (each board slug
-    # maps to a Greenhouse API call or a re-read of the fixture). Reject for
-    # linkedin since linkedin search is already multi-board by nature.
-    if args.boards and args.source == "linkedin":
+    # --boards is only meaningful for greenhouse (each board slug maps to a
+    # separate API call). Reject for linkedin (search is already multi-board
+    # via the query) and file (a single fixture has no per-board structure).
+    if args.boards and args.source != "greenhouse":
         _emit(args,
-              text="error: --boards is only supported for greenhouse and file sources",
+              text="error: --boards is only supported for --source greenhouse",
               payload={"error": "boards_only_for_greenhouse"})
         return 1
 
@@ -714,17 +733,7 @@ def cmd_discover(args: argparse.Namespace) -> int:
                     entries.extend(batch)
                 except Exception as e:
                     errors.append({"board": b, "reason": str(e)})
-            # Dedupe by gh_id (keep first occurrence).
-            seen: set = set()
-            deduped: list[dict] = []
-            for j in entries:
-                gid = j.get("gh_id")
-                if gid is not None and gid in seen:
-                    continue
-                if gid is not None:
-                    seen.add(gid)
-                deduped.append(j)
-            entries = deduped
+            entries = _dedupe_by_gh_id(entries)
             if not entries and errors:
                 _emit(args,
                       text=f"error: all {len(errors)} board(s) failed",
@@ -790,35 +799,17 @@ def cmd_discover(args: argparse.Namespace) -> int:
             _emit(args, text="error: --file required for --source file",
                   payload={"error": "file_required"})
             return 1
-        # If --boards is given, re-load the file once per board (file source
-        # has no per-board filter; the loop exercises the dedup path).
-        boards_to_scan = (
-            [b.strip() for b in args.boards.split(",") if b.strip()]
-            if args.boards else [None]
-        )
-        for b in boards_to_scan:
-            try:
-                raw = json.loads(Path(args.file).read_text())
-            except Exception as e:
-                _emit(args, text=f"error: could not read file: {e}",
-                      payload={"error": "file_read_failed", "detail": str(e)})
-                return 1
-            if not isinstance(raw, list):
-                _emit(args, text="error: file must contain a JSON array of job entries",
-                      payload={"error": "file_format_invalid"})
-                return 1
-            entries.extend(raw)
-        # Dedupe by gh_id (keep first occurrence).
-        seen: set = set()
-        deduped: list[dict] = []
-        for j in entries:
-            gid = j.get("gh_id")
-            if gid is not None and gid in seen:
-                continue
-            if gid is not None:
-                seen.add(gid)
-            deduped.append(j)
-        entries = deduped
+        try:
+            raw = json.loads(Path(args.file).read_text())
+        except Exception as e:
+            _emit(args, text=f"error: could not read file: {e}",
+                  payload={"error": "file_read_failed", "detail": str(e)})
+            return 1
+        if not isinstance(raw, list):
+            _emit(args, text="error: file must contain a JSON array of job entries",
+                  payload={"error": "file_format_invalid"})
+            return 1
+        entries = raw
         for i, j in enumerate(entries, 1):
             j.setdefault("id", f"DISC-{i:03d}")
             j.setdefault("source", "file")
@@ -868,11 +859,11 @@ def cmd_update(args: argparse.Namespace) -> int:
                   text="error: --essay-answers must be a JSON object",
                   payload={"error": "essay_json_not_object"})
             return 1
-        if len(essay_dict) > 20:
+        if len(essay_dict) > MAX_ESSAY_KEYS:
             _emit(args,
-                  text=f"error: --essay-answers has {len(essay_dict)} keys (max 20)",
+                  text=f"error: --essay-answers has {len(essay_dict)} keys (max {MAX_ESSAY_KEYS})",
                   payload={"error": "too_many_essay_keys",
-                           "count": len(essay_dict), "max": 20})
+                           "count": len(essay_dict), "max": MAX_ESSAY_KEYS})
             return 1
         for k, v in essay_dict.items():
             if not isinstance(v, str):
@@ -880,17 +871,17 @@ def cmd_update(args: argparse.Namespace) -> int:
                       text=f"error: essay_answers[{k!r}] must be a string",
                       payload={"error": "essay_value_not_string", "key": k})
                 return 1
-            if len(v) > 5000:
+            if len(v) > MAX_ESSAY_VALUE_CHARS:
                 _emit(args,
-                      text=f"error: essay_answers[{k!r}] is {len(v)} chars (max 5000)",
+                      text=f"error: essay_answers[{k!r}] is {len(v)} chars (max {MAX_ESSAY_VALUE_CHARS})",
                       payload={"error": "essay_value_too_long",
-                               "key": k, "max": 5000})
+                               "key": k, "max": MAX_ESSAY_VALUE_CHARS})
                 return 1
 
-    if args.cover_letter and len(args.cover_letter) > 10000:
+    if args.cover_letter and len(args.cover_letter) > MAX_COVER_LETTER_CHARS:
         _emit(args,
-              text=f"error: --cover-letter is {len(args.cover_letter)} chars (max 10000)",
-              payload={"error": "cover_letter_too_long", "max": 10000})
+              text=f"error: --cover-letter is {len(args.cover_letter)} chars (max {MAX_COVER_LETTER_CHARS})",
+              payload={"error": "cover_letter_too_long", "max": MAX_COVER_LETTER_CHARS})
         return 1
 
     with _state_lock():

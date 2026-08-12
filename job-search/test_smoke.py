@@ -497,62 +497,46 @@ def test_update_validates_lengths(tmpdir: Path) -> None:
     assert job["essay_answers"] == {}
 
 
-def test_discover_boards_csv(tmpdir: Path) -> None:
-    """discover --boards <csv> merges results from multiple boards + dedupes by gh_id."""
-    env = fresh_state(tmpdir)
-    fixture = tmpdir / "boards.json"
-    # Three entries; gh_id=100 is duplicated across "boards"
-    fixture.write_text(json.dumps([
-        {
-            "title": "Forward Deployed Engineer",
-            "company": "alpha",
-            "location": "Remote",
-            "url": "https://example.com/alpha/1",
-            "jd_text": "FDE role alpha.",
-            "source": "file",
-            "board": "alpha",
-            "gh_id": 100,
-        },
-        {
-            "title": "Forward Deployed Engineer",
-            "company": "alpha-dup",
-            "location": "Remote",
-            "url": "https://example.com/alpha/1",
-            "jd_text": "Same job, different board name.",
-            "source": "file",
-            "board": "beta",
-            "gh_id": 100,  # duplicate
-        },
-        {
-            "title": "Customer Engineer",
-            "company": "beta",
-            "location": "Singapore",
-            "url": "https://example.com/beta/1",
-            "jd_text": "Customer engineer role.",
-            "source": "file",
-            "board": "beta",
-            "gh_id": 200,
-        },
-    ]))
+def test_dedupe_by_gh_id(tmpdir: Path) -> None:
+    """Unit test for _dedupe_by_gh_id: keeps first occurrence, drops later dupes."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("job_search_under_test", CLI)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
 
-    r = run_cli(["--json", "discover", "--source", "file", "--boards", "alpha,beta",
-                 "--file", str(fixture)], env=env)
-    assert r.returncode == 0, f"discover failed: {r.stderr}"
-    payload = json.loads(r.stdout.strip())
-    # 3 file entries get loaded once via fixture; --boards triggers a loop that
-    # re-loads the fixture per board (file source has no per-board filter).
-    # What matters: dedup keeps distinct gh_ids only.
-    gh_ids = [j.get("gh_id") for j in payload["jobs"] if j.get("gh_id")]
-    assert len(gh_ids) == len(set(gh_ids)), f"gh_ids not deduped: {gh_ids}"
-    assert set(gh_ids) <= {100, 200}
+    entries = [
+        {"gh_id": 100, "title": "first"},
+        {"gh_id": 100, "title": "second (drop)"},
+        {"gh_id": 200, "title": "third"},
+        {"title": "no gh_id, keep"},
+        {"gh_id": 200, "title": "fourth (drop)"},
+        {"title": "another no-id, keep"},
+    ]
+    out = mod._dedupe_by_gh_id(entries)
+    titles = [e["title"] for e in out]
+    assert titles == ["first", "third", "no gh_id, keep", "another no-id, keep"], \
+        f"unexpected dedup result: {titles}"
 
 
 def test_discover_boards_rejects_linkedin(tmpdir: Path) -> None:
-    """discover --boards with --source linkedin is rejected (boards is greenhouse/file only)."""
+    """discover --boards with --source linkedin is rejected (greenhouse-only)."""
     env = fresh_state(tmpdir)
     r = run_cli(["--json", "discover", "--source", "linkedin",
                  "--boards", "anthropic,palantir"], env=env)
     assert r.returncode != 0, "--boards with linkedin should fail"
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "boards_only_for_greenhouse"
+
+
+def test_discover_boards_rejects_file(tmpdir: Path) -> None:
+    """discover --boards with --source file is rejected (file is a single fixture, no per-board)."""
+    env = fresh_state(tmpdir)
+    fixture = tmpdir / "jobs.json"
+    fixture.write_text(json.dumps([{"title": "FDE", "company": "x",
+                                    "url": "https://e/", "jd_text": "y"}]))
+    r = run_cli(["--json", "discover", "--source", "file", "--boards", "alpha,beta",
+                 "--file", str(fixture)], env=env)
+    assert r.returncode != 0, "--boards with file source should fail"
     payload = json.loads(r.stdout.strip())
     assert payload["error"] == "boards_only_for_greenhouse"
 
@@ -595,8 +579,9 @@ def main() -> int:
             test_update_rejects_submitted,
             test_update_rejects_invalid_json,
             test_update_validates_lengths,
-            test_discover_boards_csv,
+            test_dedupe_by_gh_id,
             test_discover_boards_rejects_linkedin,
+            test_discover_boards_rejects_file,
             test_discover_board_and_boards_rejected,
         ]
         for test_fn in tests:
