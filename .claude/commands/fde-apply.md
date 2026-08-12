@@ -117,31 +117,27 @@ On rejection:
 python3 job-search/job-search.py --json review <JOB-ID> reject --reason "<reason>"
 ```
 
-## Step 7 — Submit (open in agent-browser)
+## Step 7 — Submit (hand the URL to the user)
 
-For each approved job:
+For each approved job, the drafts saved in Step 5.5 + the JD URL are the
+deliverable. The user fills the form manually. Tell the user:
+
+> "Drafts saved. Open the form at <jd-url>, paste the drafts into the matching
+>  fields, and submit. Need help with any specific essay question?"
+
+If the user explicitly asks you to fill the form for them, you may run:
 
 ```bash
 python3 job-search/job-search.py --json submit <JOB-ID>
 ```
 
 The tool opens the JD URL in agent-browser, takes a screenshot, and saves
-the form fields to `artifacts/<JOB-ID>-*`. Tell the user:
-
-> "Drafts saved. Open the form at <jd-url>, paste the drafts into the matching
->  fields, and submit. Need help with any specific essay question?"
-
-If the user wants automatic fill:
-
-1. `agent_browser_snapshot` → parse refs
-2. `agent_browser_fill @eN "<value>"` for each form field from the job's
-   `form_fields`
-3. `agent_browser_screenshot final.png` → show the user
-4. Ask: "Looks right? Submit? (y / adjust X)"
+the form fields to `artifacts/<JOB-ID>-*`. **Do not auto-fill.** Always ask
+before typing into form fields on the user's behalf.
 
 ## Step 8 — Confirm
 
-After the form is actually submitted in the browser (manual or automatic):
+After the form is actually submitted in the browser (by the user):
 
 ```bash
 python3 job-search/job-search.py --json confirm <JOB-ID> \
