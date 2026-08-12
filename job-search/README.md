@@ -85,6 +85,14 @@ python3 job-search.py confirm JOB-2026-08-11-001 --submit-id ATS-987654 --notes 
 python3 job-search.py delete JOB-2026-08-11-001            # prints what would be deleted; returns 1
 python3 job-search.py delete JOB-2026-08-11-001 --force   # actually removes from state.json
 
+# Update an existing job (drafts, variant override)
+python3 job-search.py update JOB-2026-08-12-001 \
+  --cover-letter "Dear Hiring Team, ..." \
+  --essay-answers '{"why_company":"...","why_you":"...","deployment_story":"..."}'
+
+# Override resume variant for a queued job
+python3 job-search.py update JOB-2026-08-12-001 --resume-variant general-fde
+
 # Find FDE jobs (results go to discovery.json, NOT state.json)
 python3 job-search.py --json discover --source greenhouse --board anthropic --limit 10
 python3 job-search.py --json discover --source greenhouse --board stripe --keywords "forward deploy,solutions engineer"
@@ -111,6 +119,17 @@ python3 job-search.py --json discover --source greenhouse \
 # Same, but only with "forward deploy" or "solutions engineer" in the title
 python3 job-search.py --json discover --source greenhouse \
   --board stripe --keywords "forward deploy,solutions engineer"
+
+# Scan multiple boards in one call (merges + dedupes by gh_id)
+python3 job-search.py --json discover --source greenhouse \
+  --boards anthropic,palantir,openai,scale,ramp,brex,stripe --limit 10
+
+# Skip the agent-browser screenshot loop (default — saves ~50s per scan)
+python3 job-search.py --json discover --source greenhouse --board anthropic
+
+# Opt back in to screenshots (useful if you want visual previews of each JD)
+python3 job-search.py --json discover --source greenhouse --board anthropic \
+  --include-screenshots
 
 # LinkedIn (slower, may hit login wall, raw markdown is dumped for parsing)
 python3 job-search.py --json discover --source linkedin \
@@ -171,3 +190,5 @@ choices, and discover (file source + real Greenhouse API).
 ## Design
 
 See `~/Documents/daws/daily-worker-hub-web/docs/superpowers/specs/2026-08-11-forward-deploy-job-search-automation-design.md`.
+
+This implementation matches the spec at `docs/superpowers/specs/2026-08-12-fde-apply-draft-mode-design.md`.

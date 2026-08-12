@@ -373,6 +373,184 @@ def test_rolling_backup_recovery(tmpdir: Path) -> None:
     assert "First Co" in companies, f"recovery missed 'First Co': {companies}"
 
 
+def test_update_sets_cover_letter(tmpdir: Path) -> None:
+    """update sets cover_letter + essay_answers + updated_at; JSON output correct."""
+    env = fresh_state(tmpdir)
+    job_id = add_job(env, "Update Co")
+
+    essays = json.dumps({
+        "why_company": "Mission-aligned work on AI agents in production.",
+        "why_you": "Shipped Mastra agent handling 4 channels end-to-end.",
+        "deployment_story": "Situation: 4 inbound channels fragmented. Task: unify. Action: built Mastra agent. Result: 24/7 booking, no human in loop.",
+    })
+    r = run_cli(["--json", "update", job_id,
+                 "--cover-letter", "Dear Hiring Team,\n\nI write to apply...",
+                 "--essay-answers", essays], env=env)
+    assert r.returncode == 0, f"update failed: {r.stderr}"
+    payload = json.loads(r.stdout.strip())
+    assert payload["id"] == job_id
+    assert "cover_letter" in payload["updated_fields"]
+    assert "essay_answers" in payload["updated_fields"]
+
+    # Verify state.json was actually updated
+    state = json.loads((tmpdir / "state.json").read_text())
+    job = next(j for j in state["jobs"] if j["id"] == job_id)
+    assert job["cover_letter"].startswith("Dear Hiring Team")
+    assert job["essay_answers"]["why_company"].startswith("Mission-aligned")
+    assert job["updated_at"] is not None
+    assert "T" in job["updated_at"]  # ISO 8601 contains 'T' separator
+
+
+def test_update_rejects_submitted(tmpdir: Path) -> None:
+    """update on a submitted or rejected job returns wrong_status, no mutation."""
+    env = fresh_state(tmpdir)
+    job_id = add_job(env, "Locked Co")
+    # approve then confirm so status=submitted
+    run_cli(["--json", "review", job_id, "approve"], env=env)
+    run_cli(["--json", "confirm", job_id, "--notes", "done"], env=env)
+
+    # Capture state before the rejected update
+    before = json.loads((tmpdir / "state.json").read_text())
+    cover_before = next(j for j in before["jobs"] if j["id"] == job_id)["cover_letter"]
+
+    r = run_cli(["--json", "update", job_id,
+                 "--cover-letter", "should not stick"], env=env)
+    assert r.returncode != 0, "update on submitted job should fail"
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "wrong_status"
+    assert payload["status"] == "submitted"
+
+    # State unchanged
+    after = json.loads((tmpdir / "state.json").read_text())
+    cover_after = next(j for j in after["jobs"] if j["id"] == job_id)["cover_letter"]
+    assert cover_after == cover_before, "cover_letter must not change on rejected update"
+
+    # Also rejected: rejected status is read-only
+    job_id_2 = add_job(env, "Rejected Co")
+    run_cli(["--json", "review", job_id_2, "reject", "--reason", "title mismatch"], env=env)
+    r = run_cli(["--json", "update", job_id_2, "--cover-letter", "x"], env=env)
+    assert r.returncode != 0
+    assert json.loads(r.stdout.strip())["error"] == "wrong_status"
+
+
+def test_update_rejects_invalid_json(tmpdir: Path) -> None:
+    """update with malformed --essay-answers fails before any mutation."""
+    env = fresh_state(tmpdir)
+    job_id = add_job(env, "JSON Co")
+
+    # Malformed JSON
+    r = run_cli(["--json", "update", job_id,
+                 "--essay-answers", '{not valid'], env=env)
+    assert r.returncode != 0, "malformed JSON should fail"
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "essay_json_invalid"
+
+    # Valid JSON but not an object (array)
+    r = run_cli(["--json", "update", job_id,
+                 "--essay-answers", '[1,2,3]'], env=env)
+    assert r.returncode != 0
+    assert json.loads(r.stdout.strip())["error"] == "essay_json_not_object"
+
+    # Value is not a string
+    r = run_cli(["--json", "update", job_id,
+                 "--essay-answers", '{"k": 123}'], env=env)
+    assert r.returncode != 0
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "essay_value_not_string"
+    assert payload["key"] == "k"
+
+    # State unchanged (no mutation)
+    state = json.loads((tmpdir / "state.json").read_text())
+    job = next(j for j in state["jobs"] if j["id"] == job_id)
+    assert job["essay_answers"] == {}
+    assert job["updated_at"] is None
+
+
+def test_update_validates_lengths(tmpdir: Path) -> None:
+    """update rejects cover_letter > 10000 chars and essay value > 5000 chars."""
+    env = fresh_state(tmpdir)
+    job_id = add_job(env, "Long Co")
+
+    # cover_letter too long (10001 chars)
+    too_long = "x" * 10001
+    r = run_cli(["--json", "update", job_id, "--cover-letter", too_long], env=env)
+    assert r.returncode != 0
+    assert json.loads(r.stdout.strip())["error"] == "cover_letter_too_long"
+
+    # essay value too long (5001 chars)
+    r = run_cli(["--json", "update", job_id,
+                 "--essay-answers", json.dumps({"k": "y" * 5001})], env=env)
+    assert r.returncode != 0
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "essay_value_too_long"
+    assert payload["key"] == "k"
+
+    # No update fields at all
+    r = run_cli(["--json", "update", job_id], env=env)
+    assert r.returncode != 0
+    assert json.loads(r.stdout.strip())["error"] == "no_fields_to_update"
+
+    # State unchanged
+    state = json.loads((tmpdir / "state.json").read_text())
+    job = next(j for j in state["jobs"] if j["id"] == job_id)
+    assert job["cover_letter"] == ""
+    assert job["essay_answers"] == {}
+
+
+def test_dedupe_by_gh_id(tmpdir: Path) -> None:
+    """Unit test for _dedupe_by_gh_id: keeps first occurrence, drops later dupes."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("job_search_under_test", CLI)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    entries = [
+        {"gh_id": 100, "title": "first"},
+        {"gh_id": 100, "title": "second (drop)"},
+        {"gh_id": 200, "title": "third"},
+        {"title": "no gh_id, keep"},
+        {"gh_id": 200, "title": "fourth (drop)"},
+        {"title": "another no-id, keep"},
+    ]
+    out = mod._dedupe_by_gh_id(entries)
+    titles = [e["title"] for e in out]
+    assert titles == ["first", "third", "no gh_id, keep", "another no-id, keep"], \
+        f"unexpected dedup result: {titles}"
+
+
+def test_discover_boards_rejects_linkedin(tmpdir: Path) -> None:
+    """discover --boards with --source linkedin is rejected (greenhouse-only)."""
+    env = fresh_state(tmpdir)
+    r = run_cli(["--json", "discover", "--source", "linkedin",
+                 "--boards", "anthropic,palantir"], env=env)
+    assert r.returncode != 0, "--boards with linkedin should fail"
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "boards_only_for_greenhouse"
+
+
+def test_discover_boards_rejects_file(tmpdir: Path) -> None:
+    """discover --boards with --source file is rejected (file is a single fixture, no per-board)."""
+    env = fresh_state(tmpdir)
+    fixture = tmpdir / "jobs.json"
+    fixture.write_text(json.dumps([{"title": "FDE", "company": "x",
+                                    "url": "https://e/", "jd_text": "y"}]))
+    r = run_cli(["--json", "discover", "--source", "file", "--boards", "alpha,beta",
+                 "--file", str(fixture)], env=env)
+    assert r.returncode != 0, "--boards with file source should fail"
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "boards_only_for_greenhouse"
+
+
+def test_discover_board_and_boards_rejected(tmpdir: Path) -> None:
+    """discover --board and --boards together is a mutual-exclusion error."""
+    env = fresh_state(tmpdir)
+    r = run_cli(["--json", "discover", "--source", "greenhouse",
+                 "--board", "anthropic", "--boards", "anthropic,palantir"], env=env)
+    assert r.returncode != 0
+    payload = json.loads(r.stdout.strip())
+    assert payload["error"] == "board_and_boards_both_set"
+
+
 # -- Runner -------------------------------------------------------------------
 
 def main() -> int:
@@ -396,6 +574,15 @@ def main() -> int:
             # Discover
             test_discover_from_file,
             test_discover_greenhouse_real,
+            # Update (drafts)
+            test_update_sets_cover_letter,
+            test_update_rejects_submitted,
+            test_update_rejects_invalid_json,
+            test_update_validates_lengths,
+            test_dedupe_by_gh_id,
+            test_discover_boards_rejects_linkedin,
+            test_discover_boards_rejects_file,
+            test_discover_board_and_boards_rejected,
         ]
         for test_fn in tests:
             tmpdir = Path(tmp) / test_fn.__name__

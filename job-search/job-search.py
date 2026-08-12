@@ -61,6 +61,25 @@ DEFAULT_FORM_FIELDS = {
     "portfolio": "https://abdurrahmanfirdaus.com",
     "resume_url": "https://www.abdurrahmanfirdaus.com/CV.pdf",
 }
+# Limits enforced by `cmd_update`. Loose enough to hold real cover letters and
+# per-question essays; tight enough to keep state.json bounded.
+MAX_COVER_LETTER_CHARS = 10000
+MAX_ESSAY_VALUE_CHARS = 5000
+MAX_ESSAY_KEYS = 20
+
+
+def _dedupe_by_gh_id(entries: list[dict]) -> list[dict]:
+    """Drop entries whose gh_id was already seen; keep first occurrence."""
+    seen: set = set()
+    out: list[dict] = []
+    for j in entries:
+        gid = j.get("gh_id")
+        if gid is not None:
+            if gid in seen:
+                continue
+            seen.add(gid)
+        out.append(j)
+    return out
 
 
 # -- Helpers ------------------------------------------------------------------
@@ -172,6 +191,7 @@ class Job:
     submitted_at: str | None = None
     submit_id: str | None = None
     submit_notes: str | None = None
+    updated_at: str | None = None
 
 
 def next_job_id(existing: list[dict]) -> str:
@@ -684,23 +704,57 @@ def cmd_discover(args: argparse.Namespace) -> int:
     if not keywords:
         keywords = ["forward deploy", "forward deployed", "solutions engineer", "customer engineer", "tech lead", "fullstack"]
 
+    # Mutual exclusion: --board (singular) and --boards (csv) cannot coexist.
+    if args.board and args.boards:
+        _emit(args,
+              text="error: use --board OR --boards, not both",
+              payload={"error": "board_and_boards_both_set"})
+        return 1
+
+    # --boards is only meaningful for greenhouse (each board slug maps to a
+    # separate API call). Reject for linkedin (search is already multi-board
+    # via the query) and file (a single fixture has no per-board structure).
+    if args.boards and args.source != "greenhouse":
+        _emit(args,
+              text="error: --boards is only supported for --source greenhouse",
+              payload={"error": "boards_only_for_greenhouse"})
+        return 1
+
     entries: list[dict] = []
+    errors: list[dict] = []
 
     if args.source == "greenhouse":
-        if not args.board:
-            _emit(args,
-                  text="error: --board required for --source greenhouse (e.g. --board anthropic)",
-                  payload={"error": "board_required"})
-            return 1
-        try:
-            entries = fetch_greenhouse_jobs(args.board, keywords, args.limit)
-        except Exception as e:
-            _emit(args, text=f"error: greenhouse fetch failed: {e}",
-                  payload={"error": "greenhouse_fetch_failed", "detail": str(e)})
-            return 1
+        # Determine which boards to scan.
+        if args.boards:
+            boards = [b.strip() for b in args.boards.split(",") if b.strip()]
+            for b in boards:
+                try:
+                    batch = fetch_greenhouse_jobs(b, keywords, args.limit)
+                    entries.extend(batch)
+                except Exception as e:
+                    errors.append({"board": b, "reason": str(e)})
+            entries = _dedupe_by_gh_id(entries)
+            if not entries and errors:
+                _emit(args,
+                      text=f"error: all {len(errors)} board(s) failed",
+                      payload={"error": "all_boards_failed", "errors": errors})
+                return 1
+        else:
+            if not args.board:
+                _emit(args,
+                      text="error: --board (or --boards) required for --source greenhouse",
+                      payload={"error": "board_required"})
+                return 1
+            try:
+                entries = fetch_greenhouse_jobs(args.board, keywords, args.limit)
+            except Exception as e:
+                _emit(args, text=f"error: greenhouse fetch failed: {e}",
+                      payload={"error": "greenhouse_fetch_failed", "detail": str(e)})
+                return 1
         # Use agent-browser to screenshot each JD page (proves the link is live
         # and gives a visual reference for the LLM session triaging results).
-        if agent_browser_available() and entries:
+        # Default OFF (--skip-screenshots) — opt back in with --include-screenshots.
+        if not args.skip_screenshots and agent_browser_available() and entries:
             ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
             for j in entries:
                 if not j.get("url"):
@@ -768,15 +822,111 @@ def cmd_discover(args: argparse.Namespace) -> int:
     save_discovery(entries)
 
     if args.json:
-        _emit(args, payload={"count": len(entries), "source": args.source, "jobs": entries})
+        _emit(args, payload={"count": len(entries), "source": args.source,
+                             "jobs": entries, "errors": errors})
     else:
-        print(f"discovered {len(entries)} job(s) from {args.source} (keywords={keywords}):")
+        suffix = f" ({len(errors)} error(s))" if errors else ""
+        print(f"discovered {len(entries)} job(s) from {args.source}{suffix}:")
         for j in entries:
             print(f"  {j.get('id', '?'):18s}  {j.get('company', '?'):24s}  {j.get('title', '?')[:60]}")
             if j.get("location"):
                 print(f"    location: {j['location']}")
         print(f"\nsaved to {DISCOVERY_PATH}")
         print("next: review the file, then run `add` for the ones you want to apply to")
+    return 0
+
+
+def cmd_update(args: argparse.Namespace) -> int:
+    """Update fields on an existing job (cover_letter, essay_answers, resume_variant)."""
+    if not (args.cover_letter or args.essay_answers or args.resume_variant):
+        _emit(args,
+              text="error: at least one of --cover-letter / --essay-answers / --resume-variant is required",
+              payload={"error": "no_fields_to_update"})
+        return 1
+
+    # Validate essay-answers JSON early (before lock).
+    essay_dict: dict | None = None
+    if args.essay_answers:
+        try:
+            essay_dict = json.loads(args.essay_answers)
+        except json.JSONDecodeError as e:
+            _emit(args,
+                  text=f"error: --essay-answers is not valid JSON: {e}",
+                  payload={"error": "essay_json_invalid", "detail": str(e)})
+            return 1
+        if not isinstance(essay_dict, dict):
+            _emit(args,
+                  text="error: --essay-answers must be a JSON object",
+                  payload={"error": "essay_json_not_object"})
+            return 1
+        if len(essay_dict) > MAX_ESSAY_KEYS:
+            _emit(args,
+                  text=f"error: --essay-answers has {len(essay_dict)} keys (max {MAX_ESSAY_KEYS})",
+                  payload={"error": "too_many_essay_keys",
+                           "count": len(essay_dict), "max": MAX_ESSAY_KEYS})
+            return 1
+        for k, v in essay_dict.items():
+            if not isinstance(v, str):
+                _emit(args,
+                      text=f"error: essay_answers[{k!r}] must be a string",
+                      payload={"error": "essay_value_not_string", "key": k})
+                return 1
+            if len(v) > MAX_ESSAY_VALUE_CHARS:
+                _emit(args,
+                      text=f"error: essay_answers[{k!r}] is {len(v)} chars (max {MAX_ESSAY_VALUE_CHARS})",
+                      payload={"error": "essay_value_too_long",
+                               "key": k, "max": MAX_ESSAY_VALUE_CHARS})
+                return 1
+
+    if args.cover_letter and len(args.cover_letter) > MAX_COVER_LETTER_CHARS:
+        _emit(args,
+              text=f"error: --cover-letter is {len(args.cover_letter)} chars (max {MAX_COVER_LETTER_CHARS})",
+              payload={"error": "cover_letter_too_long", "max": MAX_COVER_LETTER_CHARS})
+        return 1
+
+    with _state_lock():
+        state = load_state()
+        job = next((j for j in state["jobs"] if j["id"] == args.job_id), None)
+        if job is None:
+            _emit(args,
+                  text=f"error: {args.job_id} not found",
+                  payload={"error": "not_found", "job_id": args.job_id})
+            return 1
+        if job["status"] not in ("draft", "approved"):
+            _emit(args,
+                  text=f"error: {args.job_id} is {job['status']!r}, only draft/approved are updatable",
+                  payload={"error": "wrong_status",
+                           "job_id": args.job_id, "status": job["status"]})
+            return 1
+
+        updated_fields: list[str] = []
+        if args.cover_letter:
+            job["cover_letter"] = args.cover_letter
+            updated_fields.append("cover_letter")
+        if essay_dict is not None:
+            job["essay_answers"].update(essay_dict)
+            updated_fields.append("essay_answers")
+        if args.resume_variant:
+            choices = _profile_variants()
+            if args.resume_variant not in choices:
+                _emit(args,
+                      text=f"error: --resume-variant {args.resume_variant!r} not in profile.json",
+                      payload={"error": "unknown_variant",
+                               "variant": args.resume_variant,
+                               "choices": choices})
+                return 1
+            job["resume_variant"] = args.resume_variant
+            updated_fields.append("resume_variant")
+
+        job["updated_at"] = _now_iso()
+        save_state(state)
+
+    payload = {"id": args.job_id, "updated_fields": updated_fields,
+               "status": job["status"]}
+    if args.json:
+        _emit(args, payload=payload)
+    else:
+        print(f"updated {args.job_id} ({', '.join(updated_fields)})")
     return 0
 
 
@@ -830,6 +980,16 @@ def build_parser() -> argparse.ArgumentParser:
     p_confirm.add_argument("--notes", help="Free-form notes (e.g. confirmation email subject)")
     p_confirm.set_defaults(func=cmd_confirm)
 
+    p_update = sub.add_parser("update", help="Update fields on an existing job")
+    p_update.add_argument("job_id", help="e.g. JOB-2026-08-12-001")
+    p_update.add_argument("--cover-letter", type=_arg_non_empty("--cover-letter"),
+                          help="Cover letter text (max 10000 chars)")
+    p_update.add_argument("--essay-answers", type=_arg_non_empty("--essay-answers"),
+                          help="JSON object of essay answers (max 20 keys, 5000 chars each)")
+    p_update.add_argument("--resume-variant", choices=_profile_variants(),
+                          help="Override resume variant (must exist in profile.json)")
+    p_update.set_defaults(func=cmd_update)
+
     p_delete = sub.add_parser("delete", help="Delete a job (requires --force)")
     p_delete.add_argument("job_id", help="e.g. JOB-2026-08-11-001")
     p_delete.add_argument("--force", action="store_true", help="Actually delete (no dry-run)")
@@ -841,6 +1001,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="Where to search (default: greenhouse)",
     )
     p_discover.add_argument("--board", help="Greenhouse board slug (e.g. anthropic, palantir)")
+    p_discover.add_argument("--boards", help="Comma-separated board slugs (e.g. anthropic,palantir,openai)")
+    p_discover.add_argument("--skip-screenshots", dest="skip_screenshots",
+                            action="store_true", default=True,
+                            help="Skip agent-browser screenshot loop (default)")
+    p_discover.add_argument("--include-screenshots", dest="skip_screenshots",
+                            action="store_false",
+                            help="Re-enable the screenshot loop (opt-in)")
     p_discover.add_argument("--query", help="LinkedIn search query (e.g. 'Forward Deployed Engineer')")
     p_discover.add_argument("--location", help="LinkedIn location filter (e.g. 'Remote', 'San Francisco')")
     p_discover.add_argument(
