@@ -11,6 +11,7 @@ export interface Conversation {
   updatedAt: string;
   messageCount: number;
   unread?: boolean;
+  online?: boolean;
 }
 
 export interface Message {
@@ -24,9 +25,9 @@ export interface Message {
 }
 
 export const CONVERSATIONS: Conversation[] = [
-  { id: "c-001", title: "VAT rate on restaurant food", topic: "VAT", preview: "The standard VAT rate in the UAE is 5%...", updatedAt: "2026-08-13", messageCount: 8, unread: true },
+  { id: "c-001", title: "VAT rate on restaurant food", topic: "VAT", preview: "The standard VAT rate in the UAE is 5%...", updatedAt: "2026-08-13", messageCount: 8, unread: true, online: true },
   { id: "c-002", title: "Corporate tax registration threshold", topic: "Corporate Tax", preview: "Businesses with taxable income above AED 375,000...", updatedAt: "2026-08-12", messageCount: 14 },
-  { id: "c-003", title: "Free zone qualifying income", topic: "Free Zones", preview: "Qualifying Free Zone Persons can benefit from 0%...", updatedAt: "2026-08-11", messageCount: 22 },
+  { id: "c-003", title: "Free zone qualifying income", topic: "Free Zones", preview: "Qualifying Free Zone Persons can benefit from 0%...", updatedAt: "2026-08-11", messageCount: 22, online: true },
   { id: "c-004", title: "Excise tax on soft drinks", topic: "Excise", preview: "Excise tax is 50% on carbonated drinks...", updatedAt: "2026-08-10", messageCount: 6 },
   { id: "c-005", title: "Transfer pricing documentation", topic: "Transfer Pricing", preview: "Maintain a Master File, Local File, and CbCR...", updatedAt: "2026-08-08", messageCount: 19 },
   { id: "c-006", title: "VAT on imported services", topic: "VAT", preview: "Reverse charge mechanism applies when...", updatedAt: "2026-08-05", messageCount: 11 },
@@ -58,6 +59,34 @@ export const SAMPLE_MESSAGES: Message[] = [
     attachmentName: "excise-tax-schedule-2024.pdf",
     timestamp: "10:44",
   },
+  {
+    id: "m-5", conversationId: "c-001", role: "user",
+    content: "Thanks — that's exactly what I needed. One more: are there any upcoming VAT changes I should be aware of for Q4?",
+    timestamp: "10:47",
+  },
 ];
 
 export const TOKEN_QUOTA = { used: 18_420, limit: 50_000 };
+
+// Signed-in user, shown as the sidebar profile mini, the message avatar, and
+// the Settings photo placeholder. Same person as the taxai-wizard fixture.
+export interface User {
+  name: string;
+  email: string;
+  jobTitle: string;
+  country: string;
+}
+
+export const SAMPLE_USER: User = {
+  name: "Sara Al-Mansouri",
+  email: "sara.mansouri@example.ae",
+  jobTitle: "Freelance Tax Consultant",
+  country: "United Arab Emirates",
+};
+
+export const initials = SAMPLE_USER.name
+  .split(" ")
+  .map((p) => p.charAt(0))
+  .join("")
+  .slice(0, 2)
+  .toUpperCase();
