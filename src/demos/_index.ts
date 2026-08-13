@@ -26,6 +26,7 @@ export interface DemoMeta {
   route: `/demos/${DemoId}`;
   status: DemoStatus;
   theme: DemoTheme;
+  externalUrl?: string;  // when set, DemoHub renders <a target="_blank"> instead of <button>
 }
 
 export const DEMOS: DemoMeta[] = [
@@ -82,6 +83,7 @@ export const DEMOS: DemoMeta[] = [
     route: "/demos/laguku",
     status: "live",
     theme: THEMES.laguku,
+    externalUrl: "https://laguku.co",
   },
   {
     id: "taxai-wizard",

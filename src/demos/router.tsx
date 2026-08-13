@@ -22,7 +22,6 @@ import { InvoiceSense } from "./invoice-sense";
 import { Channelflow } from "./channelflow";
 import { KitchenFresh } from "./kitchen-fresh";
 import { PeopleCulture } from "./people-culture";
-import { Laguku } from "./laguku";
 import { TaxaiWizard } from "./taxai-wizard";
 import { TaxaiChat } from "./taxai-chat";
 import { TaxaiTalk } from "./taxai-talk";
@@ -72,13 +71,12 @@ export function setDemoHash(id: DemoId | null, sub?: string) {
   window.location.hash = next;
 }
 
-const DEMO_COMPONENTS: Record<DemoId, ComponentType<{ sub: string | null; theme: DemoTheme }>> = {
+const DEMO_COMPONENTS: Record<Exclude<DemoId, "laguku">, ComponentType<{ sub: string | null; theme: DemoTheme }>> = {
   invenflow: Invenflow,
   "invoice-sense": InvoiceSense,
   channelflow: Channelflow,
   "kitchen-fresh": KitchenFresh,
   "people-culture": PeopleCulture,
-  laguku: Laguku,
   "taxai-wizard": TaxaiWizard,
   "taxai-chat": TaxaiChat,
   "taxai-talk": TaxaiTalk,
@@ -100,12 +98,17 @@ export function DemoRouter() {
     return <ComingSoon meta={meta} />;
   }
 
+  // ponytail: Laguku is in DEMOS for the hub card, but its demo shell was
+  // removed in iteration 2. Direct-typed #/demos/laguku falls through to
+  // DemoNotFound per spec §3.2 (acceptable edge case, consistent with the
+  // "no demo shell" decision).
+  if (route.id === "laguku") return <DemoNotFound />;
+
   const Demo = DEMO_COMPONENTS[route.id];
-  const isLaguku = route.id === "laguku";
   return (
     <>
       <Demo sub={route.sub} theme={meta.theme} />
-      {!isLaguku && <MobileViewportNotice />}
+      <MobileViewportNotice />
     </>
   );
 }

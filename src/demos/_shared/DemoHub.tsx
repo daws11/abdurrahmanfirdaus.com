@@ -1,6 +1,6 @@
 // src/demos/_shared/DemoHub.tsx
 //
-// Hub page rendered at `#/demos` (no specific demo). Shows all 5 demos as
+// Hub page rendered at `#/demos` (no specific demo). Shows all 9 demos as
 // cards, each with a real prototype screenshot + themed Brand tile.
 
 import { ArrowRight, FlaskConical } from "lucide-react";
@@ -21,7 +21,7 @@ export function DemoHub({ demos }: { demos: DemoMeta[] }) {
         </a>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight">Demo prototypes</h1>
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-          Five UI-only prototypes — synthetic data, no backend, no integrations
+          Nine UI-only prototypes — synthetic data, no backend, no integrations
           wired. Click into any demo to see the production app, recreated from
           scratch.
         </p>
@@ -29,12 +29,23 @@ export function DemoHub({ demos }: { demos: DemoMeta[] }) {
       <div className="mx-auto mt-10 grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {demos.map((d) => {
           const theme = THEMES[d.id];
+          const external = d.externalUrl;
+          const Card = external ? "a" : "button";
+          const cardProps = external
+            ? {
+                href: external,
+                target: "_blank",
+                rel: "noopener noreferrer",
+              }
+            : {
+                type: "button" as const,
+                onClick: () => setDemoHash(d.id),
+                disabled: d.status === "soon",
+              };
           return (
-            <button
+            <Card
               key={d.id}
-              type="button"
-              onClick={() => setDemoHash(d.id)}
-              disabled={d.status === "soon"}
+              {...cardProps}
               className="group flex flex-col overflow-hidden rounded-md border border-border bg-card text-left transition hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
             >
               {/* Prototype screenshot */}
@@ -61,11 +72,20 @@ export function DemoHub({ demos }: { demos: DemoMeta[] }) {
                   className="mt-1 inline-flex items-center gap-1 text-xs font-medium"
                   style={{ color: theme.tokens["--accent"] }}
                 >
-                  Open demo
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                  {external ? (
+                    <>
+                      Open live
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    </>
+                  ) : (
+                    <>
+                      Open demo
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                    </>
+                  )}
                 </div>
               </div>
-            </button>
+            </Card>
           );
         })}
       </div>
