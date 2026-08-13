@@ -1,14 +1,14 @@
-// src/demos/taxai-wizard/screens/Register.tsx
+// src/demos/taxai-wizard/screens/PersonalInfo.tsx
 //
-// Registration step — multi-field form. Mock state only; submit jumps to
-// /plans via setDemoHash.
+// Step 3 of the Wizard onboarding — personal info form.
+// Mock state only; submit jumps to /plans via setDemoHash.
 
 import { useState, type FormEvent } from "react";
 import { Button } from "@/demos/_shared/Button";
 import { Field } from "@/demos/_shared/Field";
 import { setDemoHash } from "@/demos/router";
 
-export function Register() {
+export function PersonalInfo() {
   const [form, setForm] = useState({ name: "", email: "", password: "", jobTitle: "" });
 
   const onSubmit = (e: FormEvent) => {
@@ -18,7 +18,7 @@ export function Register() {
 
   return (
     <div className="mx-auto max-w-md px-6 py-10">
-      <h2 className="text-2xl font-semibold tracking-tight">Create your TaxAI account</h2>
+      <h2 className="text-2xl font-semibold tracking-tight">Tell us about you</h2>
       <p className="mt-1 text-sm" style={{ color: "var(--muted)" }}>
         Start your 14-day Free Trial. No credit card required.
       </p>

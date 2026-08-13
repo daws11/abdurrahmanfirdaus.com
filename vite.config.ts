@@ -47,6 +47,9 @@ export default defineConfig({
           if (id.includes("/demos/channelflow/")) return "demo-channelflow";
           if (id.includes("/demos/kitchen-fresh/")) return "demo-kitchen-fresh";
           if (id.includes("/demos/people-culture/")) return "demo-people-culture";
+          if (id.includes("/demos/taxai-wizard/")) return "demo-taxai-wizard";
+          if (id.includes("/demos/taxai-chat/")) return "demo-taxai-chat";
+          if (id.includes("/demos/taxai-talk/")) return "demo-taxai-talk";
           return undefined;
         },
       },

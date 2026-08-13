@@ -1,62 +1,49 @@
 // src/demos/taxai-wizard/index.tsx
 //
-// Top-level shell for TaxAI Wizard. Wraps `Shell`, mounts a numbered step nav
-// (the wizard is a linear flow) and switches on `sub`.
+// Top-level shell for TaxAI Wizard. Wraps `Shell`, mounts a stepper-style
+// sidebar nav (numbered, with completed-state checkmarks + active accent)
+// and switches on `sub` across 7 onboarding screens.
 
 import { Shell } from "@/demos/_shared/Shell";
+import { Stepper } from "@/demos/_shared/Stepper";
 import { useTheme } from "@/demos/_shared/useTheme";
 import { setDemoHash } from "@/demos/router";
 import type { DemoTheme } from "@/demos/_shared/theme";
 import { TAXAI_WIZARD_SCREENS, getScreenLabel } from "./routes";
-import { Register } from "./screens/Register";
+import { EmailStep } from "./screens/EmailStep";
+import { OtpStep } from "./screens/OtpStep";
+import { PersonalInfo } from "./screens/PersonalInfo";
 import { Plans } from "./screens/Plans";
 import { Checkout } from "./screens/Checkout";
+import { SuccessStep } from "./screens/SuccessStep";
 import { Dashboard } from "./screens/Dashboard";
 
 export function TaxaiWizard({ theme, sub }: { theme: DemoTheme; sub: string | null }) {
   useTheme(theme.id);
-  const screen = getScreenLabel(sub, "register");
+  const screen = getScreenLabel(sub, "email");
 
-  // ponytail: Shell renders `nav` inside the 240px sidebar, so the step list is
-  // vertical rather than the horizontal strip the plan sketched.
   const nav = (
-    <ul className="flex flex-col gap-0.5 px-2 py-2">
-      {TAXAI_WIZARD_SCREENS.map((s, i) => {
-        const active = screen === s.id;
-        return (
-          <li key={s.id}>
-            <button
-              type="button"
-              onClick={() => setDemoHash(theme.id, s.id)}
-              aria-current={active ? "page" : undefined}
-              className="inline-flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-xs font-medium transition-colors"
-              style={{
-                backgroundColor: active ? "var(--surface)" : "transparent",
-                color: active ? "var(--accent)" : "var(--muted)",
-              }}
-            >
-              <span
-                className="flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-semibold"
-                style={{ backgroundColor: "var(--border)", color: "var(--fg)" }}
-              >
-                {i + 1}
-              </span>
-              {s.label}
-            </button>
-          </li>
-        );
-      })}
-    </ul>
+    <Stepper
+      steps={TAXAI_WIZARD_SCREENS}
+      current={screen}
+      onSelect={(id) => setDemoHash(theme.id, id)}
+    />
   );
 
   const content = (() => {
     switch (screen) {
+      case "email":
+        return <EmailStep />;
+      case "otp":
+        return <OtpStep />;
       case "register":
-        return <Register />;
+        return <PersonalInfo />;
       case "plans":
         return <Plans />;
       case "checkout":
         return <Checkout />;
+      case "success":
+        return <SuccessStep />;
       case "dashboard":
         return <Dashboard />;
     }
