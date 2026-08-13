@@ -1,9 +1,9 @@
 // src/demos/taxai-talk/screens/Settings.tsx
 //
-// Settings — voice selection cards (4 ElevenLabs voices) + response language
-// picker. Visual only.
+// Settings — voice selection cards (4 ElevenLabs voices) with a "Preview"
+// button per card, plus the response language picker. Visual only.
 
-import { Check } from "lucide-react";
+import { Check, Play } from "lucide-react";
 import { VOICES, SELECTED_VOICE } from "../mocks";
 
 export function Settings() {
@@ -11,26 +11,51 @@ export function Settings() {
     <div className="mx-auto max-w-2xl px-6 py-10 space-y-8">
       <section>
         <h3 className="text-sm font-semibold">Voice</h3>
-        <p className="mt-1 text-xs" style={{ color: "var(--muted)" }}>ElevenLabs voices available for the assistant. Currently selected voice is highlighted.</p>
+        <p className="mt-1 text-xs" style={{ color: "var(--muted)" }}>
+          ElevenLabs voices available for the assistant. Tap Preview to hear a
+          5-second sample. Currently selected voice is highlighted.
+        </p>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {VOICES.map((v) => {
             const active = v.id === SELECTED_VOICE;
             return (
-              <button
+              <div
                 key={v.id}
-                type="button"
-                className="relative rounded-lg border p-4 text-left transition-colors hover:opacity-80"
+                className="relative rounded-lg border p-4 transition-colors"
                 style={{
                   borderColor: active ? "var(--accent)" : "var(--border)",
                   backgroundColor: active ? "var(--surface)" : undefined,
                 }}
               >
-                {active && <Check className="absolute right-3 top-3 h-4 w-4" style={{ color: "var(--accent)" }} />}
+                {active && (
+                  <Check
+                    className="absolute right-3 top-3 h-4 w-4"
+                    style={{ color: "var(--accent)" }}
+                  />
+                )}
                 <p className="text-sm font-semibold">{v.name}</p>
-                <p className="mt-1 text-xs" style={{ color: "var(--muted)" }}>{v.description}</p>
-                <p className="mt-2 text-[10px] uppercase tracking-wider" style={{ color: "var(--muted)" }}>{v.language}</p>
-              </button>
+                <p className="mt-1 text-xs" style={{ color: "var(--muted)" }}>
+                  {v.description}
+                </p>
+                <p
+                  className="mt-2 text-[10px] uppercase tracking-wider"
+                  style={{ color: "var(--muted)" }}
+                >
+                  {v.language}
+                </p>
+                <button
+                  type="button"
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium hover:opacity-80"
+                  style={{
+                    borderColor: "var(--border)",
+                    backgroundColor: "var(--surface)",
+                    color: active ? "var(--accent)" : "var(--muted)",
+                  }}
+                >
+                  <Play className="h-3 w-3" /> Preview
+                </button>
+              </div>
             );
           })}
         </div>
@@ -38,11 +63,28 @@ export function Settings() {
 
       <section>
         <h3 className="text-sm font-semibold">Response language</h3>
-        <p className="mt-1 text-xs" style={{ color: "var(--muted)" }}>Voice output follows this preference. Input is auto-detected.</p>
+        <p className="mt-1 text-xs" style={{ color: "var(--muted)" }}>
+          Voice output follows this preference. Input is auto-detected.
+        </p>
         <div className="mt-4 flex gap-2 text-xs">
-          <span className="rounded-full px-3 py-1 font-medium" style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}>Multilingual</span>
-          <span className="rounded-full border px-3 py-1" style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}>English</span>
-          <span className="rounded-full border px-3 py-1" style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}>العربية</span>
+          <span
+            className="rounded-full px-3 py-1 font-medium"
+            style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
+          >
+            Multilingual
+          </span>
+          <span
+            className="rounded-full border px-3 py-1"
+            style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
+          >
+            English
+          </span>
+          <span
+            className="rounded-full border px-3 py-1"
+            style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
+          >
+            العربية
+          </span>
         </div>
       </section>
     </div>
