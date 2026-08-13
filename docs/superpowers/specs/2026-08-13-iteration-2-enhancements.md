@@ -46,11 +46,15 @@ export interface DemoMeta {
 
 Update entry `laguku` (atau hapus dari DEMOS array — lihat §3.2).
 
-### 3.2 Laguku: hapus dari DEMOS, atau keep dengan externalUrl?
+### 3.2 Laguku: keep di DEMOS dengan externalUrl, remove shell files
 
-**Pilihan:** Keep entry di DEMOS dengan `externalUrl: "https://laguku.co"`. DemoHub handle external case. Ini preserves the count of 9 entries di DemoHub (semua 5 existing + 4 new) — konsisten dengan case study approach nanti.
+User memilih "DemoHub card langsung ke laguku.co" + "Tidak ada demo shell". Jadi:
+- Keep entry `laguku` di DEMOS dengan `externalUrl: "https://laguku.co"` — DemoHub render `<a target="_blank">`.
+- Remove `src/demos/laguku/` directory entirely (`index.tsx`, `routes.tsx`, `README.md`).
+- Update `router.tsx`: remove `Laguku` import, remove `laguku` entry dari `DEMO_COMPONENTS`, remove `isLaguku` check (MobileViewportNotice always-on setelah ini).
+- URL `#/demos/laguku` (direct typing) → tidak match anything di DEMOS → `DemoNotFound`. Acceptable edge case.
 
-Alternative: hapus dari DEMOS. Plus di `projects` array (FocusRailItem) sebagai `href: "https://laguku.co"`. Tapi DemoHub tidak render dari `projects`, jadi Laguku hilang dari DemoHub. User memilih "DemoHub card langsung ke laguku.co" — saya interpret ini sebagai "Laguku masih jadi card di DemoHub tapi click langsung ke live URL". Jadi **keep di DEMOS + externalUrl**.
+Reasoning: card click adalah flow normal; direct URL access adalah edge case. Edge case menampilkan DemoNotFound, yang konsisten dengan convention project.
 
 ### 3.3 TaxAI UI enhancements — per demo
 
@@ -216,6 +220,7 @@ public/assets/images/projects/{laguku,taxai-wizard,taxai-chat,taxai-talk}.png
 ```
 src/demos/_index.ts                                 # +externalUrl on DemoMeta, set on laguku
 src/demos/_shared/DemoHub.tsx                       # handle externalUrl (render <a> instead of <button>)
+src/demos/router.tsx                                # remove Laguku import + DEMO_COMPONENTS entry + isLaguku guard
 src/data/portfolio.ts                               # +4 projectStories, +4 projects, subheading copy
 src/demos/taxai-wizard/routes.tsx                   # +3 screens (Email, Otp, Success)
 src/demos/taxai-wizard/index.tsx                    # updated nav with 7 steps + stepper
@@ -228,13 +233,15 @@ src/demos/taxai-talk/screens/Transcript.tsx         # +avatar per turn + audio d
 src/demos/taxai-talk/screens/Settings.tsx           # +voice preview button
 ```
 
-### Files removed/archived
+### Files removed
 
 ```
 src/demos/laguku/index.tsx          # remove (replaced by externalUrl approach in DemoHub)
 src/demos/laguku/routes.tsx         # remove
-src/demos/laguku/README.md          # remove or update to mention "external link, not demo"
+src/demos/laguku/README.md          # remove
 ```
+
+Plus router.tsx cleanup: remove `Laguku` import, remove `laguku: Laguku` from DEMO_COMPONENTS, remove `isLaguku` guard + `{!isLaguku && <MobileViewportNotice />}` (always render MobileViewportNotice now).
 
 ## 5. Visual integration
 
