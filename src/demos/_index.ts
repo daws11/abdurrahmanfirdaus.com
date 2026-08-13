@@ -10,7 +10,11 @@ export type DemoId =
   | "invoice-sense"
   | "channelflow"
   | "kitchen-fresh"
-  | "people-culture";
+  | "people-culture"
+  | "laguku"
+  | "taxai-wizard"
+  | "taxai-chat"
+  | "taxai-talk";
 
 export type DemoStatus = "live" | "soon";
 
@@ -69,6 +73,42 @@ export const DEMOS: DemoMeta[] = [
     route: "/demos/people-culture",
     status: "live",
     theme: THEMES["people-culture"],
+  },
+  {
+    id: "laguku",
+    title: "Laguku",
+    division: "AI · Music orchestration",
+    blurb: "GPT writes the lyrics, Suno composes the track — delivered via WhatsApp.",
+    route: "/demos/laguku",
+    status: "live",
+    theme: THEMES.laguku,
+  },
+  {
+    id: "taxai-wizard",
+    title: "TaxAI Wizard",
+    division: "AI · Stripe subscription",
+    blurb: "UAE tax intelligence behind a Stripe subscription — Free Trial to Yearly.",
+    route: "/demos/taxai-wizard",
+    status: "live",
+    theme: THEMES["taxai-wizard"],
+  },
+  {
+    id: "taxai-chat",
+    title: "TaxAI Chat",
+    division: "AI · Document Q&A",
+    blurb: "Ask the UAE tax code — GPT answers with document citations.",
+    route: "/demos/taxai-chat",
+    status: "live",
+    theme: THEMES["taxai-chat"],
+  },
+  {
+    id: "taxai-talk",
+    title: "TaxAI Talk",
+    division: "AI · Voice pipeline",
+    blurb: "GPT reasons, ElevenLabs speaks — tax answers in multiple languages.",
+    route: "/demos/taxai-talk",
+    status: "live",
+    theme: THEMES["taxai-talk"],
   },
 ];
 

@@ -7,7 +7,7 @@
 export type Surface = "light" | "dark";
 
 export interface DemoTheme {
-  id: "invenflow" | "invoice-sense" | "channelflow" | "kitchen-fresh" | "people-culture";
+  id: "invenflow" | "invoice-sense" | "channelflow" | "kitchen-fresh" | "people-culture" | "laguku" | "taxai-wizard" | "taxai-chat" | "taxai-talk";
   brand: {
     name: string;
     monogram: string;
@@ -44,6 +44,10 @@ import { invoiceSenseTheme } from "./themes/invoice-sense";
 import { channelflowTheme } from "./themes/channelflow";
 import { kitchenFreshTheme } from "./themes/kitchen-fresh";
 import { peopleCultureTheme } from "./themes/people-culture";
+import { lagukuTheme } from "./themes/laguku";
+import { taxaiWizardTheme } from "./themes/taxai-wizard";
+import { taxaiChatTheme } from "./themes/taxai-chat";
+import { taxaiTalkTheme } from "./themes/taxai-talk";
 
 export const THEMES: Record<DemoTheme["id"], DemoTheme> = {
   invenflow: invenflowTheme,
@@ -51,6 +55,10 @@ export const THEMES: Record<DemoTheme["id"], DemoTheme> = {
   channelflow: channelflowTheme,
   "kitchen-fresh": kitchenFreshTheme,
   "people-culture": peopleCultureTheme,
+  laguku: lagukuTheme,
+  "taxai-wizard": taxaiWizardTheme,
+  "taxai-chat": taxaiChatTheme,
+  "taxai-talk": taxaiTalkTheme,
 };
 
 export function getTheme(id: DemoTheme["id"]): DemoTheme {
