@@ -129,7 +129,7 @@ export const sectionCopy = {
   },
   work: {
     heading: "Inside the work.",
-    subheading: "Five systems, told in detail. Click any project for the full case study.",
+    subheading: "Nine systems, told in detail. Click any project for the full case study.",
   },
   contact: {
     heading: "Let's build something that gets used.",
@@ -316,6 +316,46 @@ export const projects: FocusRailItem[] = [
     privateRepoHref: "https://github.com/PTUNICORN/channelflow",
     caseStudyId: "channelflow",
   },
+  {
+    id: "laguku",
+    title: "Laguku",
+    meta: "Music · AI · WhatsApp",
+    description:
+      "GPT writes the lyrics, Suno composes the track — delivered via WhatsApp for personal gifting.",
+    imageSrc: "/assets/images/projects/laguku.png",
+    href: "https://laguku.co",
+    caseStudyId: "laguku",
+  },
+  {
+    id: "taxai-wizard",
+    title: "TaxAI Wizard",
+    meta: "Tax AI · Stripe · 7-step funnel",
+    description:
+      "Stripe-backed UAE tax onboarding — email → OTP → personal info → plans → checkout → dashboard.",
+    imageSrc: "/assets/images/projects/taxai-wizard.png",
+    href: "#/demos/taxai-wizard",
+    caseStudyId: "taxai-wizard",
+  },
+  {
+    id: "taxai-chat",
+    title: "TaxAI Chat",
+    meta: "Tax AI · Document Q&A",
+    description:
+      "Conversations with the UAE tax code — upload, reference, cite. GPT-4o answers with sources.",
+    imageSrc: "/assets/images/projects/taxai-chat.png",
+    href: "#/demos/taxai-chat",
+    caseStudyId: "taxai-chat",
+  },
+  {
+    id: "taxai-talk",
+    title: "TaxAI Talk",
+    meta: "Tax AI · Voice · ElevenLabs",
+    description:
+      "GPT reasons, ElevenLabs speaks — tax answers in multiple languages over a live voice channel.",
+    imageSrc: "/assets/images/projects/taxai-talk.png",
+    href: "#/demos/taxai-talk",
+    caseStudyId: "taxai-talk",
+  },
 ];
 
 /** Detailed narrative for a single project page (and the home ringkas card). */
@@ -478,6 +518,113 @@ export const projectStories: ProjectStory[] = [
     integrations: [],
     heroSrc: "/assets/images/demos/people-culture.png",
     duration: "Aug 2025 – present",
+    teamSize: "Solo",
+  },
+  {
+    id: "laguku",
+    projectHref: "https://laguku.co",
+    division: "Music · AI orchestration",
+    kicker: "A song in their voice, from their story.",
+    fdeCallout:
+      "I didn't start with a feature list. I started with the WhatsApp thread where my friend was trying to send his mom a song for her 60th — and couldn't find one in three hours. The product wasn't missing. The delivery was.",
+    story:
+      "**Discovery.** Personal gifting — birthdays, anniversaries, retirements — has always been a high-emotion, low-tool moment. People default to a Spotify playlist link, or a YouTube cover, or a generic AI song from a chatbot. None of it sounds like the person it's for. None of it is delivered in a way the recipient will actually open.\n\n**Built.** Laguku orchestrates three things in one WhatsApp-first flow. **GPT** writes the lyrics — prompt-engineered with the customer's story (recipient name, occasion, the relationship, the tone). **Suno** (via kai.ai) composes the actual track from those lyrics, with a small set of curated styles. **WhatsApp Business API** is the delivery surface — the customer never leaves chat, the recipient gets the song the same way they'd get a voice note. No app install, no web flow to abandon, no email to forget.\n\n**Outcome.** Custom songs went from a 3-hour ordeal to a 10-minute WhatsApp conversation. The recipient gets a song that actually mentions their name, their relationship, and the occasion — in a voice and style the customer picked. The product sells itself through the message it leaves in the recipient's chat.",
+    impact: [
+      { label: "Time to song", value: "3h → 10min in WhatsApp" },
+      { label: "Pipeline", value: "GPT → Suno → WhatsApp, fully orchestrated" },
+      { label: "Delivery", value: "100% via WhatsApp Business" },
+    ],
+    outcomes: [
+      "GPT-orchestrated lyric generation from the customer's story",
+      "Suno composition via kai.ai with curated style prompts",
+      "End-to-end WhatsApp Business delivery — no app install required",
+      "10-minute flow replaces 3-hour ordeal for personal gifting moments",
+    ],
+    stack: ["React", "Vite", "TypeScript", "OpenAI", "Suno", "WhatsApp Business API"],
+    integrations: ["WhatsApp Business", "OpenAI", "kai.ai"],
+    heroSrc: "/assets/images/demos/laguku.png",
+    duration: "2024 – present",
+    teamSize: "Solo + brand operator",
+  },
+  {
+    id: "taxai-wizard",
+    projectHref: "https://github.com/daws11/tax-ai-wizard-web-70",
+    division: "Tax AI · Stripe subscription",
+    kicker: "From Free Trial to Yearly — a Stripe-powered onboarding for the UAE tax assistant.",
+    fdeCallout:
+      "The hardest part wasn't the Stripe integration. It was the seven screens in between — email, OTP, personal info, plan selection, checkout, success, dashboard — each one a place the customer could drop off. I rebuilt the funnel because the existing one was losing them at step two.",
+    story:
+      "**Discovery.** TaxAI needed a 7-step onboarding that moved a UAE tax customer from a free trial to a paid subscription without friction. The existing flow had seven steps but no visible state — the customer didn't know they were on step three of seven, didn't know what was coming next, and dropped off at the OTP screen because nothing told them to check their inbox.\n\n**Built.** A linear funnel: **Email** (work email only — personal emails blocked) → **OTP** (6-digit code, auto-advance inputs, resend) → **Personal info** (name, job title, country) → **Plan selection** (4 tiers, Free Trial / Monthly / Quarterly / Yearly) → **Checkout** (Stripe Elements with VAT breakdown + AED/USD currency) → **Success** (welcome screen with subscription summary) → **Dashboard** (quota widget, subscription status, renewal date). The stepper sidebar tells the customer where they are, which steps are done, and what's next.\n\n**Outcome.** The funnel is the product surface. Every step is a place to lose the customer — and every step now has a visible state, a clear next action, and a back path. The Stripe-backed checkout handles the conversion; the seven screens handle the trust.",
+    impact: [
+      { label: "Steps", value: "7 (Email, OTP, Personal info, Plans, Checkout, Success, Dashboard)" },
+      { label: "Plans", value: "4 tiers, AED/USD" },
+      { label: "Backbone", value: "Stripe Elements · JWT auth · MongoDB" },
+    ],
+    outcomes: [
+      "7-step onboarding funnel with visible stepper state and completion checkmarks",
+      "Stripe Elements checkout with VAT breakdown (5%, UAE) and currency selector",
+      "Email → OTP gate using work-domain validation",
+      "Welcome screen with subscription summary before dashboard reveal",
+      "Multilingual-ready copy (English prototype, AR-ready structure)",
+    ],
+    stack: ["React", "TypeScript", "Stripe Elements", "MongoDB", "Express", "JWT"],
+    integrations: ["Stripe"],
+    heroSrc: "/assets/images/demos/taxai-wizard.png",
+    duration: "2025 – present",
+    teamSize: "Solo + 1 founder",
+  },
+  {
+    id: "taxai-chat",
+    projectHref: "https://github.com/daws11/chat.taxai",
+    division: "Tax AI · Document Q&A",
+    kicker: "Conversations with the UAE tax code — upload, reference, cite.",
+    fdeCallout:
+      "The customer doesn't want 'an answer'. They want an answer they can take to their auditor. Every AI response needs to cite the law it just paraphrased — Federal Decree-Law, Executive Regulations, FTA Public Clarifications. The chat is the product; the citations are the trust.",
+    story:
+      "**Discovery.** UAE tax questions don't have one source. They have the Federal Decree-Law No. (8) of 2017, the Executive Regulations, FTA Public Clarifications, and sector-specific guides. A consultant answering a VAT question quotes from all four in the same sentence. A chatbot answering a VAT question has to do the same — or it's not useful.\n\n**Built.** A chat interface where every AI response carries citation cards under the bubble. The customer uploads a PDF (invoice, contract, prior return); the assistant reads it; the response quotes the specific law section that applies. Dual-bubble layout — user on the right with an accent background, AI on the left with citations below. Token usage is tracked per conversation and surfaced in the sidebar footer; the monthly quota is visible without leaving the chat. Avatars per bubble, typing indicator before each AI reply, hover-reveal reactions to rate the response quality.\n\n**Outcome.** A consultant can copy the response, drop it in a client email, and defend every line with the source citation underneath. The chat isn't a chatbot — it's a citable research surface.",
+    impact: [
+      { label: "Citations", value: "Per AI response, with snippet preview" },
+      { label: "Sources", value: "Federal Decree-Law, Executive Regulations, FTA Public Clarifications" },
+      { label: "Attachments", value: "PDF upload + inline preview per turn" },
+    ],
+    outcomes: [
+      "Citation cards under every AI message — Federal Decree-Law, Executive Regulations, FTA",
+      "Dual-bubble layout with per-message avatars and typing indicator",
+      "PDF upload + attachment preview inline per turn",
+      "Token quota tracked per conversation, visible in sidebar footer",
+      "Hover-reveal reactions to rate AI response quality",
+    ],
+    stack: ["Next.js", "TypeScript", "MongoDB", "JWT"],
+    integrations: [],
+    heroSrc: "/assets/images/demos/taxai-chat.png",
+    duration: "2025 – present",
+    teamSize: "Solo",
+  },
+  {
+    id: "taxai-talk",
+    projectHref: "https://github.com/daws11/talk.taxai.ae",
+    division: "Tax AI · Voice pipeline",
+    kicker: "GPT reasons, ElevenLabs speaks — tax answers in multiple languages.",
+    fdeCallout:
+      "I didn't pick ElevenLabs first. I picked it last — after trying three other TTS pipelines that couldn't handle Arabic without losing the tax terms. Voice is the trust surface for voice products. If the Arabic sounds wrong, the customer stops trusting the English too.",
+    story:
+      "**Discovery.** TaxAI Talk is a voice-first interface for the same UAE tax corpus. The customer speaks (Arabic or English), GPT-4o reasons over the corpus, ElevenLabs speaks the answer back in the customer's language. The hard part wasn't the reasoning — it was making the voice pipeline hold up across Arabic numerals, transliterated tax terms, and ElevenLabs voice quality at the latency the customer expects from a phone call.\n\n**Built.** A live voice session screen with two avatars (you + TaxAI assistant), a status badge (\"Live\"), a 32-bar pulsing waveform during the call, and a single-tap end-call flow. The transcript view shows the bilingual conversation with per-turn avatars, language pills, and a 'Play audio' button on each AI turn that shows the actual audio duration. The settings panel lets the customer pick from 4 ElevenLabs voices (Aria, River, Sarah, George), each with a 5-second preview button before committing.\n\n**Outcome.** A UAE tax consultant can hand the phone to a client and have the conversation happen in Arabic, with the assistant voice clearly pronouncing every Federal Decree-Law reference. The transcript captures the full exchange with audio playback per turn — the consultant can forward the session link to a colleague without losing the audio.",
+    impact: [
+      { label: "Pipeline", value: "GPT-4o reasoning + ElevenLabs speech" },
+      { label: "Languages", value: "EN, AR, Multilingual" },
+      { label: "Voices", value: "4 ElevenLabs voices with preview" },
+    ],
+    outcomes: [
+      "GPT-4o reasons over the UAE tax corpus, ElevenLabs speaks the response",
+      "32-bar pulsing waveform during the live session, status badge (\"Live\")",
+      "Bilingual transcript with per-turn avatars, language pills, and audio playback",
+      "4 ElevenLabs voices (Aria, River, Sarah, George) with 5-second preview per card",
+      "Multilingual output handles Arabic numerals and transliterated tax terms",
+    ],
+    stack: ["Next.js", "TypeScript", "ElevenLabs SDK", "OpenAI"],
+    integrations: ["ElevenLabs", "OpenAI"],
+    heroSrc: "/assets/images/demos/taxai-talk.png",
+    duration: "2025 – present",
     teamSize: "Solo",
   },
 ];
