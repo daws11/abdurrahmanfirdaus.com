@@ -34,3 +34,6 @@ yarn-error.log*
 /job-search/artifacts/
 /job-search/__pycache__/
 /job-search/*.pyc
+
+# preview-render mocks (transient build inputs)
+/scripts/preview-render/*.html
