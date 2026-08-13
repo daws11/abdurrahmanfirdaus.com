@@ -33,6 +33,10 @@ const LOGOS: Record<string, LogoAsset> = {
   channelflow: { src: "/assets/images/logos/channelflow.png", kind: "image" },
   "kitchen-fresh": { src: "/assets/images/logos/kitchen-fresh.svg", kind: "image" },
   "people-culture": { src: "/assets/images/logos/people-culture.png", kind: "image" },
+  laguku: { src: "/assets/images/logos/laguku.png", kind: "image" },
+  "taxai-wizard": { src: "/assets/images/logos/taxai.png", kind: "image" },
+  "taxai-chat": { src: "/assets/images/logos/taxai.png", kind: "image" },
+  "taxai-talk": { src: "/assets/images/logos/taxai.png", kind: "image" },
 };
 
 export function Brand({

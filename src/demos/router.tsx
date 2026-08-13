@@ -22,6 +22,10 @@ import { InvoiceSense } from "./invoice-sense";
 import { Channelflow } from "./channelflow";
 import { KitchenFresh } from "./kitchen-fresh";
 import { PeopleCulture } from "./people-culture";
+import { Laguku } from "./laguku";
+import { TaxaiWizard } from "./taxai-wizard";
+import { TaxaiChat } from "./taxai-chat";
+import { TaxaiTalk } from "./taxai-talk";
 
 export interface DemoRoute {
   /** id of the demo, or null if at the hub. */
@@ -74,6 +78,10 @@ const DEMO_COMPONENTS: Record<DemoId, ComponentType<{ sub: string | null; theme:
   channelflow: Channelflow,
   "kitchen-fresh": KitchenFresh,
   "people-culture": PeopleCulture,
+  laguku: Laguku,
+  "taxai-wizard": TaxaiWizard,
+  "taxai-chat": TaxaiChat,
+  "taxai-talk": TaxaiTalk,
 };
 
 export function DemoRouter() {
@@ -93,10 +101,11 @@ export function DemoRouter() {
   }
 
   const Demo = DEMO_COMPONENTS[route.id];
+  const isLaguku = route.id === "laguku";
   return (
     <>
       <Demo sub={route.sub} theme={meta.theme} />
-      <MobileViewportNotice />
+      {!isLaguku && <MobileViewportNotice />}
     </>
   );
 }
