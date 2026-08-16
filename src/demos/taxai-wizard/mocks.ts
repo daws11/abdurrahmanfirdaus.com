@@ -10,7 +10,10 @@ export interface Plan {
   interval: "14 days" | "month" | "quarter" | "year";
   messageQuota: number;
   features: string[];
+  description: string;
   highlighted?: boolean;
+  /** Trial plans skip Checkout → jump directly to Success. */
+  isTrial?: boolean;
 }
 
 export interface Subscription {
@@ -33,33 +36,63 @@ export const PLANS: Plan[] = [
     name: "Free Trial",
     priceUsd: 0,
     interval: "14 days",
-    messageQuota: 50,
-    features: ["50 messages", "GPT-4o tax Q&A", "Document upload (3 MB)", "Email support"],
+    messageQuota: 10,
+    description: "Try all features for 14 days",
+    features: [
+      "Up to 10 messages",
+      "No credit card required",
+      "1 user",
+      "1 device",
+      "Bilingual support (EN/AR)",
+    ],
+    isTrial: true,
   },
   {
     id: "monthly",
-    name: "Monthly",
+    name: "Monthly Plan",
     priceUsd: 99,
     interval: "month",
     messageQuota: 100,
-    features: ["100 messages / month", "GPT-4o tax Q&A", "Document upload (10 MB)", "Priority support"],
+    description: "Ideal for business owners, freelancers, tax advisors, accountants, and finance professionals.",
+    features: [
+      "100 AI-powered messages per month",
+      "UAE Tax Coverage (VAT/Corporate/Excise)",
+      "Priority email support",
+      "1 user",
+      "1 device",
+    ],
   },
   {
     id: "quarterly",
-    name: "Quarterly",
+    name: "Quarterly Plan",
     priceUsd: 250,
     interval: "quarter",
     messageQuota: 300,
-    features: ["300 messages / quarter", "GPT-4o tax Q&A", "Document upload (25 MB)", "Priority support", "Tax calendar reminders"],
+    description: "Best for professionals who want consistent tax advisory access with savings.",
+    features: [
+      "300 messages total over 3 months",
+      "Standard support",
+      "1-2 users",
+      "2 devices",
+      "Monthly tax digest",
+    ],
     highlighted: true,
   },
   {
     id: "yearly",
-    name: "Yearly",
+    name: "Yearly Plan",
     priceUsd: 899,
     interval: "year",
     messageQuota: 1200,
-    features: ["1,200 messages / year", "GPT-4o tax Q&A", "Document upload (unlimited)", "Dedicated CSM", "Custom tax prompts"],
+    description: "For users committed to long-term support and deeper features, with the best value.",
+    features: [
+      "1,200 messages per year (averaging 100/month)",
+      "Priority email support",
+      "Early access to new features",
+      "Onboarding session included",
+      "3+ users",
+      "3 devices",
+    ],
   },
 ];
 
