@@ -2,21 +2,20 @@
 //
 // Top-level shell for TaxAI Wizard. Wraps `Shell`, mounts a stepper-style
 // sidebar nav (numbered, with completed-state checkmarks + active accent)
-// and switches on `sub` across 7 onboarding screens.
+// and switches on `sub` across 6 production-aligned onboarding screens.
 
 import { Shell } from "@/demos/_shared/Shell";
-import { Stepper } from "@/demos/_shared/Stepper";
 import { useTheme } from "@/demos/_shared/useTheme";
 import { setDemoHash } from "@/demos/router";
 import type { DemoTheme } from "@/demos/_shared/theme";
+import { Stepper } from "@/demos/_shared/Stepper";
 import { TAXAI_WIZARD_SCREENS, getScreenLabel } from "./routes";
-import { EmailStep } from "./screens/EmailStep";
-import { OtpStep } from "./screens/OtpStep";
-import { PersonalInfo } from "./screens/PersonalInfo";
-import { Plans } from "./screens/Plans";
-import { Checkout } from "./screens/Checkout";
+import { EmailInputStep } from "./screens/EmailInputStep";
+import { EmailVerificationStep } from "./screens/EmailVerificationStep";
+import { PersonalInfoStep } from "./screens/PersonalInfoStep";
+import { PlanSelectionStep } from "./screens/PlanSelectionStep";
+import { CheckoutStep } from "./screens/CheckoutStep";
 import { SuccessStep } from "./screens/SuccessStep";
-import { Dashboard } from "./screens/Dashboard";
 
 export function TaxaiWizard({ theme, sub }: { theme: DemoTheme; sub: string | null }) {
   useTheme(theme.id);
@@ -33,19 +32,19 @@ export function TaxaiWizard({ theme, sub }: { theme: DemoTheme; sub: string | nu
   const content = (() => {
     switch (screen) {
       case "email":
-        return <EmailStep />;
-      case "otp":
-        return <OtpStep />;
-      case "register":
-        return <PersonalInfo />;
+        return <EmailInputStep />;
+      case "verification":
+        return <EmailVerificationStep />;
+      case "personal-info":
+        return <PersonalInfoStep />;
       case "plans":
-        return <Plans />;
+        return <PlanSelectionStep />;
       case "checkout":
-        return <Checkout />;
+        return <CheckoutStep />;
       case "success":
         return <SuccessStep />;
-      case "dashboard":
-        return <Dashboard />;
+      default:
+        return <EmailInputStep />;
     }
   })();
 
