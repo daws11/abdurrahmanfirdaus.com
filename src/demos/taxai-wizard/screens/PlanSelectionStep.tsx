@@ -29,6 +29,7 @@ export function PlanSelectionStep() {
           return (
             <div
               key={plan.id}
+              // ponytail: 1.02 scale (not production's 1.05) — less aggressive for a static portfolio demo card
               className="relative flex flex-col rounded-md border shadow-sm backdrop-blur-md transition-all hover:shadow-md hover:scale-[1.02]"
               style={{
                 backgroundColor: "color-mix(in srgb, var(--surface) 80%, transparent)",

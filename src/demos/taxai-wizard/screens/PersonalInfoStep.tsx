@@ -235,7 +235,7 @@ export function PersonalInfoStep() {
           <div
             className="rounded-md p-3 text-xs space-y-1"
             style={{
-              backgroundColor: "color-mix(in srgb, var(--surface) 50%, transparent)",
+              backgroundColor: "color-mix(in srgb, var(--surface) 80%, transparent)",
               color: "var(--muted)",
             }}
           >

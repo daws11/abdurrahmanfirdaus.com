@@ -14,7 +14,7 @@ import { PLANS, SAMPLE_USER } from "../mocks";
 export function CheckoutStep() {
   // ponytail: hardcode Quarterly for visual demo (matches production default)
   const planName = sessionStorage.getItem("taxai-wizard-plan") || "Quarterly Plan";
-  const plan = PLANS.find((p) => p.name === planName) ?? PLANS.find((p) => p.id === "quarterly")!;
+  const plan = PLANS.find((p) => p.name === planName) ?? PLANS.find((p) => p.id === "quarterly") ?? PLANS[0];
   const vatAmount = (plan.priceUsd * 0.05).toFixed(2);
   const total = (plan.priceUsd * 1.05).toFixed(2);
 
