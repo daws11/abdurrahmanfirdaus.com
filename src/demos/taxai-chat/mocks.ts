@@ -124,3 +124,35 @@ export const LANGUAGES: Language[] = [
   { code: "en", name: "English", nativeName: "English" },
   { code: "ar", name: "Arabic", nativeName: "العربية" },
 ];
+
+// PLANS + SAMPLE_SUBSCRIPTION — Settings page subscription card. Plan shape
+// mirrors taxai-wizard/mocks.ts (single source of plan data, but kept local
+// here since each demo is self-contained per project rules).
+// ponytail: taxai-chat owns its own plan fixtures so the demo doesn't depend
+// on taxai-wizard mocks.
+export interface Plan {
+  id: "trial" | "monthly" | "quarterly" | "yearly";
+  name: string;
+  priceUsd: number;
+  interval: "14 days" | "month" | "quarter" | "year";
+  messageQuota: number;
+}
+
+export const PLANS: Plan[] = [
+  { id: "trial", name: "Free Trial", priceUsd: 0, interval: "14 days", messageQuota: 10 },
+  { id: "monthly", name: "Monthly Plan", priceUsd: 99, interval: "month", messageQuota: 100 },
+  { id: "quarterly", name: "Quarterly Plan", priceUsd: 250, interval: "quarter", messageQuota: 300 },
+  { id: "yearly", name: "Yearly Plan", priceUsd: 899, interval: "year", messageQuota: 1200 },
+];
+
+export interface Subscription {
+  planId: Plan["id"];
+  startedAt: string;
+  expiresAt: string;
+}
+
+export const SAMPLE_SUBSCRIPTION: Subscription = {
+  planId: "quarterly",
+  startedAt: "2026-07-15",
+  expiresAt: "2026-10-15",
+};

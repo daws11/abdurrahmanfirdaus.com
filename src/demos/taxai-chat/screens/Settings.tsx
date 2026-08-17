@@ -1,54 +1,98 @@
 // src/demos/taxai-chat/screens/Settings.tsx
 //
-// Settings page — profile photo placeholder above Name, language detection
-// toggle (EN/AR/auto), model picker, and account info. Visual only, no save.
+// Settings — language picker (Globe dropdown) + compact Subscription card +
+// Model + Account. Mirrors production settings + SubscriptionInfo card.
 
-import { Globe, Cpu, User } from "lucide-react";
+import { Cpu, User, Crown, Calendar } from "lucide-react";
 import { Field } from "@/demos/_shared/Field";
-import { SAMPLE_USER, initials } from "../mocks";
+import { LanguageDropdown } from "./LanguageDropdown";
+import { TOKEN_QUOTA, SAMPLE_SUBSCRIPTION, SAMPLE_USER, PLANS } from "../mocks";
+
+const plan = PLANS.find((p) => p.id === SAMPLE_SUBSCRIPTION.planId)!;
 
 export function Settings() {
+  const pct = Math.round((TOKEN_QUOTA.used / TOKEN_QUOTA.limit) * 100);
+
   return (
     <div className="mx-auto max-w-2xl px-6 py-10 space-y-8">
-      {/* Profile photo placeholder */}
-      <section className="flex items-center gap-4">
-        <div
-          className="flex h-16 w-16 items-center justify-center rounded-full text-lg font-semibold"
-          style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
-        >
-          {initials}
-        </div>
-        <div>
-          <p className="text-sm font-semibold">{SAMPLE_USER.name}</p>
-          <p className="text-xs" style={{ color: "var(--muted)" }}>
-            Photo upload is disabled in the prototype.
-          </p>
-        </div>
-      </section>
-
+      {/* Language */}
       <section>
         <h3 className="flex items-center gap-2 text-sm font-semibold">
-          <Globe className="h-4 w-4" /> Language
+          Language
         </h3>
         <p className="mt-1 text-xs" style={{ color: "var(--muted)" }}>
-          ChatGPT auto-detects your input language. You can force a specific response language.
+          Atto detects your input language and responds accordingly. Override for voice output.
         </p>
         <div className="mt-4">
-          <Field label="Response language" defaultValue="Auto-detect" />
-        </div>
-        <div className="mt-3 flex gap-2 text-xs">
-          <span className="rounded-full px-3 py-1 font-medium" style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}>
-            Auto
-          </span>
-          <span className="rounded-full border px-3 py-1" style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}>
-            English
-          </span>
-          <span className="rounded-full border px-3 py-1" style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}>
-            العربية
-          </span>
+          <LanguageDropdown />
         </div>
       </section>
 
+      {/* Subscription */}
+      <section>
+        <h3 className="flex items-center justify-between text-sm font-semibold">
+          <span className="flex items-center gap-2">
+            <Crown className="h-4 w-4" style={{ color: "var(--accent)" }} />
+            Subscription
+          </span>
+          <span
+            className="rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+            style={{
+              backgroundColor: "color-mix(in srgb, var(--ok) 15%, transparent)",
+              color: "var(--ok)",
+            }}
+          >
+            {SAMPLE_SUBSCRIPTION.planId === "trial" ? "Trial" : "Active"}
+          </span>
+        </h3>
+        <p className="mt-1 text-xs" style={{ color: "var(--muted)" }}>
+          {plan.name} — {plan.messageQuota.toLocaleString()} messages / {plan.interval}
+        </p>
+
+        <div
+          className="mt-4 rounded-md border p-4"
+          style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
+        >
+          <div className="flex items-baseline justify-between text-xs">
+            <span style={{ color: "var(--muted)" }}>Messages used this period</span>
+            <span className="font-medium" style={{ color: "var(--fg)" }}>
+              {TOKEN_QUOTA.used.toLocaleString()} / {plan.messageQuota.toLocaleString()}
+            </span>
+          </div>
+          <div
+            className="mt-2 h-2 w-full overflow-hidden rounded-full"
+            style={{ backgroundColor: "var(--border)" }}
+          >
+            <div
+              className="h-full rounded-full"
+              style={{ width: `${pct}%`, backgroundColor: "var(--accent)" }}
+            />
+          </div>
+          <div className="mt-4 flex items-center gap-2 text-xs" style={{ color: "var(--muted)" }}>
+            <Calendar className="h-4 w-4" />
+            Renews on {SAMPLE_SUBSCRIPTION.expiresAt}
+          </div>
+          <div className="mt-4 flex gap-2 pt-3 border-t" style={{ borderColor: "var(--border)" }}>
+            <button
+              type="button"
+              className="flex-1 rounded-md border px-3 py-2 text-xs font-medium hover:opacity-90"
+              style={{ borderColor: "var(--border)", color: "var(--fg)" }}
+            >
+              Change Plan
+            </button>
+            <button
+              type="button"
+              className="flex-1 rounded-md px-3 py-2 text-xs font-medium hover:opacity-90"
+              style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
+            >
+              <Crown className="mr-2 inline h-3.5 w-3.5" />
+              Upgrade
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Model */}
       <section>
         <h3 className="flex items-center gap-2 text-sm font-semibold">
           <Cpu className="h-4 w-4" /> Model
@@ -58,6 +102,7 @@ export function Settings() {
         </div>
       </section>
 
+      {/* Account */}
       <section>
         <h3 className="flex items-center gap-2 text-sm font-semibold">
           <User className="h-4 w-4" /> Account
