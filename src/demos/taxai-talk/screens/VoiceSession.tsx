@@ -1,11 +1,22 @@
 // src/demos/taxai-talk/screens/VoiceSession.tsx
 //
-// Live voice session view — centered avatar circle (initials), status badge
-// ("Live"), 32-bar waveform (was 24), and mic/end-call controls. The
-// waveform uses staggered animation delays so the bars feel "alive".
+// Live voice session view — mirrors talk.taxai.ae production
+// ConversationControls.tsx layout:
+// - Live status badge (kept from iteration 3)
+// - Three avatars (kept: user / center AI / voice variant)
+// - Voice name + description (kept)
+// - 32-bar waveform (kept: synthetic visual element)
+// - Mute button + MicButton (primary) + End call
+// - StatusIndicator (NEW: listening/speaking)
+// - Powered-by line (kept)
+// - QuickStartPills (NEW: 3 colored-dot footer)
 
-import { Mic, PhoneOff, Volume2, Radio } from "lucide-react";
+import { useState } from "react";
+import { Volume2, Radio, PhoneOff } from "lucide-react";
 import { Button } from "@/demos/_shared/Button";
+import { MicButton, type MicState } from "./MicButton";
+import { StatusIndicator, type SessionStatus } from "./StatusIndicator";
+import { QuickStartPills } from "./QuickStartPills";
 import { VOICES, SELECTED_VOICE } from "../mocks";
 
 const AVATAR_INITIALS = "AI"; // TaxAI Assistant
@@ -13,6 +24,25 @@ const BARS = 32;
 
 export function VoiceSession() {
   const voice = VOICES.find((v) => v.id === SELECTED_VOICE)!;
+  const [micState, setMicState] = useState<MicState>("idle");
+  const [status, setStatus] = useState<SessionStatus>("idle");
+
+  const handleStart = () => {
+    setMicState("connecting");
+    setTimeout(() => {
+      setMicState("active");
+      setStatus("listening");
+    }, 300);
+  };
+
+  const handleEnd = () => {
+    setMicState("ending");
+    setTimeout(() => {
+      setMicState("idle");
+      setStatus("ended");
+      setTimeout(() => setStatus("idle"), 800);
+    }, 300);
+  };
 
   return (
     <div className="flex h-full flex-col items-center justify-center px-6">
@@ -39,7 +69,6 @@ export function VoiceSession() {
               color: "var(--fg)",
             }}
           >
-            {/* ponytail: hardcoded avatar — taxai-talk mocks doesn't export SAMPLE_USER */}
             SM
           </div>
           <p className="text-[10px] uppercase tracking-widest" style={{ color: "var(--muted)" }}>
@@ -94,9 +123,10 @@ export function VoiceSession() {
         ))}
       </div>
 
-      {/* Controls */}
+      {/* Controls — Mute (left), MicButton (center primary), End (right) */}
       <div className="mt-10 flex items-center gap-4">
         <button
+          type="button"
           className="flex h-12 w-12 items-center justify-center rounded-full border hover:opacity-80"
           style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)", color: "var(--muted)" }}
           aria-label="Mute"
@@ -104,28 +134,27 @@ export function VoiceSession() {
           <Volume2 className="h-5 w-5" />
         </button>
 
-        <button
-          className="flex h-16 w-16 items-center justify-center rounded-full shadow-lg"
-          style={{ backgroundColor: "var(--accent)", color: "white" }}
-          aria-label="Speak"
-        >
-          <Mic className="h-7 w-7" />
-        </button>
+        <MicButton state={micState} onStart={handleStart} onEnd={handleEnd} />
 
         <Button
           type="button"
           variant="secondary"
           className="h-12 w-12 !p-0 rounded-full"
           aria-label="End call"
+          disabled={micState === "idle"}
         >
           <PhoneOff className="h-5 w-5" />
         </Button>
       </div>
 
+      <StatusIndicator status={status} />
+
       <p className="mt-6 text-xs" style={{ color: "var(--muted)" }}>
         Powered by <span className="font-semibold" style={{ color: "var(--accent)" }}>ElevenLabs</span>
         {" "}· GPT-4o reasoning
       </p>
+
+      <QuickStartPills />
     </div>
   );
 }
