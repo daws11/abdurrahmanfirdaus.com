@@ -39,4 +39,16 @@ export const SAMPLE_TRANSCRIPT: TranscriptTurn[] = [
   { id: "t-6", role: "assistant", language: "EN", content: "Corporate tax registration with the Federal Tax Authority is mandatory for UAE resident juridical persons, and for non-resident persons with a permanent establishment in the UAE. The registration window depends on when your business was established.", timestamp: "00:37" },
 ];
 
+export const CONVERSATION_SUMMARY = `The user asked three questions about UAE taxation in a multilingual conversation (English + Arabic):
+
+1. **VAT on restaurants** — confirmed the standard 5% VAT rate applies uniformly to dine-in and takeaway food, with no carve-outs in the Federal Decree-Law.
+
+2. **Excise tax on beverages and tobacco** — clarified Excise Tax rates: 50% on carbonated beverages, 100% on tobacco products, and 100% on energy drinks. Tax is triggered at import or release from an excise warehouse.
+
+3. **Corporate Tax registration** — explained that Federal Tax Authority registration is mandatory for UAE-resident juridical persons and non-residents with a permanent establishment, with deadlines tied to the date of business establishment.
+
+**Key terms surfaced:** Federal Decree-Law No. 8 of 2017, Federal Tax Authority, Excise Warehouse, Permanent Establishment.
+
+**Recommended next steps:** Review the user's specific business activity codes (VAT and CT) and confirm any goods that may qualify for designated-zone VAT relief. Open corporate tax registration flow via the EmaraTax portal if establishment date is approaching the 9-month deadline.`;
+
 export const SELECTED_VOICE: VoiceId = "aria";
