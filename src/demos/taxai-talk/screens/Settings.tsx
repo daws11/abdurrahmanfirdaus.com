@@ -1,10 +1,12 @@
 // src/demos/taxai-talk/screens/Settings.tsx
 //
 // Settings — voice selection cards (4 ElevenLabs voices) with a "Preview"
-// button per card, plus the response language picker. Visual only.
+// button per card, plus the response language picker. QuickStartPills footer
+// mirrors production's bottom-of-page colored-dot pills.
 
 import { Check, Play } from "lucide-react";
 import { VOICES, SELECTED_VOICE } from "../mocks";
+import { QuickStartPills } from "./QuickStartPills";
 
 export function Settings() {
   return (
@@ -86,6 +88,14 @@ export function Settings() {
             العربية
           </span>
         </div>
+      </section>
+
+      <section>
+        <h3 className="text-sm font-semibold">Capabilities</h3>
+        <p className="mt-1 text-xs" style={{ color: "var(--muted)" }}>
+          What this voice session can do for you.
+        </p>
+        <QuickStartPills />
       </section>
     </div>
   );
