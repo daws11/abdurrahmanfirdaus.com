@@ -54,9 +54,9 @@ export function Settings() {
           style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
         >
           <div className="flex items-baseline justify-between text-xs">
-            <span style={{ color: "var(--muted)" }}>Messages used this period</span>
+            <span style={{ color: "var(--muted)" }}>Tokens used this period</span>
             <span className="font-medium" style={{ color: "var(--fg)" }}>
-              {TOKEN_QUOTA.used.toLocaleString()} / {plan.messageQuota.toLocaleString()}
+              {TOKEN_QUOTA.used.toLocaleString()} / {TOKEN_QUOTA.limit.toLocaleString()}
             </span>
           </div>
           <div
