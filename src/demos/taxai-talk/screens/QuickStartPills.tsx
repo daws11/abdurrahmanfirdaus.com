@@ -30,7 +30,7 @@ export function QuickStartPills() {
             className="h-2 w-2 shrink-0 rounded-full"
             style={{ backgroundColor: pill.color }}
           />
-          <span className="text-muted-foreground truncate" style={{ color: "var(--muted)" }}>
+          <span className="truncate" style={{ color: "var(--muted)" }}>
             {pill.label}
           </span>
         </div>

@@ -21,7 +21,7 @@ export function StatusIndicator({ status }: StatusIndicatorProps) {
     <div className="mt-2 flex h-5 items-center justify-center gap-2">
       <div
         className="flex items-center gap-1.5"
-        style={{ color: isListening ? "#3b82f6" : "#10b981" }}
+        style={{ color: isListening ? "#3b82f6" : "var(--ok)" }}
       >
         {isListening ? (
           <>

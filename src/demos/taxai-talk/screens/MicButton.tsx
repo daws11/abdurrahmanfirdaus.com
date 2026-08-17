@@ -24,14 +24,12 @@ export function MicButton({ state, onStart, onEnd }: MicButtonProps) {
       onClick={isActive ? onEnd : onStart}
       disabled={isLoading}
       aria-label={isActive ? "End conversation" : "Start conversation"}
-      className="relative flex items-center justify-center rounded-full transition-all duration-200 ease-in-out active:scale-95 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2"
+      className="relative flex h-24 w-24 items-center justify-center rounded-full transition-all duration-200 ease-in-out active:scale-95 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--accent)] lg:h-32 lg:w-32"
       style={{
-        height: "6rem",
-        width: "6rem",
-        backgroundColor: isActive ? "#ef4444" : "var(--accent)",
+        backgroundColor: isActive ? "var(--bad)" : "var(--accent)",
         color: "white",
         boxShadow: isActive
-          ? "0 10px 25px -5px rgba(239, 68, 68, 0.4)"
+          ? "0 10px 25px -5px color-mix(in srgb, var(--bad) 40%, transparent)"
           : "0 10px 25px -5px color-mix(in srgb, var(--accent) 40%, transparent)",
       }}
     >
@@ -49,7 +47,7 @@ export function MicButton({ state, onStart, onEnd }: MicButtonProps) {
         <span
           aria-hidden
           className="absolute inset-0 rounded-full opacity-75 animate-ping"
-          style={{ backgroundColor: "#ef4444" }}
+          style={{ backgroundColor: "var(--bad)" }}
         />
       )}
     </button>
