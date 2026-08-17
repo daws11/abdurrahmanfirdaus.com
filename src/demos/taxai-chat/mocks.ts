@@ -90,3 +90,37 @@ export const initials = SAMPLE_USER.name
   .join("")
   .slice(0, 2)
   .toUpperCase();
+
+// SESSION_HISTORY — past chat sessions for the sidebar list (derived from
+// CONVERSATIONS so titles and counts stay in sync; id is reused directly
+// since CONVERSATIONS already uses `c-001`–`c-006` ids)
+export interface SessionHistoryItem {
+  id: string;
+  title: string;
+  updatedAt: string;
+  messageCount: number;
+}
+
+export const SESSION_HISTORY: SessionHistoryItem[] = CONVERSATIONS.map(
+  ({ id, title, updatedAt, messageCount }) => ({ id, title, updatedAt, messageCount }),
+);
+
+// USER_META — sidebar footer user info (extends SAMPLE_USER; initials reuses
+// the existing initials export to keep a single source of truth)
+export const USER_META = {
+  initials,
+  name: SAMPLE_USER.name,
+  email: SAMPLE_USER.email,
+};
+
+// LANGUAGES — language dropdown options (matches production's EN/AR)
+export interface Language {
+  code: "en" | "ar";
+  name: string;
+  nativeName: string;
+}
+
+export const LANGUAGES: Language[] = [
+  { code: "en", name: "English", nativeName: "English" },
+  { code: "ar", name: "Arabic", nativeName: "العربية" },
+];
