@@ -16,12 +16,12 @@ import { StatusIndicator, type SessionStatus } from "./StatusIndicator";
 import { QuickStartPills } from "./QuickStartPills";
 import {
   VOICES,
-  SELECTED_VOICE,
   CONCLUSION_HEADLINE,
   CONCLUSION_BODY,
   CONCLUSION_CTAS,
   SIMULATED_TURNS,
 } from "../mocks";
+import { useVoiceSelection } from "../useVoiceSelection";
 import { useTranscript, resetTranscript } from "../useTranscript";
 
 const AVATAR_INITIALS = "AI";
@@ -34,7 +34,8 @@ function fmtMMSS(totalSec: number): string {
 }
 
 export function VoiceSession() {
-  const voice = VOICES.find((v) => v.id === SELECTED_VOICE)!;
+  const [selectedVoiceId] = useVoiceSelection();
+  const voice = VOICES.find((v) => v.id === selectedVoiceId)!;
   const [micState, setMicState] = useState<MicState>("idle");
   const [status, setStatus] = useState<SessionStatus>("idle");
   const [showConclusion, setShowConclusion] = useState(false);

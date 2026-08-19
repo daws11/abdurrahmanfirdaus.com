@@ -6,7 +6,8 @@
 
 import { Play } from "lucide-react";
 import { Badge } from "@/demos/_shared/Badge";
-import { VOICES, SELECTED_VOICE, CONVERSATION_SUMMARY } from "../mocks";
+import { VOICES, CONVERSATION_SUMMARY } from "../mocks";
+import { useVoiceSelection } from "../useVoiceSelection";
 import { useTranscript } from "../useTranscript";
 
 const AVATAR_INITIALS = "AI";
@@ -18,7 +19,8 @@ const AUDIO_DURATIONS: Record<string, string> = {
 };
 
 export function Transcript() {
-  const voice = VOICES.find((v) => v.id === SELECTED_VOICE)!;
+  const [selectedVoiceId] = useVoiceSelection();
+  const voice = VOICES.find((v) => v.id === selectedVoiceId)!;
   const [transcript] = useTranscript();
   const lastAssistantTurn = [...transcript].reverse().find((t) => t.role === "assistant");
 
