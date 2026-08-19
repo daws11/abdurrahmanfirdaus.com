@@ -32,7 +32,7 @@ export const profile = {
   name: "Abdurrahman Firdaus",
   nickname: "Daus",
   title: "Forward Deployed Engineer & Tech Lead",
-  bio: "Forward Deployed Engineer based in Bali. I sit with the team, find what's actually broken, ship the smallest fix that unsticks it, and stay until they reach for it without thinking. Bachelor's 2020–2025; Bersinar.id (Jan–Jul 2021) overlapped with final school years; full-time engineering roles from Aug 2025.",
+  bio: "Forward Deployed Engineer based in Bali. I sit with the team, find what's actually broken, ship the smallest fix that unsticks it, and stay until they reach for it without thinking.",
   email: "hello@abdurrahmanfirdaus.com",
   location: "Bali, Indonesia",
   photo: "/assets/images/daws.jpg",
