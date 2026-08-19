@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ProjectStory } from "@/data/portfolio";
+import { getDemoById } from "@/demos/_index";
 
 interface CaseStudyCardProps {
   story: ProjectStory;
@@ -10,6 +11,7 @@ interface CaseStudyCardProps {
 
 export function CaseStudyCard({ story, index }: CaseStudyCardProps) {
   const reverse = index % 2 === 1;
+  const brand = getDemoById(story.id)?.title ?? story.division;
 
   return (
     <motion.article
@@ -53,10 +55,10 @@ export function CaseStudyCard({ story, index }: CaseStudyCardProps) {
       >
         <div className="flex items-center gap-3">
           <span className="rounded-full border border-emerald-400/40 bg-emerald-400/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-emerald-400">
-            {story.division}
+            {brand}
           </span>
           <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-neutral-600">
-            Case study · {String(index + 1).padStart(2, "0")}
+            {story.division} · {String(index + 1).padStart(2, "0")}
           </span>
         </div>
 

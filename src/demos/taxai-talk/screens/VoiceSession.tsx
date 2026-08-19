@@ -19,7 +19,7 @@ import { StatusIndicator, type SessionStatus } from "./StatusIndicator";
 import { QuickStartPills } from "./QuickStartPills";
 import { VOICES, SELECTED_VOICE } from "../mocks";
 
-const AVATAR_INITIALS = "AI"; // TaxAI Assistant
+const AVATAR_INITIALS = "YO"; // Yosr, TaxAI's voice agent
 const BARS = 32;
 
 export function VoiceSession() {

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useProjectRoute } from "@/lib/use-project-route";
 import { projectStories } from "@/data/portfolio";
+import { getDemoById } from "@/demos/_index";
 import { Hero } from "@/components/sections/project/Hero";
 import { Narrative } from "@/components/sections/project/Narrative";
 import { Sidebar } from "@/components/sections/project/Sidebar";
@@ -26,7 +27,7 @@ export function ProjectPage() {
           className="mb-16 flex flex-col gap-3"
         >
           <span className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-400">
-            Case study · {story.division}
+            {getDemoById(story.id)?.title ?? "Case study"} · {story.division}
           </span>
           <h1 className="max-w-3xl font-serif text-4xl italic leading-tight md:text-5xl lg:text-6xl">
             {story.kicker}

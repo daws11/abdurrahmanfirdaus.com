@@ -69,10 +69,12 @@ export const tickerItems: string[] = [
   "COGS",
   "Stocktake",
   "Finance",
-  "People & Culture",
+  "PeopleOS",
   "WhatsApp Business",
   "Instagram Graph",
   "TikTok",
+  "Atto",
+  "Yosr",
   "Mastra AI",
   "Teaspoon",
   "iSeller",
@@ -88,7 +90,7 @@ export interface Skill {
 
 /** CV-specific summary — condensed from the LinkedIn About section. */
 export const resumeSummary =
-  "Forward Deployed Engineer based in Bali. I sit with the team, find what's actually broken, ship the smallest fix that unsticks it, and stay until they reach for it without thinking. I lead the Technology & Innovation Lab at PT Unicorn Food and Service, owning end-to-end delivery of every internal product — from PRD and roadmap to real-time integrations and adoption. Five production apps are now in daily use across kitchen, finance, warehouse, HR, and bookings teams. How I work: Discover → Design → Deploy → Drive adoption — I don't write a line of code until I've watched the team do the work by hand.";
+  "Forward Deployed Engineer based in Bali. I sit with the team, find what's actually broken, ship the smallest fix that unsticks it, and stay until they reach for it without thinking. I lead the Technology & Innovation Lab at PT Unicorn Food and Service, owning end-to-end delivery of every internal product — from PRD and roadmap to real-time integrations and adoption. Five products are in daily use: Invenflow (purchasing, warehouse, outlets), Invoice Sense (finance reconciliation on Xero + iSeller), PeopleOS (in-house HRM replacing a per-head vendor bill), Channelflow (This is Bali bookings across WhatsApp, Instagram, email, TikTok with an AI agent), and Kitchen Fresh (outlet kitchen ops). Alongside that I build the AI surfaces for TaxAI, a UAE tax assistant: Atto, the chat agent that cites Federal Decree-Law sources, and Yosr, the EN/AR voice agent on GPT-4o + ElevenLabs. How I work: Discover → Design → Deploy → Drive adoption — I don't write a line of code until I've watched the team do the work by hand.";
 
 export interface SkillGroup {
   label: string;
@@ -151,7 +153,7 @@ export const experience: WorkExperience[] = [
         date: "Oct 2025 – Present",
         current: true,
         description:
-          "Lead the Technology & Innovation Lab: end-to-end FDE ownership of every internal product. Discovery at the desk, not on the whiteboard. PRDs, roadmaps, exec reviews, real-time integrations with Xero, iSeller, Teaspoon Lab, WhatsApp Business, Instagram Graph, TikTok. Promoted from Fullstack Developer to Tech Lead after 2 months for owning shipping velocity and adoption.",
+          "Lead the Technology & Innovation Lab: end-to-end FDE ownership of every internal product — Invenflow (purchasing/warehouse/outlets), Invoice Sense (finance), PeopleOS (HRM), Channelflow (This is Bali bookings + AI agent), Kitchen Fresh (kitchen ops). Discovery at the desk, not on the whiteboard. PRDs, roadmaps, exec reviews, real-time integrations with Xero, iSeller, Teaspoon Lab, WhatsApp Business, Instagram Graph, TikTok. Promoted from Fullstack Developer to Tech Lead after 2 months for owning shipping velocity and adoption.",
         impact:
           "5 production apps in active use across 6 internal teams (kitchen, finance, PC, warehouse, marketing, ops) — replacing ~6 vendor tools and 4 manual workflows.",
       },
@@ -285,10 +287,10 @@ export const projects: FocusRailItem[] = [
   },
   {
     id: "inv-03",
-    title: "People & Culture",
-    meta: "HR · Workforce",
+    title: "PeopleOS",
+    meta: "HR · Workforce · In-house HRM",
     description:
-      "Internal workforce module for the People & Culture team — onboarding, records, lifecycle.",
+      "In-house HRM that replaced the per-head vendor bill — onboarding, geofenced attendance, payroll.",
     imageSrc: "/assets/images/projects/people-culture.svg",
     href: "#/demos/people-culture",
     privateRepoHref: "https://github.com/PTUNICORN/people-and-culture-app",
@@ -338,8 +340,8 @@ export const projects: FocusRailItem[] = [
   },
   {
     id: "taxai-chat",
-    title: "TaxAI Chat",
-    meta: "Tax AI · Document Q&A",
+    title: "Atto",
+    meta: "TaxAI · Chat agent · Document Q&A",
     description:
       "Conversations with the UAE tax code — upload, reference, cite. GPT-4o answers with sources.",
     imageSrc: "/assets/images/projects/taxai-chat.png",
@@ -348,8 +350,8 @@ export const projects: FocusRailItem[] = [
   },
   {
     id: "taxai-talk",
-    title: "TaxAI Talk",
-    meta: "Tax AI · Voice · ElevenLabs",
+    title: "Yosr",
+    meta: "TaxAI · Voice agent · ElevenLabs",
     description:
       "GPT reasons, ElevenLabs speaks — tax answers in multiple languages over a live voice channel.",
     imageSrc: "/assets/images/projects/taxai-talk.png",
@@ -549,7 +551,7 @@ export const projectStories: ProjectStory[] = [
   {
     id: "taxai-wizard",
     projectHref: "https://github.com/daws11/tax-ai-wizard-web-70",
-    division: "Tax AI · Stripe subscription",
+    division: "TaxAI · Stripe subscription",
     kicker: "From Free Trial to Yearly — a Stripe-powered onboarding for the UAE tax assistant.",
     fdeCallout:
       "The Stripe integration was a day of work. The seven screens wrapped around it — email capture, OTP verification, personal info, plan selection, checkout, success state, dashboard reveal — took weeks, because each one is a quiet place the customer can disappear. The existing funnel was losing people at step two with no visible progress, no obvious next action, and no signal that the work was worth finishing. So I rebuilt the surface to make state itself the message: the customer always knows where they are, what's coming next, and how to back out without losing what they've already entered.",
@@ -576,7 +578,7 @@ export const projectStories: ProjectStory[] = [
   {
     id: "taxai-chat",
     projectHref: "https://github.com/daws11/chat.taxai",
-    division: "Tax AI · Document Q&A",
+    division: "TaxAI · Chat agent",
     kicker: "Conversations with the UAE tax code — upload, reference, cite.",
     fdeCallout:
       "A chatbot answer that doesn't cite its source isn't useful to the person asking. The actual customer — a UAE tax consultant, an in-house accountant, a finance lead — needs to take every line of an answer and defend it downstream: in a client email, in a board memo, in a filing that has to reference back to the FTA. So every response in this surface carries the specific citation it just paraphrased — Federal Decree-Law No. (8) of 2017, the Executive Regulations, FTA Public Clarifications — under the bubble, not buried in a settings page. The chat interface is the surface; the citation cards are what make the answer actionable.",
@@ -603,7 +605,7 @@ export const projectStories: ProjectStory[] = [
   {
     id: "taxai-talk",
     projectHref: "https://github.com/daws11/talk.taxai.ae",
-    division: "Tax AI · Voice pipeline",
+    division: "TaxAI · Voice agent",
     kicker: "GPT reasons, ElevenLabs speaks — tax answers in multiple languages.",
     fdeCallout:
       "I didn't pick ElevenLabs first. I picked it last — after trying three other TTS pipelines that couldn't handle Arabic without losing the tax terms. Voice is the trust surface for voice products. If the Arabic sounds wrong, the customer stops trusting the English too.",

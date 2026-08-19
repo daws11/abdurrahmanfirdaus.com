@@ -3,8 +3,8 @@ import type { DemoTheme } from "../theme";
 export const taxaiTalkTheme: DemoTheme = {
   id: "taxai-talk",
   brand: {
-    name: "TaxAI Talk",
-    monogram: "TT",
+    name: "Yosr",
+    monogram: "YO",
     surface: "dark",
   },
   tokens: {

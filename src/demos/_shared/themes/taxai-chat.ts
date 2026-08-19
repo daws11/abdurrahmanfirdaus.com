@@ -3,8 +3,8 @@ import type { DemoTheme } from "../theme";
 export const taxaiChatTheme: DemoTheme = {
   id: "taxai-chat",
   brand: {
-    name: "TaxAI Chat",
-    monogram: "TC",
+    name: "Atto",
+    monogram: "AT",
     surface: "light",
   },
   tokens: {

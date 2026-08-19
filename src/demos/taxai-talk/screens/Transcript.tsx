@@ -94,7 +94,7 @@ export function Transcript() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                      <Badge tone={isUser ? "neutral" : "accent"}>{isUser ? "You" : "Atto"}</Badge>
+                      <Badge tone={isUser ? "neutral" : "accent"}>{isUser ? "You" : "Yosr"}</Badge>
                       <Badge tone="neutral">{t.language}</Badge>
                     </div>
                     <span className="text-[10px] shrink-0" style={{ color: "var(--muted)" }}>

@@ -9,6 +9,7 @@ import {
   resumeSkillGroups,
   projectStories,
 } from "@/data/portfolio";
+import { getDemoById } from "@/demos/_index";
 
 const LINK_CLASS = "text-blue-600 no-underline";
 const PORTFOLIO_ORIGIN = "https://abdurrahmanfirdaus.com";
@@ -143,9 +144,9 @@ export function Resume() {
             {projectStories.map((p) => (
               <li key={p.id} className="break-inside-avoid">
                 <a href={`${PORTFOLIO_ORIGIN}/#/projects/${p.id}`} className={`${LINK_CLASS} font-medium`}>
-                  {p.division}
+                  {getDemoById(p.id)?.title ?? p.division}
                 </a>{" "}
-                - {atsSafe(p.outcomes[0])}
+                ({atsSafe(p.division)}) - {atsSafe(p.outcomes[0])}
                 {p.impact[0] && (
                   <span>
                     {" "}
