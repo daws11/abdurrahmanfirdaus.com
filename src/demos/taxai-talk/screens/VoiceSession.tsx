@@ -184,12 +184,20 @@ export function VoiceSession() {
         {Array.from({ length: BARS }).map((_, i) => (
           <span
             key={i}
-            className={phase === "idle" ? "w-1 rounded-full animate-pulse" : "w-1 rounded-full"}
+            className={
+              phase === "speaking"
+                ? "w-1 rounded-full"
+                : "w-1 rounded-full animate-pulse"
+            }
             style={{
               height: `${20 + barHeights[i] * 60}%`,
               animationDelay: phase === "idle" ? `${i * 50}ms` : undefined,
-              animationDuration: phase === "listening" ? `${400 + (i % 4) * 60}ms` : phase === "idle" ? `${900 + (i % 4) * 150}ms` : undefined,
-              animation: phase === "listening" ? "pulse 0.6s ease-in-out infinite" : phase === "idle" ? undefined : undefined,
+              animationDuration:
+                phase === "listening"
+                  ? `${400 + (i % 4) * 60}ms`
+                  : phase === "idle"
+                  ? `${900 + (i % 4) * 150}ms`
+                  : undefined,
               backgroundColor: "var(--accent)",
               transition: phase === "speaking" ? "height 100ms ease-out" : undefined,
             }}
