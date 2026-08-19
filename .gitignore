@@ -37,3 +37,9 @@ yarn-error.log*
 
 # preview-render mocks (transient build inputs)
 /scripts/preview-render/*.html
+
+# graphify knowledge-graph output (generated)
+/graphify-out/
+
+# archived job-search tool + its local state and artifacts (never commit)
+/job-search/_archived/
