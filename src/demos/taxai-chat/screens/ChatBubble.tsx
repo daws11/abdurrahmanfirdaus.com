@@ -1,7 +1,7 @@
 // src/demos/taxai-chat/screens/ChatBubble.tsx
 //
-// Dual bubble with mini markdown parsing + hover-reveal action tray.
-// Matches production ChatMessage (ui/chat-message.tsx:131-276).
+// Dual bubble with hover-reveal action tray. Plain text content — no inline
+// markdown parsing. Matches production ChatMessage layout (ui/chat-message.tsx).
 
 import type { ReactNode } from "react";
 import { ThumbsUp, Heart, Copy } from "lucide-react";
@@ -13,48 +13,9 @@ interface ChatBubbleProps {
   children?: ReactNode;
 }
 
-// ponytail: minimal markdown parser — only **bold** and *italic*. Full
-// markdown would require a library; production uses MarkdownRenderer.
-function parseInline(text: string): ReactNode {
-  const parts: ReactNode[] = [];
-  let i = 0;
-  let key = 0;
-  while (i < text.length) {
-    const boldEnd = text.indexOf("**", i);
-    const italicEnd = text.indexOf("*", i);
-    let next = -1;
-    let kind: "bold" | "italic" | null = null;
-    if (boldEnd >= 0 && (italicEnd < 0 || boldEnd <= italicEnd)) {
-      next = boldEnd;
-      kind = "bold";
-    } else if (italicEnd >= 0) {
-      next = italicEnd;
-      kind = "italic";
-    }
-    if (next < 0) {
-      parts.push(text.slice(i));
-      break;
-    }
-    if (next > i) parts.push(text.slice(i, next));
-    const closeMarker = kind === "bold" ? "**" : "*";
-    const closeIdx = text.indexOf(closeMarker, next + closeMarker.length);
-    if (closeIdx < 0) {
-      parts.push(text.slice(next));
-      break;
-    }
-    const inner = text.slice(next + closeMarker.length, closeIdx);
-    parts.push(
-      kind === "bold" ? (
-        <strong key={`b-${key++}`}>{inner}</strong>
-      ) : (
-        <em key={`i-${key++}`}>{inner}</em>
-      ),
-    );
-    i = closeIdx + closeMarker.length;
-  }
-  return parts;
-}
-
+// ponytail: no inline parser — assistant copy is authored plain text
+// (see mocks.ts). Production uses MarkdownRenderer, but the demo's author
+// controls the strings directly, so no parser layer is needed here.
 export function ChatBubble({ role, content, timestamp, children }: ChatBubbleProps) {
   const isUser = role === "user";
   return (
@@ -69,7 +30,7 @@ export function ChatBubble({ role, content, timestamp, children }: ChatBubblePro
           border: isUser ? "none" : "1px solid var(--border)",
         }}
       >
-        <div className="whitespace-pre-wrap leading-relaxed">{parseInline(content)}</div>
+        <div className="whitespace-pre-wrap leading-relaxed">{content}</div>
 
         {/* Hover-reveal action tray (assistant only) */}
         {!isUser && (
