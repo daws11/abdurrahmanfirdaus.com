@@ -156,3 +156,36 @@ export const SAMPLE_SUBSCRIPTION: Subscription = {
   startedAt: "2026-07-15",
   expiresAt: "2026-10-15",
 };
+
+/**
+ * Topic-aware canned assistant replies. E.4: composer appends one of these
+ * after a 900ms typing delay. Plain text only — see E.10 (markdown parser
+ * dropped). Each topic has 3-4 short replies (1-2 sentences each).
+ */
+export const CANNED_REPLIES: Record<Conversation["topic"], string[]> = {
+  VAT: [
+    "The standard VAT rate in the UAE is 5%, applied to most goods and services. Restaurant food, retail goods, and professional services all fall under the standard rate unless explicitly exempted.",
+    "For VAT registration, the threshold is AED 375,000 in taxable turnover over 12 months. Mandatory registration kicks in once you cross that. Voluntary registration is possible earlier — useful for businesses recovering input VAT on stock.",
+    "Designated zones get a special VAT treatment for goods: supplies between businesses in designated zones can be treated as outside the scope of VAT, similar to a free zone for corporate tax. Services don't get the same treatment — they're taxable regardless of where the supplier sits.",
+  ],
+  "Corporate Tax": [
+    "Corporate Tax in the UAE applies at 9% on taxable income above AED 375,000. Below that threshold, the rate is 0% — so small businesses and free zone qualifying income pay effectively nothing.",
+    "Registration with the Federal Tax Authority is mandatory for UAE resident juridical persons, and for non-residents with a permanent establishment in the UAE. The deadline depends on when the business was established — typically 9 months after the financial year-end.",
+    "For transfer pricing, you'll need a Master File and Local File if you meet the revenue thresholds (AED 200M+ for Master File). Country-by-Country Reporting kicks in at AED 3.15B.",
+  ],
+  "Free Zones": [
+    "Qualifying Free Zone Persons can benefit from a 0% corporate tax rate on qualifying income. The conditions: maintain adequate substance in the free zone, earn only qualifying income, and not elect otherwise.",
+    "Qualifying income is essentially income from transactions with other Free Zone Persons, or income from exports. Domestic sales (to the UAE mainland) above de minimis thresholds are taxed at 9%.",
+    "To stay qualified, the entity must earn qualifying income OR elect to be taxed at the standard 9% rate across all income. The election is irrevocable for 5 years.",
+  ],
+  Excise: [
+    "Excise tax in the UAE applies to specific goods at the point of import or release from an excise warehouse. Carbonated beverages: 50%. Tobacco products: 100%. Energy drinks: 100%. Sugar-sweetened beverages: 50%.",
+    "Excise goods are tracked through an excise warehouse regime. Goods in a designated excise warehouse can move without triggering the tax until released for consumption.",
+    "For business owners, excise is generally a pass-through — you buy excise-paid from the importer. Your pricing and VAT return flow stay the same.",
+  ],
+  "Transfer Pricing": [
+    "Transfer pricing documentation in the UAE follows the OECD guidelines, with a Master File, Local File, and CbCR structure aligned to the Federal Tax Authority's requirements.",
+    "The threshold for Master File is AED 200 million in revenue or group revenue. Local File is required for related-party transactions crossing AED 4 million in either direction.",
+    "Substance matters — the FTA will look at whether the UAE entity has the people, premises, and decision-making to justify the profits booked here.",
+  ],
+};

@@ -2,16 +2,23 @@
 //
 // Conversation view — header with back button + chat list using ChatBubble.
 // Avatar circles per message, typing indicator, citations under assistant
-// bubbles, paperclip + send composer. Uses production's chat-message
-// pattern (dual bubble + hover-reveal action tray inside ChatBubble).
+// bubbles, paperclip + send composer.
+//
+// E.4: composer actually sends. handleSend appends the user message, kicks
+// the typing indicator, and after a 900ms delay appends a topic-aware canned
+// reply from CANNED_REPLIES. Cmd/Ctrl+Enter submits.
+//
+// E.6 will lift `messages` into a per-conversation map; this E.4 establishes
+// the state machine and seed data.
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Paperclip, Send, FileText, ExternalLink, ChevronLeft } from "lucide-react";
 import { setDemoHash } from "@/demos/router";
 import { ChatBubble } from "./ChatBubble";
-import { SAMPLE_MESSAGES, SAMPLE_USER } from "../mocks";
+import { SAMPLE_MESSAGES, SAMPLE_USER, CONVERSATIONS, CANNED_REPLIES } from "../mocks";
 
-const AI_INITIALS = "AI"; // Atto Assistant
+const AI_INITIALS = "AI";
+const TYPING_DELAY_MS = 900;
 
 const USER_INITIALS = SAMPLE_USER.name
   .split(" ")
@@ -34,17 +41,63 @@ function Avatar({ accent }: { accent: boolean }) {
   );
 }
 
-export function Conversation() {
+interface ConversationProps {
+  /** Active session id (E.6 will thread this through). Currently unused but
+   *  accepted so the caller wiring in E.6 doesn't need to change. */
+  sessionId?: string;
+}
+
+export function Conversation({ sessionId: _sessionId }: ConversationProps = {}) {
+  // E.4: messages in local state; E.6 will swap initial value to read from
+  // MESSAGES_BY_CONVERSATION[id].
+  const [messages, setMessages] = useState(SAMPLE_MESSAGES);
   const [draft, setDraft] = useState("");
-  let lastUserIndex = -1;
-  for (let i = SAMPLE_MESSAGES.length - 1; i >= 0; i--) {
-    if (SAMPLE_MESSAGES[i].role === "user") {
-      lastUserIndex = i;
-      break;
-    }
-  }
-  // ponytail: typing indicator shown only after the most recent user message
-  const showTyping = lastUserIndex === SAMPLE_MESSAGES.length - 1;
+  const [isTyping, setIsTyping] = useState(false);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to bottom when messages change or typing indicator toggles.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, [messages, isTyping]);
+
+  // The active conversation's topic drives canned-reply selection. E.6 will
+  // derive this from sessionId; for now we hardcode c-001 (VAT) which is the
+  // only conversation with real messages in SAMPLE_MESSAGES.
+  const activeTopic = "VAT" as const;
+  const sessionTitle = CONVERSATIONS.find((c) => c.id === "c-001")?.title ?? "Conversation";
+
+  const handleSend = () => {
+    const text = draft.trim();
+    if (!text || isTyping) return;
+    const userMsg = {
+      id: `m-${Date.now()}`,
+      conversationId: "c-001",
+      role: "user" as const,
+      content: text,
+      timestamp: new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false }),
+    };
+    setMessages((prev) => [...prev, userMsg]);
+    setDraft("");
+    setIsTyping(true);
+
+    // After TYPING_DELAY_MS, append a canned reply picked by current topic.
+    setTimeout(() => {
+      const pool = CANNED_REPLIES[activeTopic];
+      const reply = pool[Math.floor(Math.random() * pool.length)];
+      const aiMsg = {
+        id: `m-${Date.now() + 1}`,
+        conversationId: "c-001",
+        role: "assistant" as const,
+        content: reply,
+        timestamp: new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false }),
+      };
+      setMessages((prev) => [...prev, aiMsg]);
+      setIsTyping(false);
+    }, TYPING_DELAY_MS);
+  };
 
   return (
     <div className="flex h-full flex-col">
@@ -60,15 +113,15 @@ export function Conversation() {
           <ChevronLeft className="h-4 w-4" />
         </button>
         <div>
-          <p className="text-sm font-semibold">VAT rate on restaurant food</p>
+          <p className="text-sm font-semibold">{sessionTitle}</p>
           <p className="text-[10px]" style={{ color: "var(--muted)" }}>
-            VAT · 8 messages · GPT-4o · today
+            {activeTopic} · {messages.length} messages · GPT-4o · today
           </p>
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-        {SAMPLE_MESSAGES.map((m) => (
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+        {messages.map((m) => (
           <div
             key={m.id}
             className={`flex items-start gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}
@@ -115,7 +168,7 @@ export function Conversation() {
           </div>
         ))}
 
-        {showTyping && (
+        {isTyping && (
           <div className="flex items-start gap-2">
             <Avatar accent={false} />
             <div
@@ -144,15 +197,22 @@ export function Conversation() {
           <textarea
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
             placeholder="Ask Atto anything..."
             className="flex-1 resize-none bg-transparent text-sm outline-none"
             rows={1}
           />
           <button
             type="button"
+            onClick={handleSend}
             className="flex h-7 w-7 items-center justify-center rounded-md disabled:opacity-50"
             style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
-            disabled={!draft.trim()}
+            disabled={!draft.trim() || isTyping}
             aria-label="Send"
           >
             <Send className="h-3.5 w-3.5" />
