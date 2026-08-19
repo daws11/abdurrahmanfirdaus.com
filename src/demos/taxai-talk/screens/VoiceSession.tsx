@@ -7,7 +7,7 @@
 // Duration / Turns. Restart resets the live transcript.
 
 import { useEffect, useRef, useState } from "react";
-import { Volume2, Radio, PhoneOff } from "lucide-react";
+import { Volume2, Radio, PhoneOff, Sparkles } from "lucide-react";
 import { Button } from "@/demos/_shared/Button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/demos/_shared/Card";
 import { Dialog } from "@/demos/_shared/Dialog";
@@ -152,7 +152,7 @@ export function VoiceSession() {
           className="flex h-20 w-20 items-center justify-center rounded-full text-lg font-semibold shadow-lg"
           style={{ backgroundColor: "var(--accent)", color: "var(--accent-fg)" }}
         >
-          {AVATAR_INITIALS}
+          <Sparkles className="h-8 w-8" />
         </div>
 
         <div className="flex flex-col items-center gap-1.5">
