@@ -2,30 +2,44 @@
 //
 // Live voice session view — mirrors talk.taxai.ae production
 // ConversationControls.tsx layout:
-// - Live status badge (kept from iteration 3)
-// - Three avatars (kept: user / center AI / voice variant)
-// - Voice name + description (kept)
-// - 32-bar waveform (kept: synthetic visual element)
+// - Live status badge
+// - Three avatars (You / Atto center / voice variant right)
+// - Voice name + description
+// - 32-bar synthetic waveform
 // - Mute button + MicButton (primary) + End call
-// - StatusIndicator (NEW: listening/speaking)
-// - Powered-by line (kept)
-// - QuickStartPills (NEW: 3 colored-dot footer)
+// - StatusIndicator
+// - Powered-by line
+// - QuickStartPills
+//
+// E.5 — adds a Conclusion modal that appears when the session ends, replacing
+// the previous silent reset. The modal summarises the session and offers
+// Save & email / Restart actions.
 
 import { useState } from "react";
 import { Volume2, Radio, PhoneOff } from "lucide-react";
 import { Button } from "@/demos/_shared/Button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/demos/_shared/Card";
+import { Dialog } from "@/demos/_shared/Dialog";
 import { MicButton, type MicState } from "./MicButton";
 import { StatusIndicator, type SessionStatus } from "./StatusIndicator";
 import { QuickStartPills } from "./QuickStartPills";
-import { VOICES, SELECTED_VOICE } from "../mocks";
+import {
+  VOICES,
+  SELECTED_VOICE,
+  CONCLUSION_HEADLINE,
+  CONCLUSION_BODY,
+  CONCLUSION_CTAS,
+} from "../mocks";
 
-const AVATAR_INITIALS = "YO"; // Yosr, TaxAI's voice agent
+const AVATAR_INITIALS = "AI"; // VoiceSession name; E.13 will swap center to a Sparkles icon.
 const BARS = 32;
 
 export function VoiceSession() {
   const voice = VOICES.find((v) => v.id === SELECTED_VOICE)!;
   const [micState, setMicState] = useState<MicState>("idle");
   const [status, setStatus] = useState<SessionStatus>("idle");
+  const [showConclusion, setShowConclusion] = useState(false);
+  const [savedFlash, setSavedFlash] = useState(false);
 
   const handleStart = () => {
     setMicState("connecting");
@@ -35,13 +49,27 @@ export function VoiceSession() {
     }, 300);
   };
 
-  const handleEnd = () => {
+  // E.5 — both end paths converge here. Single source of truth.
+  const endSession = () => {
+    if (micState === "idle") return;
     setMicState("ending");
     setTimeout(() => {
       setMicState("idle");
-      setStatus("ended");
-      setTimeout(() => setStatus("idle"), 800);
+      setStatus("idle");
+      setShowConclusion(true);
     }, 300);
+  };
+
+  // E.5 — Restart from the Conclusion modal: close + reset visual state.
+  const handleRestart = () => {
+    setShowConclusion(false);
+    setSavedFlash(false);
+  };
+
+  // E.5 — Save & email: flash inline success for 2s (no toast library).
+  const handleSave = () => {
+    setSavedFlash(true);
+    setTimeout(() => setSavedFlash(false), 2000);
   };
 
   return (
@@ -134,13 +162,14 @@ export function VoiceSession() {
           <Volume2 className="h-5 w-5" />
         </button>
 
-        <MicButton state={micState} onStart={handleStart} onEnd={handleEnd} />
+        <MicButton state={micState} onStart={handleStart} onEnd={endSession} />
 
         <Button
           type="button"
           variant="secondary"
           className="h-12 w-12 !p-0 rounded-full"
           aria-label="End call"
+          onClick={endSession}
           disabled={micState === "idle"}
         >
           <PhoneOff className="h-5 w-5" />
@@ -155,6 +184,82 @@ export function VoiceSession() {
       </p>
 
       <QuickStartPills />
+
+      {/* E.5 — Conclusion modal */}
+      <Dialog
+        open={showConclusion}
+        onClose={() => setShowConclusion(false)}
+        title="Session complete"
+        maxWidth={520}
+        footer={
+          <>
+            <Button variant="secondary" onClick={handleRestart}>
+              {CONCLUSION_CTAS.restart}
+            </Button>
+            <Button variant="primary" onClick={handleSave}>
+              {CONCLUSION_CTAS.save}
+            </Button>
+          </>
+        }
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>{CONCLUSION_HEADLINE}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
+              {CONCLUSION_BODY}
+            </p>
+
+            <dl className="mt-4 grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <dt className="uppercase tracking-wider" style={{ color: "var(--muted)" }}>
+                  Voice
+                </dt>
+                <dd className="mt-0.5 font-medium" style={{ color: "var(--fg)" }}>
+                  {voice.name}
+                </dd>
+              </div>
+              <div>
+                <dt className="uppercase tracking-wider" style={{ color: "var(--muted)" }}>
+                  Language
+                </dt>
+                <dd className="mt-0.5 font-medium" style={{ color: "var(--fg)" }}>
+                  {voice.language}
+                </dd>
+              </div>
+              <div>
+                <dt className="uppercase tracking-wider" style={{ color: "var(--muted)" }}>
+                  Duration
+                </dt>
+                <dd className="mt-0.5 font-medium" style={{ color: "var(--fg)" }}>
+                  0:32
+                </dd>
+              </div>
+              <div>
+                <dt className="uppercase tracking-wider" style={{ color: "var(--muted)" }}>
+                  Turns
+                </dt>
+                <dd className="mt-0.5 font-medium" style={{ color: "var(--fg)" }}>
+                  6
+                </dd>
+              </div>
+            </dl>
+
+            {savedFlash && (
+              <p
+                className="mt-4 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs"
+                style={{
+                  backgroundColor: "color-mix(in srgb, var(--ok) 15%, transparent)",
+                  color: "var(--ok)",
+                }}
+              >
+                ✓ Saved to your Atto inbox
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </Dialog>
     </div>
   );
 }

@@ -52,3 +52,20 @@ export const CONVERSATION_SUMMARY = `The user asked three questions about UAE ta
 **Recommended next steps:** Review the user's specific business activity codes (VAT and CT) and confirm any goods that may qualify for designated-zone VAT relief. Open corporate tax registration flow via the EmaraTax portal if establishment date is approaching the 9-month deadline.`;
 
 export const SELECTED_VOICE: VoiceId = "aria";
+
+/**
+ * E.5 — synthetic Conclusion copy shown in the post-session modal. Atto is
+ * the assistant name shared with taxai-chat (see E.13 for cross-demo
+ * brand carry-through).
+ */
+export const CONCLUSION_HEADLINE = "Session with Atto";
+
+export const CONCLUSION_BODY =
+  "Your conversation covered UAE tax topics across English and Arabic. " +
+  "Atto cited the relevant Federal Decree-Law sections and Executive Regulations " +
+  "where applicable. Below is a recap of what was discussed.";
+
+export const CONCLUSION_CTAS = {
+  save: "Save & email",
+  restart: "Restart session",
+} as const;
