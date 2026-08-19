@@ -69,3 +69,17 @@ export const CONCLUSION_CTAS = {
   save: "Save & email",
   restart: "Restart session",
 } as const;
+
+/**
+ * E.7 — synthetic turn timeline that streams in during a voice session.
+ * Each entry fires once when elapsed seconds since mic activation crosses
+ * `afterSec`. Mix of user + assistant EN/AR to mirror SAMPLE_TRANSCRIPT.
+ */
+export const SIMULATED_TURNS: { afterSec: number; turn: Omit<TranscriptTurn, "id"> }[] = [
+  { afterSec: 4, turn: { role: "assistant", language: "EN", content: "The standard VAT rate in the UAE is 5%, applicable to restaurant food and non-alcoholic beverages.", timestamp: "00:04" } },
+  { afterSec: 8, turn: { role: "user", language: "EN", content: "And what about alcohol if the restaurant is licensed?", timestamp: "00:08" } },
+  { afterSec: 14, turn: { role: "assistant", language: "EN", content: "Alcoholic beverages are subject to excise tax at 50% in addition to the 5% VAT. The excise is levied at the point of import or release from an excise warehouse.", timestamp: "00:14" } },
+  { afterSec: 18, turn: { role: "user", language: "AR", content: "وماذا عن الضريبة الانتقائية على المشروبات الغازية؟", timestamp: "00:18" } },
+  { afterSec: 25, turn: { role: "assistant", language: "AR", content: "الضريبة الانتقائية على المشروبات الغازية 50 في المئة، وعلى منتجات التبغ 100 في المئة، وعلى مشروبات الطاقة 100 في المئة أيضاً.", timestamp: "00:25" } },
+  { afterSec: 30, turn: { role: "user", language: "EN", content: "Thanks. Can you tell me about corporate tax registration too?", timestamp: "00:30" } },
+];

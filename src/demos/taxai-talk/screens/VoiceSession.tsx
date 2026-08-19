@@ -1,21 +1,12 @@
 // src/demos/taxai-talk/screens/VoiceSession.tsx
 //
 // Live voice session view — mirrors talk.taxai.ae production
-// ConversationControls.tsx layout:
-// - Live status badge
-// - Three avatars (You / Atto center / voice variant right)
-// - Voice name + description
-// - 32-bar synthetic waveform
-// - Mute button + MicButton (primary) + End call
-// - StatusIndicator
-// - Powered-by line
-// - QuickStartPills
-//
-// E.5 — adds a Conclusion modal that appears when the session ends, replacing
-// the previous silent reset. The modal summarises the session and offers
-// Save & email / Restart actions.
+// ConversationControls.tsx layout.
+// E.7 — mic cycles through listen → speak → transcript updates in real time,
+// with mm:ss duration counter. Conclusion modal reads live values for
+// Duration / Turns. Restart resets the live transcript.
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Volume2, Radio, PhoneOff } from "lucide-react";
 import { Button } from "@/demos/_shared/Button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/demos/_shared/Card";
@@ -29,10 +20,18 @@ import {
   CONCLUSION_HEADLINE,
   CONCLUSION_BODY,
   CONCLUSION_CTAS,
+  SIMULATED_TURNS,
 } from "../mocks";
+import { useTranscript, resetTranscript } from "../useTranscript";
 
-const AVATAR_INITIALS = "AI"; // VoiceSession name; E.13 will swap center to a Sparkles icon.
+const AVATAR_INITIALS = "AI";
 const BARS = 32;
+
+function fmtMMSS(totalSec: number): string {
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
 
 export function VoiceSession() {
   const voice = VOICES.find((v) => v.id === SELECTED_VOICE)!;
@@ -41,36 +40,80 @@ export function VoiceSession() {
   const [showConclusion, setShowConclusion] = useState(false);
   const [savedFlash, setSavedFlash] = useState(false);
 
+  // E.7 — live session state
+  const [elapsed, setElapsed] = useState(0);
+  const [phase, setPhase] = useState<"idle" | "listening" | "speaking">("idle");
+  const [transcript, appendTurn] = useTranscript();
+  const lastDispatchedRef = useRef(0);
+
+  // Tick elapsed every 1s while not idle.
+  useEffect(() => {
+    if (phase === "idle") return;
+    const t = setInterval(() => setElapsed((e) => e + 1), 1000);
+    return () => clearInterval(t);
+  }, [phase]);
+
+  // Dispatch SIMULATED_TURNS based on elapsed seconds.
+  useEffect(() => {
+    for (let i = lastDispatchedRef.current; i < SIMULATED_TURNS.length; i++) {
+      if (SIMULATED_TURNS[i].afterSec <= elapsed) {
+        appendTurn(SIMULATED_TURNS[i].turn);
+        setPhase(SIMULATED_TURNS[i].turn.role === "user" ? "listening" : "speaking");
+        lastDispatchedRef.current = i + 1;
+      } else {
+        break;
+      }
+    }
+  }, [elapsed, appendTurn]);
+
+  // E.7 — random heights for waveform while speaking.
+  const [barHeights, setBarHeights] = useState<number[]>(
+    () => Array.from({ length: BARS }, () => 0.4 + Math.random() * 0.4),
+  );
+  useEffect(() => {
+    if (phase !== "speaking") return;
+    const t = setInterval(() => {
+      setBarHeights(Array.from({ length: BARS }, () => 0.2 + Math.random() * 0.8));
+    }, 100);
+    return () => clearInterval(t);
+  }, [phase]);
+
   const handleStart = () => {
     setMicState("connecting");
+    setElapsed(0);
+    lastDispatchedRef.current = 0;
     setTimeout(() => {
       setMicState("active");
       setStatus("listening");
+      setPhase("listening");
     }, 300);
   };
 
-  // E.5 — both end paths converge here. Single source of truth.
   const endSession = () => {
     if (micState === "idle") return;
     setMicState("ending");
     setTimeout(() => {
       setMicState("idle");
       setStatus("idle");
+      setPhase("idle");
       setShowConclusion(true);
     }, 300);
   };
 
-  // E.5 — Restart from the Conclusion modal: close + reset visual state.
   const handleRestart = () => {
     setShowConclusion(false);
     setSavedFlash(false);
+    setElapsed(0);
+    setPhase("idle");
+    resetTranscript();
   };
 
-  // E.5 — Save & email: flash inline success for 2s (no toast library).
   const handleSave = () => {
     setSavedFlash(true);
     setTimeout(() => setSavedFlash(false), 2000);
   };
+
+  const lastAssistant = [...transcript].reverse().find((t) => t.role === "assistant");
 
   return (
     <div className="flex h-full flex-col items-center justify-center px-6">
@@ -86,7 +129,7 @@ export function VoiceSession() {
         </span>
       </div>
 
-      {/* Three avatars — user on left, center AI in accent, side AI with border */}
+      {/* Three avatars */}
       <div className="mt-4 flex items-center gap-6">
         <div className="flex flex-col items-center gap-1.5">
           <div
@@ -135,23 +178,37 @@ export function VoiceSession() {
         </p>
       </div>
 
-      {/* Waveform — 32 staggered pulsing bars */}
+      {/* Waveform — 32 bars; heights vary by phase */}
       <div className="mt-10 flex items-center justify-center gap-1 h-24">
         {Array.from({ length: BARS }).map((_, i) => (
           <span
             key={i}
-            className="w-1 rounded-full animate-pulse"
+            className={phase === "idle" ? "w-1 rounded-full animate-pulse" : "w-1 rounded-full"}
             style={{
-              height: `${20 + Math.abs(Math.sin(i * 0.4)) * 60}%`,
-              animationDelay: `${i * 50}ms`,
-              animationDuration: `${900 + (i % 4) * 150}ms`,
+              height: `${20 + barHeights[i] * 60}%`,
+              animationDelay: phase === "idle" ? `${i * 50}ms` : undefined,
+              animationDuration: phase === "listening" ? `${400 + (i % 4) * 60}ms` : phase === "idle" ? `${900 + (i % 4) * 150}ms` : undefined,
+              animation: phase === "listening" ? "pulse 0.6s ease-in-out infinite" : phase === "idle" ? undefined : undefined,
               backgroundColor: "var(--accent)",
+              transition: phase === "speaking" ? "height 100ms ease-out" : undefined,
             }}
           />
         ))}
       </div>
 
-      {/* Controls — Mute (left), MicButton (center primary), End (right) */}
+      {/* E.7 — last assistant turn preview (clamped 2 lines) */}
+      {lastAssistant && (
+        <div className="mt-4 max-w-md px-4">
+          <p className="line-clamp-2 text-center text-xs italic" style={{ color: "var(--muted)" }}>
+            <span className="font-medium not-italic" style={{ color: "var(--accent)" }}>
+              Atto:
+            </span>{" "}
+            {lastAssistant.content}
+          </p>
+        </div>
+      )}
+
+      {/* Controls */}
       <div className="mt-10 flex items-center gap-4">
         <button
           type="button"
@@ -178,14 +235,19 @@ export function VoiceSession() {
 
       <StatusIndicator status={status} />
 
-      <p className="mt-6 text-xs" style={{ color: "var(--muted)" }}>
+      {/* E.7 — duration counter (mm:ss) */}
+      <p className="mt-2 text-xs font-mono" style={{ color: "var(--muted)" }}>
+        {fmtMMSS(elapsed)}
+      </p>
+
+      <p className="mt-4 text-xs" style={{ color: "var(--muted)" }}>
         Powered by <span className="font-semibold" style={{ color: "var(--accent)" }}>ElevenLabs</span>
         {" "}· GPT-4o reasoning
       </p>
 
       <QuickStartPills />
 
-      {/* E.5 — Conclusion modal */}
+      {/* E.5/E.7 — Conclusion modal with live values */}
       <Dialog
         open={showConclusion}
         onClose={() => setShowConclusion(false)}
@@ -233,7 +295,7 @@ export function VoiceSession() {
                   Duration
                 </dt>
                 <dd className="mt-0.5 font-medium" style={{ color: "var(--fg)" }}>
-                  0:32
+                  {fmtMMSS(elapsed)}
                 </dd>
               </div>
               <div>
@@ -241,7 +303,7 @@ export function VoiceSession() {
                   Turns
                 </dt>
                 <dd className="mt-0.5 font-medium" style={{ color: "var(--fg)" }}>
-                  6
+                  {transcript.length}
                 </dd>
               </div>
             </dl>
