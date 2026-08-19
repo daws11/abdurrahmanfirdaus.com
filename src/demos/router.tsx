@@ -11,7 +11,7 @@
  * No external deps. ~80 lines including the parser.
  */
 
-import { useEffect, useState, type ComponentType } from "react";
+import { useEffect, useRef, useState, type ComponentType } from "react";
 import { DEMOS, getDemoById, type DemoId } from "./_index";
 import type { DemoTheme } from "./_shared/theme";
 import { DemoHub } from "./_shared/DemoHub";
@@ -55,12 +55,25 @@ export function useDemoRoute(): DemoRoute {
       ? { id: null, sub: null }
       : parseHash(window.location.hash),
   );
+  const prevIdRef = useRef<DemoId | null>(route.id);
 
   useEffect(() => {
     const onHash = () => setRoute(parseHash(window.location.hash));
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
+
+  // Reset scroll when the demo id changes (hub ↔ demo, demo ↔ demo). Within
+  // the same demo, sub-route changes preserve scroll since the shell height
+  // is unchanged.
+  useEffect(() => {
+    if (prevIdRef.current !== route.id) {
+      prevIdRef.current = route.id;
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
+    }
+  }, [route.id]);
 
   return route;
 }
