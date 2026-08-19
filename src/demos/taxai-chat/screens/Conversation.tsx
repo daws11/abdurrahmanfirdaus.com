@@ -9,7 +9,7 @@
 // sessions resets messages to that conversation's thread.
 
 import { useEffect, useRef, useState } from "react";
-import { Paperclip, Send, FileText, ExternalLink, ChevronLeft } from "lucide-react";
+import { Paperclip, Send, FileText, ExternalLink, ChevronLeft, X } from "lucide-react";
 import { setDemoHash } from "@/demos/router";
 import { ChatBubble } from "./ChatBubble";
 import {
@@ -18,6 +18,7 @@ import {
   CANNED_REPLIES,
   getMessagesForConversation,
   type Conversation as ConversationTopic,
+  type Attachment,
 } from "../mocks";
 
 const AI_INITIALS = "AI";
@@ -48,6 +49,7 @@ export function Conversation({ sessionId }: { sessionId: string }) {
   const [messages, setMessages] = useState(getMessagesForConversation(sessionId));
   const [draft, setDraft] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [previewAttachment, setPreviewAttachment] = useState<Attachment | null>(null);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -119,6 +121,40 @@ export function Conversation({ sessionId }: { sessionId: string }) {
         </div>
       </header>
 
+      {previewAttachment && (
+        <section
+          className="mx-4 mt-4 rounded-lg border p-3"
+          style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
+          aria-label="Attachment preview"
+        >
+          <div className="flex items-start gap-3">
+            <FileText className="h-5 w-5 shrink-0" style={{ color: "var(--accent)" }} />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold" style={{ color: "var(--fg)" }}>
+                {previewAttachment.name}
+              </p>
+              <p className="text-xs" style={{ color: "var(--muted)" }}>
+                {previewAttachment.size}
+                {previewAttachment.pages ? ` · ${previewAttachment.pages} pages` : ""}
+                {" · "}{previewAttachment.type.toUpperCase()}
+              </p>
+              <p className="mt-2 text-xs italic" style={{ color: "var(--muted)" }}>
+                Inline preview — production would render the actual PDF/image here.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setPreviewAttachment(null)}
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md hover:opacity-80"
+              style={{ color: "var(--muted)" }}
+              aria-label="Close preview"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </section>
+      )}
+
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
         {messages.map((m) => (
           <div
@@ -133,15 +169,18 @@ export function Conversation({ sessionId }: { sessionId: string }) {
                 timestamp={m.timestamp}
               >
                 {m.attachmentName && (
-                  <div
-                    className={`inline-flex items-center gap-2 rounded-md border bg-white px-2 py-1 text-xs mb-1.5 ${
+                  <button
+                    type="button"
+                    onClick={() => setPreviewAttachment(m.attachment ?? null)}
+                    className={`inline-flex items-center gap-2 rounded-md border bg-white px-2 py-1 text-xs mb-1.5 transition hover:opacity-80 ${
                       m.role === "user" ? "self-end" : "self-start"
                     }`}
                     style={{ borderColor: "var(--border)" }}
                   >
                     <FileText className="h-3 w-3" style={{ color: "var(--accent)" }} />
                     {m.attachmentName}
-                  </div>
+                    <span style={{ color: "var(--muted)" }}>↗</span>
+                  </button>
                 )}
               </ChatBubble>
               {m.citations && (

@@ -14,12 +14,21 @@ export interface Conversation {
   online?: boolean;
 }
 
+export interface Attachment {
+  name: string;
+  size: string;
+  pages?: number;
+  type: "pdf" | "image";
+}
+
 export interface Message {
   id: string;
   conversationId: string;
   role: "user" | "assistant";
   content: string;
   attachmentName?: string;
+  /** E.16 — when present, attachment chip is clickable; opens inline preview pane. */
+  attachment?: Attachment;
   citations?: { source: string; snippet: string }[];
   timestamp: string;
 }
@@ -74,6 +83,7 @@ export const MESSAGES_BY_CONVERSATION: Record<string, Message[]> = {
       id: "m-4", conversationId: "c-001", role: "assistant",
       content: "Alcoholic beverages are subject to excise tax at 50% (in addition to the 5% VAT). The excise is levied at the point of import or release from an excise warehouse, so the restaurant would purchase them excise-paid from the importer.",
       attachmentName: "excise-tax-schedule-2024.pdf",
+      attachment: { name: "excise-tax-schedule-2024.pdf", size: "342 KB", pages: 12, type: "pdf" },
       timestamp: "10:44",
     },
     {
