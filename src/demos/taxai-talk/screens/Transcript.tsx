@@ -9,6 +9,7 @@ import { Badge } from "@/demos/_shared/Badge";
 import { VOICES, CONVERSATION_SUMMARY } from "../mocks";
 import { useVoiceSelection } from "../useVoiceSelection";
 import { useTranscript } from "../useTranscript";
+import { parseInlineBold } from "@/demos/_shared/inlineFormat";
 
 const AVATAR_INITIALS = "AI";
 
@@ -132,13 +133,13 @@ export function Transcript() {
       <section>
         <h3 className="text-sm font-semibold mb-3">Conversation summary</h3>
         <div
-          className="rounded-lg p-4 text-sm leading-relaxed whitespace-pre-line"
+          className="rounded-lg p-4 text-sm leading-relaxed whitespace-pre-wrap"
           style={{
             backgroundColor: "color-mix(in srgb, var(--muted) 30%, transparent)",
             color: "var(--fg)",
           }}
         >
-          {CONVERSATION_SUMMARY}
+          {parseInlineBold(CONVERSATION_SUMMARY)}
         </div>
       </section>
     </div>
