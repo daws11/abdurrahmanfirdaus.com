@@ -277,10 +277,10 @@ export function FocusRail({
                 )}
                 {activeItem.caseStudyId && (
                   <a
-                    href="#work"
+                    href={`#/projects/${activeItem.caseStudyId}`}
                     className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/5 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-400 transition-colors hover:bg-emerald-400/10"
                   >
-                    → Case study below
+                    → Read the case study
                   </a>
                 )}
               </motion.div>
