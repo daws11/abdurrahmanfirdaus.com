@@ -24,7 +24,6 @@ import {
 import { useVoiceSelection } from "../useVoiceSelection";
 import { useTranscript, resetTranscript } from "../useTranscript";
 
-const AVATAR_INITIALS = "AI";
 const BARS = 32;
 
 function fmtMMSS(totalSec: number): string {
@@ -157,14 +156,14 @@ export function VoiceSession() {
 
         <div className="flex flex-col items-center gap-1.5">
           <div
-            className="flex h-14 w-14 items-center justify-center rounded-full text-sm font-semibold"
+            className="flex h-14 w-14 items-center justify-center rounded-full"
             style={{
               border: "2px solid var(--accent)",
               backgroundColor: "color-mix(in srgb, var(--accent) 15%, transparent)",
               color: "var(--accent)",
             }}
           >
-            {AVATAR_INITIALS}
+            <Volume2 className="h-5 w-5" />
           </div>
           <p className="text-[10px] uppercase tracking-widest" style={{ color: "var(--muted)" }}>
             {voice.name}
