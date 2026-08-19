@@ -90,7 +90,7 @@ export interface Skill {
 
 /** CV-specific summary — condensed from the LinkedIn About section. */
 export const resumeSummary =
-  "Forward Deployed Engineer based in Bali. I sit with the team, find what's actually broken, ship the smallest fix that unsticks it, and stay until they reach for it without thinking. I lead the Technology & Innovation Lab at PT Unicorn Food and Service, owning end-to-end delivery of every internal product — from PRD and roadmap to real-time integrations and adoption. Five products are in daily use: Invenflow (purchasing, warehouse, outlets), Invoice Sense (finance reconciliation on Xero + iSeller), PeopleOS (in-house HRM replacing a per-head vendor bill), Channelflow (This is Bali bookings across WhatsApp, Instagram, email, TikTok with an AI agent), and Kitchen Fresh (outlet kitchen ops). Alongside that I build the AI surfaces for TaxAI, a UAE tax assistant: Atto, the chat agent that cites Federal Decree-Law sources, and Yosr, the EN/AR voice agent on GPT-4o + ElevenLabs. How I work: Discover → Design → Deploy → Drive adoption — I don't write a line of code until I've watched the team do the work by hand.";
+  "Forward Deployed Engineer based in Bali. I sit with the team, find what's actually broken, ship the smallest fix that unsticks it, and stay until they reach for it without thinking. I lead the Technology & Innovation Lab at PT Unicorn Food and Service, owning end-to-end delivery of every internal product — from PRD and roadmap to real-time integrations and adoption. Five products are in daily use: Invenflow (purchasing, warehouse, outlets), Invoice Sense (finance reconciliation on Xero + iSeller), PeopleOS (in-house HRM replacing a per-head vendor bill, with an employee app in production on Android and iOS), Channelflow (This is Bali bookings across WhatsApp, Instagram, email, TikTok with an AI agent), and Kitchen Fresh (outlet kitchen ops). Alongside that I build the AI surfaces for TaxAI, a UAE tax assistant: Atto, the chat agent that cites Federal Decree-Law sources, and Yosr, the EN/AR voice agent on GPT-4o + ElevenLabs. How I work: Discover → Design → Deploy → Drive adoption — I don't write a line of code until I've watched the team do the work by hand.";
 
 export interface SkillGroup {
   label: string;
@@ -99,7 +99,7 @@ export interface SkillGroup {
 
 /** CV-specific grouped skills — mirrors the LinkedIn headline structure. */
 export const resumeSkillGroups: SkillGroup[] = [
-  { label: "Full-Stack", items: ["React", "Next.js", "TypeScript", "Node.js"] },
+  { label: "Full-Stack", items: ["React", "Next.js", "TypeScript", "Node.js", "React Native"] },
   { label: "AI Agents", items: ["n8n", "RAG", "Mastra AI"] },
   {
     label: "Integrations",
@@ -153,7 +153,7 @@ export const experience: WorkExperience[] = [
         date: "Oct 2025 – Present",
         current: true,
         description:
-          "Lead the Technology & Innovation Lab: end-to-end FDE ownership of every internal product — Invenflow (purchasing/warehouse/outlets), Invoice Sense (finance), PeopleOS (HRM), Channelflow (This is Bali bookings + AI agent), Kitchen Fresh (kitchen ops). Discovery at the desk, not on the whiteboard. PRDs, roadmaps, exec reviews, real-time integrations with Xero, iSeller, Teaspoon Lab, WhatsApp Business, Instagram Graph, TikTok. Promoted from Fullstack Developer to Tech Lead after 2 months for owning shipping velocity and adoption.",
+          "Lead the Technology & Innovation Lab: end-to-end FDE ownership of every internal product — Invenflow (purchasing/warehouse/outlets), Invoice Sense (finance), PeopleOS (HRM), Channelflow (This is Bali bookings + AI agent), Kitchen Fresh (kitchen ops). Shipped PeopleOS to mobile as well as web — React Native app live on Android (direct APK + unlisted Google Play listing) and iOS (unlisted App Store build), mandatory install across the workforce. Discovery at the desk, not on the whiteboard. PRDs, roadmaps, exec reviews, real-time integrations with Xero, iSeller, Teaspoon Lab, WhatsApp Business, Instagram Graph, TikTok. Promoted from Fullstack Developer to Tech Lead after 2 months for owning shipping velocity and adoption.",
         impact:
           "5 production apps in active use across 6 internal teams (kitchen, finance, PC, warehouse, marketing, ops) — replacing ~6 vendor tools and 4 manual workflows.",
       },
@@ -288,9 +288,9 @@ export const projects: FocusRailItem[] = [
   {
     id: "inv-03",
     title: "PeopleOS",
-    meta: "HR · Workforce · In-house HRM",
+    meta: "HR · Workforce · Web + Android + iOS",
     description:
-      "In-house HRM that replaced the per-head vendor bill — onboarding, geofenced attendance, payroll.",
+      "In-house HRM that replaced the per-head vendor bill — live on Android (APK + unlisted Play Store) and iOS.",
     imageSrc: "/assets/images/projects/people-culture.svg",
     href: "#/demos/people-culture",
     privateRepoHref: "https://github.com/PTUNICORN/people-and-culture-app",
@@ -503,16 +503,18 @@ export const projectStories: ProjectStory[] = [
     fdeCallout:
       "I sat with HR for a week and watched them reconcile a forgotten clock-out into an overtime claim — a two-day back-and-forth between one employee and the People Ops team because the system couldn't tell the difference. The product wasn't the HR app. It was the missing tap.",
     story:
-      "**Discovery.** The third-party HRM bill was scaling with every new hire — fifteen million rupiah a month and climbing. That wasn't the only problem, but it was the one the stakeholders put on the table first. I sat with HR for a week to understand what was actually inside the rental app we were paying for: onboarding, attendance, shift scheduling, payroll, training, announcements. The list was clear and the requirements were straightforward — until I watched HR reconcile a forgotten clock-out into an overtime claim, a two-day back-and-forth between one employee and the People Ops team because the system couldn't tell the difference.\n\n**Built.** PeopleOS is end-to-end HRM, in-house. Hiring → onboarding → employee records → geofenced clock-in/clock-out with GPS → shift swap and day-off requests → announcements → training (video + quiz, HR-scored) → payroll + overtime, all driven from a shift schedule admin can build with AI assistance or fully by hand (including split shifts, because hospitality doesn't take Sundays off). Admins run it from a web console; employees use a mobile app distributed via Apple App Store unlisted and Google Play private channel, mandatory install. Geofences are admin-defined — employees can only clock-in from inside the circle.\n\n**Outcome.** The vendor bill is gone. Headcount growth no longer drags an HRM line with it. But the bigger shift is operational: HR stopped reconciling forgotten clock-outs into overtime claims because the app now catches them — if an employee exits the geofence without clocking out, the app pings them so they can clock out from outside the circle within a grace window. No more two-day email threads over a forgotten tap.",
+      "**Discovery.** The third-party HRM bill was scaling with every new hire — fifteen million rupiah a month and climbing. That wasn't the only problem, but it was the one the stakeholders put on the table first. I sat with HR for a week to understand what was actually inside the rental app we were paying for: onboarding, attendance, shift scheduling, payroll, training, announcements. The list was clear and the requirements were straightforward — until I watched HR reconcile a forgotten clock-out into an overtime claim, a two-day back-and-forth between one employee and the People Ops team because the system couldn't tell the difference.\n\n**Built.** PeopleOS is end-to-end HRM, in-house. Hiring → onboarding → employee records → geofenced clock-in/clock-out with GPS → shift swap and day-off requests → announcements → training (video + quiz, HR-scored) → payroll + overtime, all driven from a shift schedule admin can build with AI assistance or fully by hand (including split shifts, because hospitality doesn't take Sundays off). Admins run it from a web console; employees use a React Native app that is already in production on both platforms — Android as a direct APK and an unlisted Google Play listing, iOS as an unlisted App Store build — mandatory install on every employee device. Geofences are admin-defined — employees can only clock-in from inside the circle.\n\n**Outcome.** The vendor bill is gone. Headcount growth no longer drags an HRM line with it. But the bigger shift is operational: HR stopped reconciling forgotten clock-outs into overtime claims because the app now catches them — if an employee exits the geofence without clocking out, the app pings them so they can clock out from outside the circle within a grace window. No more two-day email threads over a forgotten tap.",
     impact: [
       { label: "HRM spend", value: "IDR 15jt/mo → IDR 0" },
       { label: "Annual savings", value: "IDR 180jt / yr" },
+      { label: "Shipped", value: "Android + iOS, in production" },
       { label: "Headcount", value: "scales without cost" },
     ],
     outcomes: [
+      "Shipped to production on both mobile platforms — Android as a direct APK and an unlisted Google Play listing, iOS as an unlisted App Store build",
       "In-house HRM replaces third-party bill that scaled with every hire",
       "End-to-end lifecycle: hiring, onboarding, records, attendance, shifts, training, payroll",
-      "Geofenced clock-in/out with mandatory mobile install (App Store unlisted, Play private)",
+      "Geofenced clock-in/out with mandatory install on every employee device",
       "AI-assisted shift scheduling plus fully custom splits for hospitality",
       "Forgot-to-clock-out notifications cut a recurring HR reconciliation loop",
     ],

@@ -70,7 +70,7 @@ export const DEMOS: DemoMeta[] = [
     id: "people-culture",
     title: "PeopleOS",
     division: "HR · Workforce",
-    blurb: "In-house HRM — records, onboarding, geofenced attendance, shifts, payroll.",
+    blurb: "In-house HRM on web + mobile (Android APK, iOS unlisted) — attendance, shifts, payroll.",
     route: "/demos/people-culture",
     status: "live",
     theme: THEMES["people-culture"],
