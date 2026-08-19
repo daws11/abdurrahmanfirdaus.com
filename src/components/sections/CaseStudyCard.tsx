@@ -65,7 +65,7 @@ export function CaseStudyCard({ story, index }: CaseStudyCardProps) {
         </p>
 
         <p className="max-w-2xl text-base leading-relaxed text-neutral-400 md:text-lg">
-          {story.fdeCallout}
+          {previewSentences(story.fdeCallout, 2)}
         </p>
 
         {story.impact.length > 0 && (
@@ -98,4 +98,21 @@ export function CaseStudyCard({ story, index }: CaseStudyCardProps) {
       </div>
     </motion.article>
   );
+}
+
+/**
+ * Preview the first `n` sentences of an FDE callout for the card's ringkas.
+ * The full text still appears on the project detail page; this keeps the
+ * homepage card scannable without over-truncating to a single sentence.
+ */
+function previewSentences(text: string, n: number): string {
+  let end = 0;
+  let count = 0;
+  while (count < n) {
+    const idx = text.indexOf(". ", end);
+    if (idx === -1) return text;
+    count += 1;
+    end = idx + 2;
+  }
+  return text.slice(0, end).trimEnd();
 }
