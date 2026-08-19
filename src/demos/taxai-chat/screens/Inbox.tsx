@@ -1,25 +1,29 @@
 // src/demos/taxai-chat/screens/Inbox.tsx
 //
-// Production-style AppSidebar layout: branding header + new chat button +
-// session history (with hover-delete) + footer (language + token + user).
+// Production-style AppSidebar layout: branding header + search + new chat
+// button + grouped session history (with hover-delete) + footer.
 // Main column shows QuickStart empty state when nothing selected.
 //
 // E.6: activeSessionId + onSelectSession come from index.tsx (lifted state).
-// E.8 will add SearchInput + date grouping on top of this.
+// E.8: SearchInput filter + group sessions by Today/Yesterday/Last 7 days/Earlier.
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Plus, MessageSquare, Calculator, FileText, Globe2 } from "lucide-react";
 import { SidebarHeader } from "./SidebarHeader";
 import { SidebarFooter } from "./SidebarFooter";
 import { SessionRow } from "./SessionRow";
 import { SESSION_HISTORY } from "../mocks";
 import { setDemoHash } from "@/demos/router";
+import { SearchInput } from "@/demos/_shared/Shell";
+import { groupBucket } from "@/demos/_shared/time";
 
 const QUICKSTARTS = [
   { icon: Calculator, title: "Calculate VAT on an invoice", body: "Quickly check the VAT component of any invoice amount in AED." },
   { icon: FileText, title: "Summarize a tax document", body: "Upload a PDF and get a plain-English summary with citations." },
   { icon: Globe2, title: "Explain free-zone tax treatment", body: "Walk through whether a free-zone entity qualifies for 0% corporate tax." },
 ];
+
+const GROUP_ORDER = ["Today", "Yesterday", "Last 7 days", "Earlier"] as const;
 
 interface InboxProps {
   activeSessionId: string;
@@ -28,6 +32,26 @@ interface InboxProps {
 
 export function Inbox({ activeSessionId, onSelectSession }: InboxProps) {
   const [sessions, setSessions] = useState(SESSION_HISTORY);
+  const [query, setQuery] = useState("");
+
+  const visible = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return sessions;
+    return sessions.filter((s) => s.title.toLowerCase().includes(q));
+  }, [sessions, query]);
+
+  const grouped = useMemo(() => {
+    const buckets: Record<typeof GROUP_ORDER[number], typeof visible> = {
+      "Today": [],
+      "Yesterday": [],
+      "Last 7 days": [],
+      "Earlier": [],
+    };
+    for (const s of visible) {
+      buckets[groupBucket(s.updatedAt)].push(s);
+    }
+    return buckets;
+  }, [visible]);
 
   return (
     <div className="grid h-full grid-cols-[300px_1fr]">
@@ -37,8 +61,9 @@ export function Inbox({ activeSessionId, onSelectSession }: InboxProps) {
       >
         <SidebarHeader />
 
-        {/* New chat button */}
-        <div className="px-3 pt-3">
+        {/* Search + New chat */}
+        <div className="px-3 pt-3 space-y-2">
+          <SearchInput value={query} onChange={setQuery} placeholder="Search conversations…" />
           <button
             type="button"
             onClick={() => {
@@ -53,28 +78,42 @@ export function Inbox({ activeSessionId, onSelectSession }: InboxProps) {
           </button>
         </div>
 
-        {/* Session history */}
+        {/* Session history (grouped) */}
         <div className="flex-1 overflow-y-auto px-2 pt-3">
-          <p className="px-2 py-1 text-[10px] font-semibold uppercase tracking-widest" style={{ color: "var(--muted)" }}>
-            Recent
-          </p>
-          <ul className="flex flex-col gap-1">
-            {sessions.map((s) => (
-              <li key={s.id}>
-                <SessionRow
-                  session={s}
-                  isActive={s.id === activeSessionId}
-                  onClick={() => {
-                    onSelectSession(s.id);
-                    setDemoHash("taxai-chat", "conversation");
-                  }}
-                  onDelete={() => {
-                    setSessions((prev) => prev.filter((x) => x.id !== s.id));
-                  }}
-                />
-              </li>
-            ))}
-          </ul>
+          {visible.length === 0 ? (
+            <p className="px-2 py-1 text-xs italic" style={{ color: "var(--muted)" }}>
+              No conversations match "{query}".
+            </p>
+          ) : (
+            GROUP_ORDER.map((group) => {
+              const items = grouped[group];
+              if (items.length === 0) return null;
+              return (
+                <div key={group} className="mb-3">
+                  <p className="px-2 py-1 text-[10px] font-semibold uppercase tracking-widest" style={{ color: "var(--muted)" }}>
+                    {group}
+                  </p>
+                  <ul className="flex flex-col gap-1">
+                    {items.map((s) => (
+                      <li key={s.id}>
+                        <SessionRow
+                          session={s}
+                          isActive={s.id === activeSessionId}
+                          onClick={() => {
+                            onSelectSession(s.id);
+                            setDemoHash("taxai-chat", "conversation");
+                          }}
+                          onDelete={() => {
+                            setSessions((prev) => prev.filter((x) => x.id !== s.id));
+                          }}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })
+          )}
         </div>
 
         <SidebarFooter />

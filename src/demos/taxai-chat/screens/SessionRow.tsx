@@ -1,12 +1,13 @@
 // src/demos/taxai-chat/screens/SessionRow.tsx
 //
 // Single conversation row in the sidebar. Hover-reveal Trash delete action.
-// Matches production AppSidebar session list (app-sidebar.tsx:149-191).
+// E.8 — renders relative time via formatRelativeTime helper.
 
 import { useState } from "react";
 import { MessageSquare, Trash2 } from "lucide-react";
 import type { SessionHistoryItem } from "../mocks";
 import { Badge } from "@/demos/_shared/Badge";
+import { formatRelativeTime } from "@/demos/_shared/time";
 
 interface SessionRowProps {
   session: SessionHistoryItem;
@@ -40,7 +41,7 @@ export function SessionRow({ session, isActive, onClick, onDelete }: SessionRowP
             <Badge tone="neutral" className="text-[9px] px-1 py-0">
               {session.messageCount}
             </Badge>
-            <span style={{ color: "var(--muted)" }}>{session.updatedAt}</span>
+            <span style={{ color: "var(--muted)" }}>{formatRelativeTime(session.updatedAt)}</span>
           </div>
         </div>
       </button>
