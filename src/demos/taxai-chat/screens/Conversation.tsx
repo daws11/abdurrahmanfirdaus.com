@@ -108,9 +108,11 @@ export function Conversation({ sessionId }: { sessionId: string }) {
         style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
       >
         <button
+          type="button"
           onClick={() => setDemoHash("taxai-chat", "inbox")}
           className="hover:opacity-80"
           style={{ color: "var(--muted)" }}
+          aria-label="Back to inbox"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
