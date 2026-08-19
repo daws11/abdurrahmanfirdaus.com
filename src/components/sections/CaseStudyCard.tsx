@@ -64,8 +64,8 @@ export function CaseStudyCard({ story, index }: CaseStudyCardProps) {
           &ldquo;{story.kicker}&rdquo;
         </p>
 
-        <p className="line-clamp-3 max-w-2xl text-base text-neutral-400 md:text-lg">
-          {firstSentence(story.fdeCallout)}
+        <p className="max-w-2xl text-base leading-relaxed text-neutral-400 md:text-lg">
+          {story.fdeCallout}
         </p>
 
         {story.impact.length > 0 && (
@@ -98,10 +98,4 @@ export function CaseStudyCard({ story, index }: CaseStudyCardProps) {
       </div>
     </motion.article>
   );
-}
-
-/** First sentence of an FDE callout for the card's ringkas preview. */
-function firstSentence(text: string): string {
-  const idx = text.indexOf(". ");
-  return idx === -1 ? text : text.slice(0, idx + 1);
 }
