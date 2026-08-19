@@ -4,7 +4,8 @@
 // session history (with hover-delete) + footer (language + token + user).
 // Main column shows QuickStart empty state when nothing selected.
 //
-// Mirrors production app-sidebar.tsx (taxai-chat production).
+// E.6: activeSessionId + onSelectSession come from index.tsx (lifted state).
+// E.8 will add SearchInput + date grouping on top of this.
 
 import { useState } from "react";
 import { Plus, MessageSquare, Calculator, FileText, Globe2 } from "lucide-react";
@@ -20,9 +21,13 @@ const QUICKSTARTS = [
   { icon: Globe2, title: "Explain free-zone tax treatment", body: "Walk through whether a free-zone entity qualifies for 0% corporate tax." },
 ];
 
-export function Inbox() {
+interface InboxProps {
+  activeSessionId: string;
+  onSelectSession: (id: string) => void;
+}
+
+export function Inbox({ activeSessionId, onSelectSession }: InboxProps) {
   const [sessions, setSessions] = useState(SESSION_HISTORY);
-  const [activeId, setActiveId] = useState<string | null>("c-001");
 
   return (
     <div className="grid h-full grid-cols-[300px_1fr]">
@@ -36,7 +41,10 @@ export function Inbox() {
         <div className="px-3 pt-3">
           <button
             type="button"
-            onClick={() => setDemoHash("taxai-chat", "conversation")}
+            onClick={() => {
+              onSelectSession("c-001");
+              setDemoHash("taxai-chat", "conversation");
+            }}
             className="flex w-full items-center justify-center gap-2 rounded-md border px-3 py-2 text-xs font-medium hover:opacity-90"
             style={{ borderColor: "var(--border)", color: "var(--fg)" }}
           >
@@ -55,14 +63,13 @@ export function Inbox() {
               <li key={s.id}>
                 <SessionRow
                   session={s}
-                  isActive={s.id === activeId}
+                  isActive={s.id === activeSessionId}
                   onClick={() => {
-                    setActiveId(s.id);
+                    onSelectSession(s.id);
                     setDemoHash("taxai-chat", "conversation");
                   }}
                   onDelete={() => {
                     setSessions((prev) => prev.filter((x) => x.id !== s.id));
-                    if (s.id === activeId) setActiveId(null);
                   }}
                 />
               </li>
@@ -90,7 +97,10 @@ export function Inbox() {
               <button
                 key={q.title}
                 type="button"
-                onClick={() => setDemoHash("taxai-chat", "conversation")}
+                onClick={() => {
+                  onSelectSession("c-001");
+                  setDemoHash("taxai-chat", "conversation");
+                }}
                 className="flex flex-col items-start gap-2 rounded-md border p-4 text-left transition hover:shadow-sm"
                 style={{ borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
               >

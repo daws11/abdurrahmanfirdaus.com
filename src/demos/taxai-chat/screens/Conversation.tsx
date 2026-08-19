@@ -4,18 +4,21 @@
 // Avatar circles per message, typing indicator, citations under assistant
 // bubbles, paperclip + send composer.
 //
-// E.4: composer actually sends. handleSend appends the user message, kicks
-// the typing indicator, and after a 900ms delay appends a topic-aware canned
-// reply from CANNED_REPLIES. Cmd/Ctrl+Enter submits.
-//
-// E.6 will lift `messages` into a per-conversation map; this E.4 establishes
-// the state machine and seed data.
+// E.4: composer sends + canned reply with typing indicator.
+// E.6: messages derive from sessionId prop (lifted in index.tsx); switching
+// sessions resets messages to that conversation's thread.
 
 import { useEffect, useRef, useState } from "react";
 import { Paperclip, Send, FileText, ExternalLink, ChevronLeft } from "lucide-react";
 import { setDemoHash } from "@/demos/router";
 import { ChatBubble } from "./ChatBubble";
-import { SAMPLE_MESSAGES, SAMPLE_USER, CONVERSATIONS, CANNED_REPLIES } from "../mocks";
+import {
+  SAMPLE_USER,
+  CONVERSATIONS,
+  CANNED_REPLIES,
+  getMessagesForConversation,
+  type Conversation as ConversationTopic,
+} from "../mocks";
 
 const AI_INITIALS = "AI";
 const TYPING_DELAY_MS = 900;
@@ -41,20 +44,16 @@ function Avatar({ accent }: { accent: boolean }) {
   );
 }
 
-interface ConversationProps {
-  /** Active session id (E.6 will thread this through). Currently unused but
-   *  accepted so the caller wiring in E.6 doesn't need to change. */
-  sessionId?: string;
-}
-
-export function Conversation({ sessionId: _sessionId }: ConversationProps = {}) {
-  // E.4: messages in local state; E.6 will swap initial value to read from
-  // MESSAGES_BY_CONVERSATION[id].
-  const [messages, setMessages] = useState(SAMPLE_MESSAGES);
+export function Conversation({ sessionId }: { sessionId: string }) {
+  const [messages, setMessages] = useState(getMessagesForConversation(sessionId));
   const [draft, setDraft] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const activeConv = CONVERSATIONS.find((c) => c.id === sessionId);
+  const activeTopic: ConversationTopic["topic"] = activeConv?.topic ?? "VAT";
+  const sessionTitle = activeConv?.title ?? "Conversation";
 
   // Auto-scroll to bottom when messages change or typing indicator toggles.
   useEffect(() => {
@@ -63,18 +62,19 @@ export function Conversation({ sessionId: _sessionId }: ConversationProps = {}) 
     el.scrollTop = el.scrollHeight;
   }, [messages, isTyping]);
 
-  // The active conversation's topic drives canned-reply selection. E.6 will
-  // derive this from sessionId; for now we hardcode c-001 (VAT) which is the
-  // only conversation with real messages in SAMPLE_MESSAGES.
-  const activeTopic = "VAT" as const;
-  const sessionTitle = CONVERSATIONS.find((c) => c.id === "c-001")?.title ?? "Conversation";
+  // E.6 — switch conversations resets messages to the new thread.
+  useEffect(() => {
+    setMessages(getMessagesForConversation(sessionId));
+    setDraft("");
+    setIsTyping(false);
+  }, [sessionId]);
 
   const handleSend = () => {
     const text = draft.trim();
     if (!text || isTyping) return;
     const userMsg = {
       id: `m-${Date.now()}`,
-      conversationId: "c-001",
+      conversationId: sessionId,
       role: "user" as const,
       content: text,
       timestamp: new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false }),
@@ -83,13 +83,12 @@ export function Conversation({ sessionId: _sessionId }: ConversationProps = {}) 
     setDraft("");
     setIsTyping(true);
 
-    // After TYPING_DELAY_MS, append a canned reply picked by current topic.
     setTimeout(() => {
       const pool = CANNED_REPLIES[activeTopic];
       const reply = pool[Math.floor(Math.random() * pool.length)];
       const aiMsg = {
         id: `m-${Date.now() + 1}`,
-        conversationId: "c-001",
+        conversationId: sessionId,
         role: "assistant" as const,
         content: reply,
         timestamp: new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false }),
