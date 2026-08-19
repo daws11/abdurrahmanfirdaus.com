@@ -9,8 +9,9 @@
 // sessions resets messages to that conversation's thread.
 
 import { useEffect, useRef, useState } from "react";
-import { Paperclip, Send, FileText, ExternalLink, ChevronLeft, X } from "lucide-react";
+import { Paperclip, Send, FileText, ExternalLink, ChevronLeft, X, Sparkles } from "lucide-react";
 import { setDemoHash } from "@/demos/router";
+import { EmptyState } from "@/demos/_shared/EmptyState";
 import { ChatBubble } from "./ChatBubble";
 import {
   SAMPLE_USER,
@@ -155,68 +156,78 @@ export function Conversation({ sessionId }: { sessionId: string }) {
         </section>
       )}
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-        {messages.map((m) => (
-          <div
-            key={m.id}
-            className={`flex items-start gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}
-          >
-            {m.role === "assistant" && <Avatar accent={false} />}
-            <div className="flex flex-col gap-2 max-w-[80%]">
-              <ChatBubble
-                role={m.role}
-                content={m.content}
-                timestamp={m.timestamp}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6">
+        {messages.length === 0 ? (
+          <EmptyState
+            icon={<Sparkles className="h-5 w-5" />}
+            title="This conversation is empty"
+            description="Send the first message to get started."
+          />
+        ) : (
+          <div className="space-y-4">
+            {messages.map((m) => (
+              <div
+                key={m.id}
+                className={`flex items-start gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}
               >
-                {m.attachmentName && (
-                  <button
-                    type="button"
-                    onClick={() => setPreviewAttachment(m.attachment ?? null)}
-                    className={`inline-flex items-center gap-2 rounded-md border bg-white px-2 py-1 text-xs mb-1.5 transition hover:opacity-80 ${
-                      m.role === "user" ? "self-end" : "self-start"
-                    }`}
-                    style={{ borderColor: "var(--border)" }}
+                {m.role === "assistant" && <Avatar accent={false} />}
+                <div className="flex flex-col gap-2 max-w-[80%]">
+                  <ChatBubble
+                    role={m.role}
+                    content={m.content}
+                    timestamp={m.timestamp}
                   >
-                    <FileText className="h-3 w-3" style={{ color: "var(--accent)" }} />
-                    {m.attachmentName}
-                    <span style={{ color: "var(--muted)" }}>↗</span>
-                  </button>
-                )}
-              </ChatBubble>
-              {m.citations && (
-                <div className="space-y-1.5">
-                  {m.citations.map((c) => (
-                    <div
-                      key={c.source}
-                      className="rounded-md border bg-white px-2.5 py-1.5 text-xs"
-                      style={{ borderColor: "var(--border)" }}
-                    >
-                      <p className="flex items-center gap-1 font-medium" style={{ color: "var(--accent)" }}>
-                        <ExternalLink className="h-3 w-3" /> {c.source}
-                      </p>
-                      <p className="mt-0.5" style={{ color: "var(--muted)" }}>
-                        "{c.snippet}"
-                      </p>
+                    {m.attachmentName && (
+                      <button
+                        type="button"
+                        onClick={() => setPreviewAttachment(m.attachment ?? null)}
+                        className={`inline-flex items-center gap-2 rounded-md border bg-white px-2 py-1 text-xs mb-1.5 transition hover:opacity-80 ${
+                          m.role === "user" ? "self-end" : "self-start"
+                        }`}
+                        style={{ borderColor: "var(--border)" }}
+                      >
+                        <FileText className="h-3 w-3" style={{ color: "var(--accent)" }} />
+                        {m.attachmentName}
+                        <span style={{ color: "var(--muted)" }}>↗</span>
+                      </button>
+                    )}
+                  </ChatBubble>
+                  {m.citations && (
+                    <div className="space-y-1.5">
+                      {m.citations.map((c) => (
+                        <div
+                          key={c.source}
+                          className="rounded-md border bg-white px-2.5 py-1.5 text-xs"
+                          style={{ borderColor: "var(--border)" }}
+                        >
+                          <p className="flex items-center gap-1 font-medium" style={{ color: "var(--accent)" }}>
+                            <ExternalLink className="h-3 w-3" /> {c.source}
+                          </p>
+                          <p className="mt-0.5" style={{ color: "var(--muted)" }}>
+                            "{c.snippet}"
+                          </p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
-              )}
-            </div>
-            {m.role === "user" && <Avatar accent={true} />}
-          </div>
-        ))}
+                {m.role === "user" && <Avatar accent={true} />}
+              </div>
+            ))}
 
-        {isTyping && (
-          <div className="flex items-start gap-2">
-            <Avatar accent={false} />
-            <div
-              className="flex items-center gap-1 rounded-lg px-4 py-3"
-              style={{ border: "1px solid var(--border)", backgroundColor: "var(--surface)" }}
-            >
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full" style={{ backgroundColor: "var(--muted)", animationDelay: "0ms" }} />
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full" style={{ backgroundColor: "var(--muted)", animationDelay: "150ms" }} />
-              <span className="h-1.5 w-1.5 animate-bounce rounded-full" style={{ backgroundColor: "var(--muted)", animationDelay: "300ms" }} />
-            </div>
+            {isTyping && (
+              <div className="flex items-start gap-2">
+                <Avatar accent={false} />
+                <div
+                  className="flex items-center gap-1 rounded-lg px-4 py-3"
+                  style={{ border: "1px solid var(--border)", backgroundColor: "var(--surface)" }}
+                >
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full" style={{ backgroundColor: "var(--muted)", animationDelay: "0ms" }} />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full" style={{ backgroundColor: "var(--muted)", animationDelay: "150ms" }} />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full" style={{ backgroundColor: "var(--muted)", animationDelay: "300ms" }} />
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

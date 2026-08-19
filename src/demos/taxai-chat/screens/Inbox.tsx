@@ -15,6 +15,7 @@ import { SessionRow } from "./SessionRow";
 import { SESSION_HISTORY } from "../mocks";
 import { setDemoHash } from "@/demos/router";
 import { SearchInput } from "@/demos/_shared/Shell";
+import { EmptyState } from "@/demos/_shared/EmptyState";
 import { groupBucket } from "@/demos/_shared/time";
 
 const QUICKSTARTS = [
@@ -80,7 +81,26 @@ export function Inbox({ activeSessionId, onSelectSession }: InboxProps) {
 
         {/* Session history (grouped) */}
         <div className="flex-1 overflow-y-auto px-2 pt-3">
-          {visible.length === 0 ? (
+          {sessions.length === 0 ? (
+            <EmptyState
+              icon={<MessageSquare className="h-5 w-5" />}
+              title="No conversations yet"
+              description="Start a new chat to see it here."
+              action={
+                <button
+                  type="button"
+                  onClick={() => {
+                    onSelectSession("c-001");
+                    setDemoHash("taxai-chat", "conversation");
+                  }}
+                  className="rounded-md border px-3 py-1.5 text-xs font-medium hover:opacity-90"
+                  style={{ borderColor: "var(--border)", color: "var(--fg)" }}
+                >
+                  New chat
+                </button>
+              }
+            />
+          ) : visible.length === 0 ? (
             <p className="px-2 py-1 text-xs italic" style={{ color: "var(--muted)" }}>
               No conversations match "{query}".
             </p>

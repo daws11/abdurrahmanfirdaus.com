@@ -4,8 +4,9 @@
 // E.7 — reads live transcript via useTranscript hook. Now Speaking card
 // shows the most recent assistant turn from live state.
 
-import { Play } from "lucide-react";
+import { Play, FileText } from "lucide-react";
 import { Badge } from "@/demos/_shared/Badge";
+import { EmptyState } from "@/demos/_shared/EmptyState";
 import { VOICES, CONVERSATION_SUMMARY } from "../mocks";
 import { useVoiceSelection } from "../useVoiceSelection";
 import { useTranscript } from "../useTranscript";
@@ -56,21 +57,23 @@ export function Transcript() {
       )}
 
       {/* Conversation history */}
-      <section>
-        <h3 className="text-sm font-semibold mb-3">Conversation history</h3>
-        <div
-          className="rounded-lg p-4 space-y-3 overflow-y-auto"
-          style={{
-            backgroundColor: "color-mix(in srgb, var(--muted) 30%, transparent)",
-            maxHeight: "16rem",
-          }}
-        >
-          {transcript.length === 0 ? (
-            <p className="text-center text-xs italic" style={{ color: "var(--muted)" }}>
-              Start a voice session to generate a transcript.
-            </p>
-          ) : (
-            transcript.map((t) => {
+      {transcript.length === 0 ? (
+        <EmptyState
+          icon={<FileText className="h-5 w-5" />}
+          title="No transcript yet"
+          description="Start a voice session to generate a transcript."
+        />
+      ) : (
+        <section>
+          <h3 className="text-sm font-semibold mb-3">Conversation history</h3>
+          <div
+            className="rounded-lg p-4 space-y-3 overflow-y-auto"
+            style={{
+              backgroundColor: "color-mix(in srgb, var(--muted) 30%, transparent)",
+              maxHeight: "16rem",
+            }}
+          >
+            {transcript.map((t) => {
               const isUser = t.role === "user";
               const initials = isUser ? "SM" : AVATAR_INITIALS;
               const audioSeconds = AUDIO_DURATIONS[t.id];
@@ -124,10 +127,10 @@ export function Transcript() {
                   </div>
                 </article>
               );
-            })
-          )}
-        </div>
-      </section>
+            })}
+          </div>
+        </section>
+      )}
 
       {/* Conversation summary */}
       <section>
